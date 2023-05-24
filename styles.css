@@ -65,8 +65,9 @@ h1 {
   color: hsl(25, 47%, 15%);
 }
 
-#spending-panel h3 {
+#spending-panel h2 {
   color: hsl(25, 47%, 15%);
+  font-size: 14px;
 }
 
 #total {
