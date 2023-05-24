@@ -1,33 +1,62 @@
-let currentDay = (new Date).getDay()
-let bars = document.querySelectorAll('.bar')
-let tooltip = document.querySelector('#tooltip')
+<!DOCTYPE html>
+<html lang="en">
 
-function changeHeight(bar, spentInDay) {
-  bar.style.dataSpent = spentInDay
-  if (spentInDay > 55) {
-    bar.style.height = "100%"
-  } else {
-    bar.style.height = `${spentInDay * 1.8}%`
-  }
-}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Frontend Mentor | Expenses chart component</title>
+</head>
 
-function handleTooltip(bar) {
-  let barCoords = bar.getBoundingClientRect()
-  tooltip.style.display = "block"
-  tooltip.innerText = `$${bar.style.dataSpent}`
-  tooltip.style.left = `${(barCoords.x - ((tooltip.getBoundingClientRect().width - barCoords.width) / 2))}px`
-  tooltip.style.top = `${(barCoords.top) - 30}px`
-}
+<body>
+  <main>
+    <div id="balance-panel">
+      <div id="balance">
+        <p>My balance</p>
+        <h1>$921.48</h1>
+      </div>
+      <img id="logo" alt="logo" src="./images/logo.svg">
+    </div>
 
-async function getData() {
-  let response = await fetch("./data.json");
-  let data = await response.json()
-  for (let i = 0; i < bars.length; i++) {
-    changeHeight(bars[i], data[i].amount)
-  }
-  bars[currentDay].style.backgroundColor = "hsl(186, 34%, 60%)";
-}
+    <div id="spending-panel">
+      <h1>Spending - Last 7 days</h1>
+      <div id="chart">
+        <div id="tooltip">$0.00</div>
+        <div id="bars">
+          <span class="bar" id="mon"></span>
+          <span class="bar" id="tue"></span>
+          <span class="bar" id="wed"></span>
+          <span class="bar" id="thu"></span>
+          <span class="bar" id="fri"></span>
+          <span class="bar" id="sat"></span>
+          <span class="bar" id="sun"></span>
+        </div>
+        <div id="labels">
+          <p class="label">mon</p>
+          <p class="label">tue</p>
+          <p class="label">wed</p>
+          <p class="label">thu</p>
+          <p class="label">fri</p>
+          <p class="label">sat</p>
+          <p class="label">sun</p>
+        </div>
+      </div>
+      <div id="total-section">
+        <div id="total">
+          <p>Total this month</p>
+          <h1 id="total-dollars">$478.33</h1>
+        </div>
+        <div id="change">
+          <h3>+2.4%</h3>
+          <p>from last month</p>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+  <script src="script.js"></script>
+</body>
 
-window.onload = getData
-bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
-bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
+</html>
