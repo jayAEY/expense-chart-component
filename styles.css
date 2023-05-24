@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  background-color: hsl(27, 66%, 92%);
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 350px;
+  min-width: 310px;
+  transition: all 0.5s;
+}
+
+h1 {
+  font-size: 25px;
+  transition: all 0.5s;
+}
+
+#balance-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 100%, 98%);
+  height: 90px;
+  border-radius: 12px;
+}
+
+#balance {
+  display: flex;
+  flex-direction: column;
+}
+
+#logo {
+  width: 60px;
+}
+
+#spending-panel {
+  padding: 18px;
+  background-color: hsl(33, 100%, 98%);
+  color: hsl(28, 10%, 53%);
+  height: 380px;
+  border-radius: 12px;
+}
+
+#spending-panel h1 {
+  color: hsl(25, 47%, 15%);
+}
+
+#spending-panel h3 {
+  color: hsl(25, 47%, 15%);
+}
+
+#total {
+  display: flex;
+  flex-direction: column;
+}
+
+#chart {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  width: 100%;
+  height: 60%;
+  gap: 12px;
+  overflow: hidden;
+}
+
+#labels {
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+}
+
+.label {
+  width: calc((100%/7) - 10px);
+}
+
+#bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 100%;
+  margin-top: 15px;
+}
+
+.bar {
+  background-color: hsl(10, 79%, 65%);
+  width: calc((100%/7) - 10px);
+  border-radius: 4px;
+  height: 1px;
+  transition: all 0.5s;
+}
+
+.bar:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+#total-section {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  border-top: 3px solid hsl(27, 66%, 92%);
+  align-items: center;
+  justify-content: space-between;
+}
+
+#change {
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+}
+
+#tooltip {
+  display: none;
+  position: absolute;
+  width: fit-content;
+  left: 20%;
+  padding: 5px;
+  background-color: hsl(25, 47%, 15%);
+  border-radius: 3px;
+  color: hsl(33, 100%, 98%);
+  text-align: center;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 500px) {
+  main {
+    width: 400px;
+  }
+
+  #total-dollars {
+    font-size: 32px;
+  }
+}

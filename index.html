@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Frontend Mentor | Expenses chart component</title>
+</head>
+
+<body>
+  <main>
+    <div id="balance-panel">
+      <div id="balance">
+        <p>My balance</p>
+        <h1>$921.48</h1>
+      </div>
+      <img id="logo" alt="logo" src="./images/logo.svg">
+    </div>
+
+    <div id="spending-panel">
+      <h1>Spending - Last 7 days</h1>
+      <div id="chart">
+        <div id="tooltip">$0.00</div>
+        <div id="bars">
+          <span class="bar" id="mon"></span>
+          <span class="bar" id="tue"></span>
+          <span class="bar" id="wed"></span>
+          <span class="bar" id="thu"></span>
+          <span class="bar" id="fri"></span>
+          <span class="bar" id="sat"></span>
+          <span class="bar" id="sun"></span>
+        </div>
+        <div id="labels">
+          <p class="label">mon</p>
+          <p class="label">tue</p>
+          <p class="label">wed</p>
+          <p class="label">thu</p>
+          <p class="label">fri</p>
+          <p class="label">sat</p>
+          <p class="label">sun</p>
+        </div>
+      </div>
+      <div id="total-section">
+        <div id="total">
+          <p>Total this month</p>
+          <h1 id="total-dollars">$478.33</h1>
+        </div>
+        <div id="change">
+          <h3>+2.4%</h3><br>
+          <p>from last month</p>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+  <script src="script.js"></script>
+</body>
+
+</html>
