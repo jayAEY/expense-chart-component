@@ -28,9 +28,35 @@ main {
   transition: all 0.5s;
 }
 
-h1 {
+#balance {
   font-size: 25px;
   transition: all 0.5s;
+  width: 190px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: hsl(33, 100%, 98%);
+  padding-left: 16px;
+  z-index: 1;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus {
+  outline: none;
+}
+
+.dollar-sign {
+  position: relative;
+  margin-bottom: -33px;
+  font-weight: 100;
 }
 
 #balance-panel {
@@ -44,7 +70,7 @@ h1 {
   border-radius: 12px;
 }
 
-#balance {
+#balance-text {
   display: flex;
   flex-direction: column;
 }
@@ -126,6 +152,17 @@ h1 {
   justify-content: space-between;
 }
 
+#monthly-total {
+  font-size: 32px;
+  font-size: 25px;
+  transition: all 0.5s;
+  width: 190px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  padding-left: 16px;
+  z-index: 1;
+}
+
 #change {
   display: flex;
   flex-direction: column;
@@ -150,7 +187,4 @@ h1 {
     width: 400px;
   }
 
-  #total-dollars {
-    font-size: 32px;
-  }
 }
