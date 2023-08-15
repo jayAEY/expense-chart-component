@@ -12,8 +12,9 @@
 
 <body>
   <!-- <input type="text" placeholder="Enter Monthly balance"> -->
-  <input type="text" placeholder="Enter balance"> 
-  <input type="text" placeholder="Add expense"> 
+  <!-- <input type="text" placeholder="Enter balance">  -->
+  <!-- <input type="text" placeholder="Add expense"> 
+  <input type="date"> -->
 
   <main>
     <div id="balance-panel">
@@ -54,7 +55,8 @@
           <p>Total this month</p>
           <!-- <h1 id="total-dollars">$478.33</h1> -->
           <h1 class="dollar-sign">$</h1>
-          <input id="monthly-total" type="number" min="0.00" step="0.01" placeholder="0.00">
+          <h1 id="monthly-total">0.00</h1>
+          <!-- <input id="monthly-total" type="number" min="0.00" step="0.01" placeholder="0.00"> -->
         </div>
         <div id="change">
           <h2>+2.4%</h2>
@@ -62,7 +64,12 @@
         </div>
       </div>
     </div>
-    
+    <div id="expense-panel">
+      <input id="expense" type="number" placeholder="Add expense"> 
+      <input id="expense-date" value=currentDay type="date">
+      <input id="expense-submit" type="submit" value="Add">
+    </div>
+
   </main>
   <script src="script.js"></script>
 </body>

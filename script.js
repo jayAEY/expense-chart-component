@@ -1,4 +1,4 @@
-let currentDay = (new Date).getDay()
+let currentDay = (new Date).getDay() - 1
 let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
 
@@ -16,7 +16,7 @@ function handleTooltip(bar) {
   tooltip.style.display = "block"
   tooltip.innerText = `$${bar.style.dataSpent}`
   tooltip.style.left = `${(barCoords.x - ((tooltip.getBoundingClientRect().width - barCoords.width) / 2))}px`
-  tooltip.style.top = `${(barCoords.top) - 30}px`
+  tooltip.style.top = `${(barCoords.top) - 40}px`
 }
 
 async function getData() {

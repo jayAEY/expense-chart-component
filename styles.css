@@ -104,8 +104,8 @@ input:focus {
 #chart {
   display: flex;
   flex-direction: column;
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-top: 18px;
+  margin-bottom: 18px;
   width: 100%;
   height: 60%;
   gap: 12px;
@@ -135,12 +135,13 @@ input:focus {
   width: calc((100%/7) - 10px);
   border-radius: 4px;
   height: 1px;
-  transition: all 0.5s;
+  transition: all 0.3s;
+  transform-origin: bottom;
 }
 
 .bar:hover {
   opacity: 0.7;
-  cursor: pointer;
+  scale: 1.05;
 }
 
 #total-section {
@@ -153,10 +154,8 @@ input:focus {
 }
 
 #monthly-total {
-  font-size: 32px;
   font-size: 25px;
   transition: all 0.5s;
-  width: 190px;
   border: none;
   background-color: rgba(255, 255, 255, 0);
   padding-left: 16px;
@@ -182,9 +181,54 @@ input:focus {
   font-weight: 700;
 }
 
+#expense-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  background-color: hsl(33, 100%, 98%);
+  color: hsl(10, 79%, 65%);
+  height: 55px;
+  border-radius: 12px;
+}
+
+#expense {
+  border: none;
+  background-color: hsl(33, 31%, 94%);
+  padding: 4px;
+  width: 135px;
+  border-radius: 3px;
+}
+
+#expense-date {
+  background-color: hsl(33, 31%, 94%);
+  border: none;
+  color: hsl(28, 10%, 53%);
+  padding: 4px;
+  border-radius: 3px;
+  cursor: text;
+}
+
+#expense-submit {
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 31%, 94%);
+  padding: 4px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#expense-submit:hover {
+  scale: 1.05;
+}
+
 @media screen and (min-width: 500px) {
   main {
     width: 400px;
   }
 
+  #expense {
+    width: 180px;
+  }
 }
