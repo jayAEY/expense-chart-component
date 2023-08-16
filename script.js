@@ -31,3 +31,9 @@ async function getData() {
 window.onload = getData
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
+
+
+let balance
+let expense
+localStorage.setItem("balance", balance)
+localStorage.setItem("expense", expense)
