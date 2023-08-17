@@ -13,14 +13,25 @@
 <body>
   <main>
     <div id="balance-panel">
-      <div id="balance-text">
-        <p>My balance</p>
-        <h1 class="dollar-sign">$</h1>
-        <input id="balance" type="number" min="0.00" step="0.01" placeholder="0.00">
-        <!-- <h1>$921.48</h1> -->
+      
+      <div id="total-balance">
+        <div id="balance-text">
+          <p>My balance</p>
+          <h1 class="dollar-sign">$</h1>
+          <input id="balance" type="number" min="0.00" step="0.01" placeholder="0.00">
+          <!-- <h1>$921.48</h1> -->
+        </div>
+        <img id="logo" alt="logo" src="./images/logo.svg">
       </div>
-      <img id="logo" alt="logo" src="./images/logo.svg">
+
+      <div id="add-balance">
+        <input id="balance-add" type="number" placeholder="Add to balance"> 
+        <input id="balance-submit" type="submit" value="Add">
+      </div>
+      
     </div>
+
+
 
     <div id="spending-panel">
       <h1>Spending - Last 7 days</h1>
@@ -60,7 +71,7 @@
       </div>
     </div>
     <div id="expense-panel">
-      <input id="expense" type="number" placeholder="Add expense"> 
+      <input id="expense-add" type="number" placeholder="Add expense"> 
       <input id="expense-date" value=currentDay type="date">
       <input id="expense-submit" type="submit" value="Add">
     </div>
