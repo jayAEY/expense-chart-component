@@ -24,10 +24,10 @@
         <img id="logo" alt="logo" src="./images/logo.svg">
       </div>
 
-      <div id="add-balance">
-        <input id="balance-add" type="number" placeholder="Add to balance"> 
+      <form id="add-balance">
+        <input id="balance-add" type="number" placeholder="Add to balance" required> 
         <input id="balance-submit" type="submit" value="Add">
-      </div>
+      </form>
       
     </div>
 
@@ -70,11 +70,11 @@
         </div>
       </div>
     </div>
-    <div id="expense-panel">
-      <input id="expense-add" type="number" placeholder="Add expense"> 
-      <input id="expense-date" value=currentDay type="date">
+    <form id="expense-panel">
+      <input id="expense-add" type="number" placeholder="Add expense" required> 
+      <input id="expense-date" value=currentDay type="date" required>
       <input id="expense-submit" type="submit" value="Add">
-    </div>
+    </form>
 
   </main>
   <script src="script.js"></script>

@@ -97,14 +97,14 @@ input:focus {
   color:  hsl(10, 79%, 65%);;
   padding: 4px;
   /* width: 135px; */
-  width: 85%;
+  width: 83%;
   border-radius: 3px;
 }
 
 #balance-submit {
   background-color:hsl(33, 31%, 94%);
   color: hsl(28, 10%, 53%);
-  padding: 4px;
+  padding: 4px 10px;
   border: none;
   border-radius: 3px;
   cursor: pointer;
@@ -232,7 +232,7 @@ input:focus {
   border: none;
   background-color: hsl(33, 31%, 94%);
   padding: 4px;
-  width: 135px;
+  width: 40%;
   border-radius: 3px;
 }
 
@@ -248,7 +248,7 @@ input:focus {
 #expense-submit {
   background-color: hsl(10, 79%, 65%);
   color: hsl(33, 31%, 94%);
-  padding: 4px;
+  padding: 4px 10px;
   border: none;
   border-radius: 3px;
   cursor: pointer;
@@ -263,6 +263,14 @@ input:focus {
   main {
     width: 400px;
   }
+
+  #balance-add {
+    width: 85%;
+  }
+
+  #expense-add {
+    width: 48%;
+  }  
 
   #expense {
     width: 180px;
