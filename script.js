@@ -4,9 +4,12 @@ let tooltip = document.querySelector('#tooltip')
 
 let balanceDisplay = document.querySelector("#balance")
 let balance = balanceDisplay.value || 0
+balance == 0 ?  localStorage.setItem("balance", 0) : null
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
+
+let monthTotal = localStorage.getItem("monthTotal") || 0
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
@@ -42,12 +45,6 @@ window.onload = getData
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 
-
-
-// let expense
-
-// localStorage.setItem("expense", expense)
-
 function balanceChange(){
   balance = balanceDisplay.value
   localStorage.setItem("balance", balance)
@@ -55,14 +52,36 @@ function balanceChange(){
   // console.log(localStorage.getItem("balance"))
 }
 
-function addbalance() {
-  let newBalance = (parseFloat(balance)+parseFloat(balanceAdd.value)).toFixed(2)
+
+  function addBalance() {  
+  let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
   balanceDisplay.value = newBalance
   balance = newBalance
   localStorage.setItem("balance", newBalance)
-  // console.log(balance)
-  // console.log(localStorage.getItem("balance"))
+  console.log(balance)
+  console.log(localStorage.getItem("balance"))
 }
 
 balanceDisplay.addEventListener("change", () => balanceChange())
-balanceButton.addEventListener("click", () => addbalance())
+balanceButton.addEventListener("click", () => addBalance())
+
+
+function addExpense() {
+  let expense = parseFloat(expenseAdd.value).toFixed(2)
+  let date = expenseDate.value
+  // localStorage.setItem("monthTotal", parseFloat(monthTotal) + expense)
+  // monthTotal = parseFloat(monthTotal).toFixed(2) + expense
+
+  // localStorage.setItem("expenses", [expense, date])
+  // console.log(balance)
+  console.log(localStorage.getItem("balance"))
+  console.log(new Date(date).toDateString()) 
+  // monthTotal = 0
+  // localStorage.removeItem("monthTotal")
+  console.log(monthTotal)
+}
+
+// let expenseAdd = document.querySelector("#expense-add")
+// let expenseDate = document.querySelector("#expense-date")
+expenseButton.addEventListener("click", () => addExpense())
+
