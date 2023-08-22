@@ -190,6 +190,7 @@ input:focus {
 }
 
 #monthly-total {
+  width: 200px;
   font-size: 25px;
   transition: all 0.5s;
   border: none;
