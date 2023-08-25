@@ -3,13 +3,13 @@ let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
 
 let balanceDisplay = document.querySelector("#balance")
-let balance = balanceDisplay.value || 0
-balance == 0 ?  localStorage.setItem("balance", 0) : null
+// let balance = balanceDisplay.value || 0
+// balance == 0 ?  localStorage.setItem("balance", 0) : null
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
 let expenseDisplay = document.querySelector("#monthly-total")
-let monthTotal = localStorage.getItem("monthTotal") || 0
+// let monthTotal = localStorage.getItem("monthTotal") || 0
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
@@ -46,16 +46,17 @@ bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 
 function balanceChange(){
-  balance = balanceDisplay.value
+  let balance = Number(balanceDisplay.value).toFixed(2) || 0
   localStorage.setItem("balance", balance)
+  balanceDisplay.value = balance
   // console.log(balance)
   // console.log(localStorage.getItem("balance"))
 }
 
-  function addBalance() {  
+function addBalance() {  
   // checks for valid decimal
   let decimals = balanceAdd.value.toString().split(".")[1]
-
+  let balance = balanceDisplay.value || 0
   if ( decimals === undefined || decimals.length < 3 ) { 
     let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
     balanceDisplay.value = newBalance
@@ -70,40 +71,38 @@ balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
 
 function expenseChange() {
-  // console.log(expenseDisplay.value)
-  monthTotal = Number(expenseDisplay.value)
+  let monthTotal = Number(expenseDisplay.value).toFixed(2)
+  expenseDisplay.value = monthTotal
   localStorage.setItem("monthTotal", monthTotal)
-  console.log(monthTotal)
+  // console.log(localStorage.getItem("monthTotal"))
 }
 
-
-
 function addExpense() {
+  let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
   let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
   let date = expenseDate.value
   // checks for valid decimal
   let decimals = expenseAdd.value.toString().split(".")[1]
-  if ( decimals === undefined || decimals.length < 3 ){
-  monthTotal = (Number(monthTotal) + expense).toFixed(2)
-  localStorage.setItem("monthTotal", monthTotal)
-  expenseDisplay.value = monthTotal
-  console.log(monthTotal)
-  // console.log(expenseDisplay.value)
+
+  if ((decimals === undefined || decimals.length < 3) && date){
+    //sets monthly total
+    let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
+    expenseDisplay.value = monthTotal
+    localStorage.setItem("monthTotal", monthTotal)
+    //handles expenses in localStorage
+    if (expenseData == null ) {
+      localStorage.setItem("expenseData", JSON.stringify({date, expense}))
+    } else {
+      // console.log([expenseData])
+      localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
+    }
+
+    // console.log()
+    // console.log(monthTotal)
+    console.log(expenseData)
   } 
-  // localStorage.setItem("expenses", [expense, date])
-  // console.log(balance)
-  // console.log(localStorage.getItem("balance"))
-
-  // console.log(new Date(date).toDateString()) 
-  console.log(date) 
-
-  // monthTotal = 0
-  // localStorage.removeItem("monthTotal")
-
 }
 
-// let expenseAdd = document.querySelector("#expense-add")
-// let expenseDate = document.querySelector("#expense-date")
 expenseDisplay.addEventListener("change", () => expenseChange())
 expenseButton.addEventListener("click", () => addExpense())
 
