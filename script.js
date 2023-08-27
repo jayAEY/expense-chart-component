@@ -3,13 +3,10 @@ let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
 
 let balanceDisplay = document.querySelector("#balance")
-// let balance = balanceDisplay.value || 0
-// balance == 0 ?  localStorage.setItem("balance", 0) : null
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
 let expenseDisplay = document.querySelector("#monthly-total")
-// let monthTotal = localStorage.getItem("monthTotal") || 0
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
