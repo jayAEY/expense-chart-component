@@ -70,14 +70,15 @@ function addBalance() {
 balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
 
-function expenseChange() {
-  // let monthTotal = Number(expenseDisplay.value).toFixed(2)
-  // expenseDisplay.value = monthTotal
-  // let monthTotal = Number(expenseDisplay.innerHTML).toFixed(2)
-  // expenseDisplay.innerHTML = monthTotal
-  localStorage.setItem("monthTotal", monthTotal)
-  // console.log(localStorage.getItem("monthTotal"))
-}
+// not needed?????
+// function expenseChange() {
+//   // let monthTotal = Number(expenseDisplay.value).toFixed(2)
+//   // expenseDisplay.value = monthTotal
+//   // let monthTotal = Number(expenseDisplay.innerHTML).toFixed(2)
+//   // expenseDisplay.innerHTML = monthTotal
+//   localStorage.setItem("monthTotal", monthTotal)
+//   // console.log(localStorage.getItem("monthTotal"))
+// }
 
 function addExpense() {
   let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
@@ -98,10 +99,8 @@ function addExpense() {
       if (expenseData == null ) {
         localStorage.setItem("expenseData", JSON.stringify({date, expense}))
       } else {
-        // console.log([expenseData])
         console.log(expenseData)
-        localStorage.setItem("expenseData", JSON.stringify([expenseData].concat({date, expense})))
-
+        localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({date, expense}).flat())))
         // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
       }
     // console.log(monthTotal)
