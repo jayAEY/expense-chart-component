@@ -1,4 +1,6 @@
 let currentDay = (new Date).getDay() - 1
+let currentDate = new Date
+// console.log(currentDate.toDateString())
 let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
 
@@ -12,7 +14,6 @@ expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
-
 
 
 function changeHeight(bar, spentInDay) {
@@ -84,6 +85,7 @@ function addExpense() {
   let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
   let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
   let date = expenseDate.value
+
   // checks for valid decimal
   let decimals = expenseAdd.value.toString().split(".")[1]
 
@@ -93,16 +95,24 @@ function addExpense() {
         let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
         // expenseDisplay.value = monthTotal
         expenseDisplay.innerHTML = monthTotal
-        
         localStorage.setItem("monthTotal", monthTotal)
       //handles expenses in localStorage
       if (expenseData == null ) {
         localStorage.setItem("expenseData", JSON.stringify({date, expense}))
       } else {
-        console.log(expenseData)
         localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({date, expense}).flat())))
         // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
       }
+      // console.log(currentDate.toDateString())
+
+      // console.log(new Date(date).toDateString())
+
+      console.log(currentDate)
+      // 
+      console.log(date)
+      console.log(new Date(date) + new Date(date).getTimezoneOffset())
+      // console.log(new Date(date).toLocaleDateString())
+      // console.log(new Date(date) + new Date(date).getTimezoneOffset())
     // console.log(monthTotal)
     // console.log(expenseData)
       }
