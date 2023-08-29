@@ -1,6 +1,13 @@
 let currentDay = (new Date).getDay() - 1
-let currentDate = new Date
-// console.log(currentDate.toDateString())
+let currentDate = (new Date).toLocaleDateString()
+
+let lastWeek = []
+for (let i = 0; i < 7; i++) {
+  lastWeek[i] = (currentDate.split("-")[2]-i)
+}
+
+console.log(lastWeek)
+
 let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
 
@@ -14,7 +21,6 @@ expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
-
 
 function changeHeight(bar, spentInDay) {
   bar.style.dataSpent = spentInDay
@@ -84,8 +90,9 @@ balanceButton.addEventListener("click", () => addBalance())
 function addExpense() {
   let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
   let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
-  let date = expenseDate.value
-
+  let date = new Date(expenseDate.value)
+      //accounting for timezone offset
+      date = new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString()
   // checks for valid decimal
   let decimals = expenseAdd.value.toString().split(".")[1]
 
@@ -103,17 +110,13 @@ function addExpense() {
         localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({date, expense}).flat())))
         // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
       }
-      // console.log(currentDate.toDateString())
 
-      // console.log(new Date(date).toDateString())
-
-      console.log(currentDate)
-      // 
       console.log(date)
-      console.log(new Date(date) + new Date(date).getTimezoneOffset())
-      // console.log(new Date(date).toLocaleDateString())
-      // console.log(new Date(date) + new Date(date).getTimezoneOffset())
-    // console.log(monthTotal)
+      // console.log(new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString())
+    
+      console.log(currentDate)
+
+      // console.log(monthTotal)
     // console.log(expenseData)
       }
 
