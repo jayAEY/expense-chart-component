@@ -7,9 +7,12 @@ let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
 let expenseDisplay = document.querySelector("#monthly-total")
+expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
+// localStorage.getItem("monthTotal") ? expenseDisplay.innerText = localStorage.getItem("monthTotal") : "00.00"
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
+
 
 
 function changeHeight(bar, spentInDay) {
@@ -68,8 +71,10 @@ balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
 
 function expenseChange() {
-  let monthTotal = Number(expenseDisplay.value).toFixed(2)
-  expenseDisplay.value = monthTotal
+  // let monthTotal = Number(expenseDisplay.value).toFixed(2)
+  // expenseDisplay.value = monthTotal
+  // let monthTotal = Number(expenseDisplay.innerHTML).toFixed(2)
+  // expenseDisplay.innerHTML = monthTotal
   localStorage.setItem("monthTotal", monthTotal)
   // console.log(localStorage.getItem("monthTotal"))
 }
@@ -82,24 +87,31 @@ function addExpense() {
   let decimals = expenseAdd.value.toString().split(".")[1]
 
   if ((decimals === undefined || decimals.length < 3) && date){
-    //sets monthly total
-    let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
-    expenseDisplay.value = monthTotal
-    localStorage.setItem("monthTotal", monthTotal)
-    //handles expenses in localStorage
-    if (expenseData == null ) {
-      localStorage.setItem("expenseData", JSON.stringify({date, expense}))
-    } else {
-      // console.log([expenseData])
-      localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
-    }
+      //sets monthly total
+      if (expense) {
+        let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
+        // expenseDisplay.value = monthTotal
+        expenseDisplay.innerHTML = monthTotal
+        
+        localStorage.setItem("monthTotal", monthTotal)
+      //handles expenses in localStorage
+      if (expenseData == null ) {
+        localStorage.setItem("expenseData", JSON.stringify({date, expense}))
+      } else {
+        // console.log([expenseData])
+        console.log(expenseData)
+        localStorage.setItem("expenseData", JSON.stringify([expenseData].concat({date, expense})))
 
-    // console.log()
+        // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
+      }
     // console.log(monthTotal)
-    console.log(expenseData)
+    // console.log(expenseData)
+      }
+
   } 
 }
 
-expenseDisplay.addEventListener("change", () => expenseChange())
+// expenseDisplay.addEventListener("change", () => expenseChange())
 expenseButton.addEventListener("click", () => addExpense())
+
 
