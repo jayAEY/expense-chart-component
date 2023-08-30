@@ -2,11 +2,27 @@ let currentDay = (new Date).getDay() - 1
 let currentDate = (new Date).toLocaleDateString()
 
 let lastWeek = []
+
 for (let i = 0; i < 7; i++) {
-  lastWeek[i] = (currentDate.split("-")[2]-i)
+  if (lastWeek[i] > 0 ) {
+    lastWeek[i] = (currentDate.split("-")[2]-i)
+  }
 }
 
+let lastMonth = new Date().getMonth()
+// console.log(currentDate)
+// console.log(new Date().getMonth())
+// console.log(lastWeek)
 console.log(lastWeek)
+
+function daysInMonth(date) {
+  return new Date(date.getFullYear(),
+                  date.getMonth()+1,
+                  0
+                 ).getDate()
+}
+
+console.log(daysInMonth(new Date()))
 
 let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
