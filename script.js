@@ -1,29 +1,3 @@
-let currentDay = (new Date).getDay() - 1
-let currentDate = (new Date).toLocaleDateString()
-
-let lastWeek = []
-
-for (let i = 0; i < 7; i++) {
-  if (lastWeek[i] > 0 ) {
-    lastWeek[i] = (currentDate.split("-")[2]-i)
-  }
-}
-
-let lastMonth = new Date().getMonth()
-// console.log(currentDate)
-// console.log(new Date().getMonth())
-// console.log(lastWeek)
-console.log(lastWeek)
-
-function daysInMonth(date) {
-  return new Date(date.getFullYear(),
-                  date.getMonth()+1,
-                  0
-                 ).getDate()
-}
-
-console.log(daysInMonth(new Date()))
-
 let bars = document.querySelectorAll('.bar')
 let tooltip = document.querySelector('#tooltip')
 
@@ -33,10 +7,39 @@ let balanceButton = document.querySelector("#balance-submit")
 
 let expenseDisplay = document.querySelector("#monthly-total")
 expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
-// localStorage.getItem("monthTotal") ? expenseDisplay.innerText = localStorage.getItem("monthTotal") : "00.00"
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
+
+//handling spending data for last 7 days
+let currentDay = (new Date).getDay() - 1
+let currentDate = (new Date).toLocaleDateString()
+let lastWeek = []
+
+let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth() - 1, new Date().getDate()).toLocaleDateString()
+
+function daysInMonth(date) {
+  return new Date(date.getFullYear(),
+                  date.getMonth() + 1,
+                  0
+                 ).getDate()
+}
+
+for (let i = 0; i < 7; i++) {
+  let dateDay = currentDate.split("-")[2] - i
+  if (dateDay > 0 ) {
+    lastWeek[i] = dateDay
+  } else {
+    lastWeek[i] = lastMonth.split("-")[2] - i + 1
+  }
+}
+
+console.log(lastWeek)
+
+let expenseData = JSON.parse(localStorage.getItem("expenseData"))
+
+// figure out why i can only add expense after refresh!
+
 
 function changeHeight(bar, spentInDay) {
   bar.style.dataSpent = spentInDay
@@ -104,7 +107,7 @@ balanceButton.addEventListener("click", () => addBalance())
 // }
 
 function addExpense() {
-  let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
+  // let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
   let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
   let date = new Date(expenseDate.value)
       //accounting for timezone offset
@@ -127,15 +130,14 @@ function addExpense() {
         // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
       }
 
-      console.log(date)
+      // console.log(date)
       // console.log(new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString())
     
-      console.log(currentDate)
+      // console.log(currentDate)
 
       // console.log(monthTotal)
     // console.log(expenseData)
       }
-
   } 
 }
 
