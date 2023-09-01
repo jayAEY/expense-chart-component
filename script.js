@@ -16,7 +16,7 @@ let currentDay = (new Date).getDay() - 1
 let currentDate = (new Date).toLocaleDateString()
 let lastWeek = []
 
-let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth() - 1, new Date().getDate()).toLocaleDateString()
+let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString()
 
 function daysInMonth(date) {
   return new Date(date.getFullYear(),
@@ -25,18 +25,38 @@ function daysInMonth(date) {
                  ).getDate()
 }
 
+currentDate = currentDate[0]
+
+console.log(currentDate)
+
 for (let i = 0; i < 7; i++) {
-  let dateDay = currentDate.split("-")[2] - i
-  if (dateDay > 0 ) {
-    lastWeek[i] = dateDay
+  // let dateDay = currentDate.split("-")[2] - i
+  // currentDate = currentDate[0]
+  // console.log(currentDate)
+  // console.log(currentDate.split("-")[2])
+  if (currentDate.split("-")[2] > 0 ) {
+    // lastWeek[i] = dateDay
   } else {
-    lastWeek[i] = lastMonth.split("-")[2] - i + 1
+    // lastWeek[i] = lastMonth.split("-")[2] - i + 1
   }
+
+  // if (dateDay > 0 ) {
+  //   lastWeek[i] = dateDay
+  // } else {
+  //   lastWeek[i] = lastMonth.split("-")[2] - i + 1
+  // }
 }
 
 console.log(lastWeek)
 
 let expenseData = JSON.parse(localStorage.getItem("expenseData"))
+
+console.log(expenseData)
+
+expenseData.forEach(expense => {
+  
+  // console.log(expense.date)
+})
 
 // figure out why i can only add expense after refresh!
 
@@ -136,7 +156,7 @@ function addExpense() {
       // console.log(currentDate)
 
       // console.log(monthTotal)
-    // console.log(expenseData)
+    console.log(expenseData)
       }
   } 
 }
