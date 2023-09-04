@@ -5,6 +5,7 @@ let balanceDisplay = document.querySelector("#balance")
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
+let expenseData = JSON.parse(localStorage.getItem("expenseData"))
 let expenseDisplay = document.querySelector("#monthly-total")
 expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
 let expenseAdd = document.querySelector("#expense-add")
@@ -25,11 +26,26 @@ function daysInMonth(date) {
                  ).getDate()
 }
 
-currentDate = currentDate[0]
-
+// currentDate = currentDate[0]
 console.log(currentDate)
 
+// expenseData.forEach(expense => expense.date == currentDate ? console.log(expense) : null)
+expenseData.forEach(expense => {
 for (let i = 0; i < 7; i++) {
+
+}
+ if (expense.date == currentDate) {
+  lastWeek.append(expense)
+ } else {
+  null 
+  }
+ }
+)
+
+console.log(lastWeek)
+
+for (let i = 0; i < 7; i++) {
+
   // let dateDay = currentDate.split("-")[2] - i
   // currentDate = currentDate[0]
   // console.log(currentDate)
@@ -49,14 +65,9 @@ for (let i = 0; i < 7; i++) {
 
 console.log(lastWeek)
 
-let expenseData = JSON.parse(localStorage.getItem("expenseData"))
+
 
 console.log(expenseData)
-
-expenseData.forEach(expense => {
-  
-  // console.log(expense.date)
-})
 
 // figure out why i can only add expense after refresh!
 
