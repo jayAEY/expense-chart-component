@@ -14,7 +14,9 @@ let expenseButton = document.querySelector("#expense-submit")
 
 //handling spending data for last 7 days
 let currentDay = (new Date).getDay() - 1
-let currentDate = (new Date).toLocaleDateString()
+// let currentDate = (new Date).toLocaleDateString()
+let currentDate = new Date
+// console.log(new Date(currentDate).toLocaleDateString())
 let lastWeek = []
 
 let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString()
@@ -27,41 +29,68 @@ function daysInMonth(date) {
 }
 
 // currentDate = currentDate[0]
-console.log(currentDate)
+// console.log(currentDate)
+// let arr = ["asd"]
+// console.log(arr.push("ad","asdsad",22))
+// console.log(arr)
 
+// console.log(currentDate.toLocaleDateString())
+// console.log(currentDate.getDate())
+// console.log(compareDate)
+
+// console.log(new Date(currentDate).setDate(currentDate.getDay() - 1))
 // expenseData.forEach(expense => expense.date == currentDate ? console.log(expense) : null)
 expenseData.forEach(expense => {
-for (let i = 0; i < 7; i++) {
+    // console.log(expense.date)
+    for (let i = 0; i < 7; i++) {
+      let compareDate = (new Date(currentDate.setDate(currentDate.getDate() - i))).toLocaleDateString()
+      // currentDate = (currentDate.setDate(currentDate.getDay() - 1))
+      // compareDate = (new Date(currentDate.setDate(currentDate.getDay() - i))).toLocaleDateString()
+// console.log(compareDate.toLocaleDateString())
+      // console.log(compareDate)
+      console.log(compareDate)
+      console.log(expense.date)
+      if (expense.date == compareDate) {
+      lastWeek.push(expense)
+      // console.log(lastWeek)
+    } 
+    }
+    // console.log(lastWeek)
+// for (let i = 0; i < 7; i++) {
+  // console.log(expense.date)
+  // if (expense.date == currentDate) {
+  //   lastWeek.push(expense)
+  //   console.log(lastWeek)
+  //  } 
+// }
 
-}
- if (expense.date == currentDate) {
-  lastWeek.append(expense)
- } else {
-  null 
-  }
+  //   else {
+  // null 
+  // }
  }
 )
 
-console.log(lastWeek)
+// console.log(lastWeek)
+// console.log(lastWeek)
 
-for (let i = 0; i < 7; i++) {
+// for (let i = 0; i < 7; i++) {
 
   // let dateDay = currentDate.split("-")[2] - i
   // currentDate = currentDate[0]
   // console.log(currentDate)
   // console.log(currentDate.split("-")[2])
-  if (currentDate.split("-")[2] > 0 ) {
+  // if (currentDate.split("-")[2] > 0 ) {
     // lastWeek[i] = dateDay
-  } else {
+  // } else {
     // lastWeek[i] = lastMonth.split("-")[2] - i + 1
-  }
+  // }
 
   // if (dateDay > 0 ) {
   //   lastWeek[i] = dateDay
   // } else {
   //   lastWeek[i] = lastMonth.split("-")[2] - i + 1
   // }
-}
+// }
 
 console.log(lastWeek)
 
