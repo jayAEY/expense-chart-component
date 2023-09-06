@@ -28,78 +28,56 @@ function daysInMonth(date) {
                  ).getDate()
 }
 
-// currentDate = currentDate[0]
-// console.log(currentDate)
-// let arr = ["asd"]
-// console.log(arr.push("ad","asdsad",22))
-// console.log(arr)
-
-// console.log(currentDate.toLocaleDateString())
-// console.log(currentDate.getDate())
-// console.log(compareDate)
-
-// console.log(new Date(currentDate).setDate(currentDate.getDay() - 1))
-// expenseData.forEach(expense => expense.date == currentDate ? console.log(expense) : null)
+// adds all expenses from last week into lastWeek
 expenseData.forEach(expense => {
-    // console.log(expense.date)
     for (let i = 0; i < 7; i++) {
-      let compareDate = (new Date(currentDate.setDate(currentDate.getDate() - i))).toLocaleDateString()
-      // currentDate = (currentDate.setDate(currentDate.getDay() - 1))
-      // compareDate = (new Date(currentDate.setDate(currentDate.getDay() - i))).toLocaleDateString()
-// console.log(compareDate.toLocaleDateString())
-      // console.log(compareDate)
-      console.log(compareDate)
-      console.log(expense.date)
-      if (expense.date == compareDate) {
-      lastWeek.push(expense)
-      // console.log(lastWeek)
-    } 
+      let compareDate = (new Date((new Date).setDate(currentDate.getDate() - i))).toLocaleDateString()
+      if (expenseDate == currentDate || expense.date == compareDate) {
+       lastWeek.push(expense)
+      } 
     }
-    // console.log(lastWeek)
-// for (let i = 0; i < 7; i++) {
-  // console.log(expense.date)
-  // if (expense.date == currentDate) {
-  //   lastWeek.push(expense)
-  //   console.log(lastWeek)
-  //  } 
-// }
-
-  //   else {
-  // null 
-  // }
  }
 )
 
-// console.log(lastWeek)
-// console.log(lastWeek)
+// COMBINE SPENDING IN EACH DAY
+// console.log(lastWeek[0])
+let newLastWeek = []
+// console.log(newLastWeek)
+lastWeek.forEach(expense => {
+  let dayCombined = { date:expense.date, expense:0 }
+  if (expense.date == dayCombined.date) {
+    dayCombined.expense += expense.expense
+  }
+  console.log(dayCombined)
+  // if (!newLastWeek[expense]) {
+  //     newLastWeek.push(expense)
 
-// for (let i = 0; i < 7; i++) {
-
-  // let dateDay = currentDate.split("-")[2] - i
-  // currentDate = currentDate[0]
-  // console.log(currentDate)
-  // console.log(currentDate.split("-")[2])
-  // if (currentDate.split("-")[2] > 0 ) {
-    // lastWeek[i] = dateDay
-  // } else {
-    // lastWeek[i] = lastMonth.split("-")[2] - i + 1
   // }
+  console.log(newLastWeek)
+  // newLastWeek.push(expense)
 
-  // if (dateDay > 0 ) {
-  //   lastWeek[i] = dateDay
-  // } else {
-  //   lastWeek[i] = lastMonth.split("-")[2] - i + 1
-  // }
+
+  }  
+)
+
+console.log(newLastWeek)
+
+// for (let i = 0; i < lastWeek.length; i++) {
+//   // console.log(lastWeek[i].date) 
+//     for (let j = 1; j < lastWeek.length; j++) {
+//       // console.log(lastWeek[j].date) 
+//       if (lastWeek[i].date == lastWeek[j].date) {
+//         console.log(lastWeek[j].date)
+//       }
+//     }
 // }
 
+
 console.log(lastWeek)
-
-
-
+console.log(lastWeek.length)
 console.log(expenseData)
 
 // figure out why i can only add expense after refresh!
-
 
 function changeHeight(bar, spentInDay) {
   bar.style.dataSpent = spentInDay
