@@ -40,25 +40,75 @@ expenseData.forEach(expense => {
 )
 
 // COMBINE SPENDING IN EACH DAY
-// console.log(lastWeek[0])
+
 let newLastWeek = []
-// console.log(newLastWeek)
+
 lastWeek.forEach(expense => {
-  let dayCombined = { date:expense.date, expense:0 }
-  if (expense.date == dayCombined.date) {
-    dayCombined.expense += expense.expense
-  }
-  console.log(dayCombined)
+
+  let existing = newLastWeek.filter((v, i) =>{
+    return v.date == expense.date
+  })
+  console.log(existing)
+})
+
+// newLastWeek.map(expense => {
+//   if (expense.date) {
+
+//   }
+//   console.log(e)
+// })
+
+// for (let i = 0; i < lastWeek.length; i++) {
+//   let combinedDay = { date: lastWeek[i].date, expense: lastWeek[i].expense}
+//   for (let j = 1; j < lastWeek.length; j++) {
+//     if (lastWeek[i].date == lastWeek[j].date) {
+//       // combinedDay.date = lastWeek[i].date
+//       combinedDay.expense += lastWeek[j].expense
+//     }
+//   }
+//   newLastWeek.push(combinedDay)  
+// }
+
+// console.log(newLastWeek)
+// lastWeek.forEach(expense => {
+  // let day = expense.date
+  // let daySpending = 0
+  // lastWeek.forEach(expense2 => {
+
+  //   if (expense2.date == expense.date) {
+  //    daySpending += expense2.expense
+  //   }
+
+  // })  
+    // newLastWeek.push({ date:expense.date, expense: daySpending })
+
+  // console.log(daySpending)
+  // let dayCombined = { date: expense.date, expense: expense.expense }
+  // lastWeek.forEach(expense2 => {
+    
+  //   []
+
+  // })
+  // console.log(expense.date)
+  // console.log (dayCombined.date)
+  // if (newLastWeek[expense]) {
+
+  // }
+  // newLastWeek.push(dayCombined)
+  // console.log(expense.date)
+  // console.log(dayCombined.date)
+  // if (expense.date == dayCombined.date) {
+  //   dayCombined.expense += expense.expense
+  // }
+  // console.log(dayCombined)
   // if (!newLastWeek[expense]) {
   //     newLastWeek.push(expense)
 
   // }
-  console.log(newLastWeek)
+  // console.log(newLastWeek)
   // newLastWeek.push(expense)
-
-
-  }  
-)
+//   }  
+// )
 
 console.log(newLastWeek)
 
@@ -72,9 +122,8 @@ console.log(newLastWeek)
 //     }
 // }
 
-
 console.log(lastWeek)
-console.log(lastWeek.length)
+// console.log(lastWeek.length)
 console.log(expenseData)
 
 // figure out why i can only add expense after refresh!
