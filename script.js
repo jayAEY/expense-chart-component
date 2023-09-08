@@ -43,13 +43,82 @@ expenseData.forEach(expense => {
 
 let newLastWeek = []
 
-lastWeek.forEach(expense => {
+lastWeek.forEach(exp => {
+    let combinedDay = { date: exp.date, expense: 0 }
+    // console.log(combinedDay.expense += exp.expense)
+    for (let i = 0; i < lastWeek.length; i++) {
+      if(exp.date == lastWeek[i].date) {
+        combinedDay.expense += exp.expense 
+      } else {
+        newLastWeek.push(combinedDay)
+      }
+      // console.log(combinedDay)
+    }  
+  }
+)
 
-  let existing = newLastWeek.filter((v, i) =>{
-    return v.date == expense.date
-  })
-  console.log(existing)
-})
+console.log([...new Set(newLastWeek)])
+
+// console.log(lastWeek.filter(e => e.expense > 5))
+// console.log(lastWeek[0].date == lastWeek[2].date)
+// for (let i = 0; i < lastWeek.length; i++) {
+  // let combinedDay = { date: lastWeek[i].date, expense: lastWeek[i].expense }
+  // console.log(combinedDay.date)
+  // for (let j = 1; j < lastWeek.length; j++) {
+    // console.log(lastWeek[j].date == combinedDay.date)
+    // if (lastWeek[j].date == combinedDay.date) {
+      // lastWeek[j].expense
+      // combinedDay.expense += lastWeek[j].expense
+      // console.log(combinedDay.date)
+    // }
+  // }   
+
+  // lastWeek.forEach( exp => {
+  //   if (exp.date == combinedDay.date) {
+  //     combinedDay.expense += exp.expense
+  //   }
+  //  }
+  // )
+  // newLastWeek.push(combinedDay)
+
+  
+    // if (!newLastWeek.includes(combinedDay)) {
+    //   newLastWeek.push(combinedDay)
+    // }
+  
+
+// }
+
+// lastWeek.forEach(expense => {
+
+//   if (!newLastWeek[expense]) {
+//     newLastWeek.push(expense)
+//   }
+//   newLastWeek.forEach(expense2 => {
+//     if (expense.date == expense2.date){
+//     expense.expense += expense2.expense
+//     // newLastWeek.pop(expense)
+//     }
+//   })
+  
+// })
+
+
+// let mergeById = (arr1, arr2) => {
+//   arr1.map(itm => ({
+//     ...arr2.find((item) => (item.id === itm.id) && item) ,
+//     ...itm
+//   }))
+// }
+
+// console.log(mergeById(lastWeek, newLastWeek))
+
+// lastWeek.forEach(expense => {
+//   let existing = newLastWeek.filter((v, i) =>{
+//    v.date == expense.date
+//   })
+//   console.log(existing)
+// })
 
 // newLastWeek.map(expense => {
 //   if (expense.date) {
