@@ -61,24 +61,44 @@ let newLastWeek = []
 //   }
 // )
 
-const mergeSpending = (arr = []) => {
+const mergeSpend = (arr = []) => {
   const data = arr.slice();
-  data.sort((a,b) => new Date(a.date) - new Date(b.date))
-  const res = []
-  data.forEach(el => {
-    if(!this[el.date]) {
-      this[el.date] = {
-         date: el.date,
+  // const res = []
+  data.forEach(expense => {
+    if(!this[expense.date]) {
+      this[expense.date] = {
+         date: expense.date,
          expense: null 
         }
-        res.push(this[el.date])
+        newLastWeek.push(this[expense.date])
       }
-      this[el.date] - Object.assign(this[el.date], el)
+      // console.log(Object.assign(this[expense.date], expense))
+      this[expense.date] = Object.assign(this[expense.date], expense)
   });
-  return res
+  return newLastWeek
 }
 
-console.log(JSON.stringify(mergeSpending(lastWeek), undefined, 4))
+console.log(mergeSpend(lastWeek))
+
+// const mergeSpending = (arr = []) => {
+//   const data = arr.slice();
+//   data.sort((a,b) => new Date(a.date) - new Date(b.date))
+//   const res = []
+//   data.forEach(expense => {
+//     if(!this[expense.date]) {
+//       this[expense.date] = {
+//          date: expense.date,
+//          expense: null 
+//         }
+//         res.push(this[expense.date])
+//       }
+//       this[expense.date] = Object.assign(this[expense.date], expense)
+//   });
+//   return res
+// }
+
+// console.log(JSON.stringify(mergeSpending(lastWeek), undefined, 1))
+
 
 // let arr = ["cat",1,"a"]
 // console.log(arr.filter(e => typeof e == "string"))
