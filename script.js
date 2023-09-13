@@ -43,202 +43,36 @@ expenseData.forEach(expense => {
 
 let newLastWeek = []
 
-// lastWeek.forEach(exp => {
-//     let combinedDay = { date: exp.date, expense: 0 }
-//     // console.log(combinedDay.expense += exp.expense)
-//     for (let i = 0; i < lastWeek.length; i++) {
-//       if(exp.date == lastWeek[i].date ) {
-//         combinedDay.expense += exp.expense 
-//       } 
-//       // console.log([].concat(combinedDay))
-//       console.log(newLastWeek)
-//       newLastWeek.concat(combinedDay)
-//       // else if (!newLastWeek.filter(e => e == combinedDay)) {
-//       //   newLastWeek.push(combinedDay)
-//       // }
-//       // console.log(combinedDay)
-//     }  
-//   }
-// )
-
 const mergeSpend = (arr = []) => {
   const data = arr.slice();
   // const res = []
+  data.sort((a,b) => new Date(a.date) - new Date(b.date))
   data.forEach(expense => {
     if(!this[expense.date]) {
       this[expense.date] = {
-         date: expense.date,
-         expense: null 
-        }
-        newLastWeek.push(this[expense.date])
-      }
+        date: expense.date,
+        expense: expense.expense 
+      } 
+      newLastWeek.push(this[expense.date])
+    } 
+    // console.log(this[expense.date])
+    // console.log(this[expense.expense])
+    // console.log(expense.expense +2)
+    // console.log(this[expense.date])
+    if (this[expense.date]) {
+      this[expense.expense] = this[expense.expense] + expense.expense
+      // this[expense.date] = Object.assign(this[expense.date], expense) 
+    }
       // console.log(Object.assign(this[expense.date], expense))
       this[expense.date] = Object.assign(this[expense.date], expense)
   });
   return newLastWeek
 }
 
-console.log(mergeSpend(lastWeek))
-
-// const mergeSpending = (arr = []) => {
-//   const data = arr.slice();
-//   data.sort((a,b) => new Date(a.date) - new Date(b.date))
-//   const res = []
-//   data.forEach(expense => {
-//     if(!this[expense.date]) {
-//       this[expense.date] = {
-//          date: expense.date,
-//          expense: null 
-//         }
-//         res.push(this[expense.date])
-//       }
-//       this[expense.date] = Object.assign(this[expense.date], expense)
-//   });
-//   return res
-// }
-
-// console.log(JSON.stringify(mergeSpending(lastWeek), undefined, 1))
-
-
-// let arr = ["cat",1,"a"]
-// console.log(arr.filter(e => typeof e == "string"))
-// console.log(arr.concat({asd:"asd",dd:"dsadsasa"}))
-
-// console.log([...new Set(newLastWeek)])
-
-// console.log(lastWeek.filter(e => e.expense > 5))
-// console.log(lastWeek[0].date == lastWeek[2].date)
-// for (let i = 0; i < lastWeek.length; i++) {
-  // let combinedDay = { date: lastWeek[i].date, expense: lastWeek[i].expense }
-  // console.log(combinedDay.date)
-  // for (let j = 1; j < lastWeek.length; j++) {
-    // console.log(lastWeek[j].date == combinedDay.date)
-    // if (lastWeek[j].date == combinedDay.date) {
-      // lastWeek[j].expense
-      // combinedDay.expense += lastWeek[j].expense
-      // console.log(combinedDay.date)
-    // }
-  // }   
-
-  // lastWeek.forEach( exp => {
-  //   if (exp.date == combinedDay.date) {
-  //     combinedDay.expense += exp.expense
-  //   }
-  //  }
-  // )
-  // newLastWeek.push(combinedDay)
-
-  
-    // if (!newLastWeek.includes(combinedDay)) {
-    //   newLastWeek.push(combinedDay)
-    // }
-  
-
-// }
-
-// lastWeek.forEach(expense => {
-
-//   if (!newLastWeek[expense]) {
-//     newLastWeek.push(expense)
-//   }
-//   newLastWeek.forEach(expense2 => {
-//     if (expense.date == expense2.date){
-//     expense.expense += expense2.expense
-//     // newLastWeek.pop(expense)
-//     }
-//   })
-  
-// })
-
-
-// let mergeById = (arr1, arr2) => {
-//   arr1.map(itm => ({
-//     ...arr2.find((item) => (item.id === itm.id) && item) ,
-//     ...itm
-//   }))
-// }
-
-// console.log(mergeById(lastWeek, newLastWeek))
-
-// lastWeek.forEach(expense => {
-//   let existing = newLastWeek.filter((v, i) =>{
-//    v.date == expense.date
-//   })
-//   console.log(existing)
-// })
-
-// newLastWeek.map(expense => {
-//   if (expense.date) {
-
-//   }
-//   console.log(e)
-// })
-
-// for (let i = 0; i < lastWeek.length; i++) {
-//   let combinedDay = { date: lastWeek[i].date, expense: lastWeek[i].expense}
-//   for (let j = 1; j < lastWeek.length; j++) {
-//     if (lastWeek[i].date == lastWeek[j].date) {
-//       // combinedDay.date = lastWeek[i].date
-//       combinedDay.expense += lastWeek[j].expense
-//     }
-//   }
-//   newLastWeek.push(combinedDay)  
-// }
-
-// console.log(newLastWeek)
-// lastWeek.forEach(expense => {
-  // let day = expense.date
-  // let daySpending = 0
-  // lastWeek.forEach(expense2 => {
-
-  //   if (expense2.date == expense.date) {
-  //    daySpending += expense2.expense
-  //   }
-
-  // })  
-    // newLastWeek.push({ date:expense.date, expense: daySpending })
-
-  // console.log(daySpending)
-  // let dayCombined = { date: expense.date, expense: expense.expense }
-  // lastWeek.forEach(expense2 => {
-    
-  //   []
-
-  // })
-  // console.log(expense.date)
-  // console.log (dayCombined.date)
-  // if (newLastWeek[expense]) {
-
-  // }
-  // newLastWeek.push(dayCombined)
-  // console.log(expense.date)
-  // console.log(dayCombined.date)
-  // if (expense.date == dayCombined.date) {
-  //   dayCombined.expense += expense.expense
-  // }
-  // console.log(dayCombined)
-  // if (!newLastWeek[expense]) {
-  //     newLastWeek.push(expense)
-
-  // }
-  // console.log(newLastWeek)
-  // newLastWeek.push(expense)
-//   }  
-// )
-
+mergeSpend(lastWeek)
+// console.log(mergeSpend(lastWeek))
 console.log(newLastWeek)
-
-// for (let i = 0; i < lastWeek.length; i++) {
-//   // console.log(lastWeek[i].date) 
-//     for (let j = 1; j < lastWeek.length; j++) {
-//       // console.log(lastWeek[j].date) 
-//       if (lastWeek[i].date == lastWeek[j].date) {
-//         console.log(lastWeek[j].date)
-//       }
-//     }
-// }
-
-console.log(lastWeek)
+console.log(lastWeek.sort((a,b) => new Date(a.date) - new Date(b.date)))
 // console.log(lastWeek.length)
 console.log(expenseData)
 
