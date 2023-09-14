@@ -41,40 +41,27 @@ expenseData.forEach(expense => {
 
 // COMBINE SPENDING IN EACH DAY
 
-let newLastWeek = []
-
-const mergeSpend = (arr = []) => {
-  const data = arr.slice();
-  // const res = []
+function mergeSpend(arr){  
+  let data = JSON.parse(JSON.stringify(arr))
   data.sort((a,b) => new Date(a.date) - new Date(b.date))
+  let newLastWeek = []
   data.forEach(expense => {
-    if(!this[expense.date]) {
-      this[expense.date] = {
-        date: expense.date,
-        expense: expense.expense 
-      } 
-      newLastWeek.push(this[expense.date])
-    } 
-    // console.log(this[expense.date])
-    // console.log(this[expense.expense])
-    // console.log(expense.expense +2)
-    // console.log(this[expense.date])
-    if (this[expense.date]) {
-      this[expense.expense] = this[expense.expense] + expense.expense
-      // this[expense.date] = Object.assign(this[expense.date], expense) 
+    if (newLastWeek.length > 0) {
+      let findSameDate = newLastWeek.indexOf(newLastWeek.find((e) => e.date == expense.date))
+      if (findSameDate != -1) {
+        newLastWeek[findSameDate].expense += expense.expense
+      } else { 
+        newLastWeek.push(expense)
+      }
+
+    } else if (newLastWeek.length == 0) {
+      newLastWeek.push(expense)
     }
-      // console.log(Object.assign(this[expense.date], expense))
-      this[expense.date] = Object.assign(this[expense.date], expense)
   });
   return newLastWeek
 }
 
-mergeSpend(lastWeek)
-// console.log(mergeSpend(lastWeek))
-console.log(newLastWeek)
-console.log(lastWeek.sort((a,b) => new Date(a.date) - new Date(b.date)))
-// console.log(lastWeek.length)
-console.log(expenseData)
+console.log(mergeSpend(lastWeek))
 
 // figure out why i can only add expense after refresh!
 
