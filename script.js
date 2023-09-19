@@ -39,28 +39,48 @@ expenseData.forEach(expense => {
 function mergeSpend(arr) {
   let data = JSON.parse(JSON.stringify(arr))
   data.sort((a, b) => new Date(a.date) - new Date(b.date))
-  let newLastWeek = []
+  let res = []
   data.forEach(expense => {
-    if (newLastWeek.length > 0) {
-      let findSameDate = newLastWeek.indexOf(newLastWeek.find((e) => e.date == expense.date))
+    if (res.length > 0) {
+      let findSameDate = res.indexOf(res.find((e) => e.date == expense.date))
       if (findSameDate != -1) {
-        newLastWeek[findSameDate].expense += expense.expense
+        res[findSameDate].expense += expense.expense
       } else {
-        newLastWeek.push(expense)
+        res.push(expense)
       }
-    } else if (newLastWeek.length == 0) {
-      newLastWeek.push(expense)
+    } else if (res.length == 0) {
+      res.push(expense)
     }
   });
-  return newLastWeek
+  return res
 }
 
-console.log(mergeSpend(lastWeek))
-//  SORT LAST WEEK
+// console.log(mergeSpend(lastWeek))
+//  HANDLE LAST WEEK LABELS
+let newLastWeek = mergeSpend(lastWeek)
+let chartDayLabels = []
+
+console.log(newLastWeek)
+newLastWeek.forEach(expense => {
+  
+  if (newLastWeek.length < 7) {
+    console.log(newLastWeek.length)
+  }
+  let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
+  let dayIndex = new Date(expense.date).getDay() + 1
+  let expenseDayLabel = dayLabels[dayIndex]
+  
+  console.log(expenseDayLabel)
+  // console.log(new Date(expense.date).getDay() + 1 ,expense.date)
+
+
+})
 
 // console.log(new Date(mergeSpend(lastWeek)[0].date).getDay())
 
 // figure out why i can only add expense after refresh!!!!!
+
+
 function getData() {
   let data = mergeSpend(lastWeek) 
   for (let i = 0; i < bars.length; i++) {
