@@ -3,17 +3,18 @@ let labels = document.querySelectorAll('.label')
 let tooltip = document.querySelector('#tooltip')
 
 let balanceDisplay = document.querySelector("#balance")
+    balanceDisplay.innerText = localStorage.getItem("balance") || "0.00"
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
 let expenseData = JSON.parse(localStorage.getItem("expenseData")) || []
 let expenseDisplay = document.querySelector("#monthly-total")
-expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
+    expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
 
-//handling spending data for last 7 days
+//HANDLE SPENDING DATE FOR LAST 7 DAYS
 let currentDay = (new Date).getDay() 
 // let currentDay = (new Date).getDay() - 1
 
@@ -28,7 +29,6 @@ function daysInMonth(date) {
   ).getDate()
 }
 
-// adds all expenses from last week into lastWeek
 expenseData.forEach(expense => {
   for (let i = 0; i < 7; i++) {
     let compareDate = (new Date((new Date).setDate(currentDate.getDate() - i))).toLocaleDateString()
@@ -38,9 +38,7 @@ expenseData.forEach(expense => {
   }
 })
 
-// SORT DIFFERENTLY??
-
-// combine spending for each day
+// COMBINES SPENDING FOR EACH DAY
 function mergeSpend(arr) {
   let data = JSON.parse(JSON.stringify(arr))
   data.sort((a, b) => new Date(a.date) - new Date(b.date))
@@ -60,15 +58,15 @@ function mergeSpend(arr) {
   return res
 }
 
-//  HANDLE LAST WEEK LABELS
+// HANDLE DAY LABELS
 let newLastWeek = mergeSpend(lastWeek)
 let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
 let dayLabelsSorted = []
-for (let i = currentDay; i <= 7; i++) {
+for (let i = currentDay + 1; i <= 7; i++) {
   if ( i < 7 ) {
     dayLabelsSorted.push(dayLabels[i])
   } else if ( i == 7 ) {
-    for (let j = 0; j < currentDay; j++) {
+    for (let j = 0; j < currentDay + 1; j++) {
       dayLabelsSorted.push(dayLabels[j])
     }
   }
@@ -79,9 +77,10 @@ labels[i].innerText = dayLabelsSorted[i]
 
 // figure out why i can only add expense after refresh!!!!!
 
-
+// DISPLAY BARS ACCORDING TO DATA
 function getData() {
   let data = mergeSpend(lastWeek) 
+  bars[6].style.backgroundColor = "hsl(186, 34%, 60%)";
   console.log(data)
   for (let i = 0; i < bars.length; i++) {
     if (data[i]) {
@@ -90,7 +89,7 @@ function getData() {
       changeHeight(bars[i],0)
     }
   }
-  bars[currentDay].style.backgroundColor = "hsl(186, 34%, 60%)";
+  // bars[currentDay].style.backgroundColor = "hsl(186, 34%, 60%)";
 }
 
 function changeHeight(bar, spentInDay) {
@@ -116,26 +115,28 @@ window.onload = getData
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 
-function balanceChange() {
-  let balance = Number(balanceDisplay.value).toFixed(2) || 0
-  localStorage.setItem("balance", balance)
-  balanceDisplay.value = balance
-  // console.log(balance)
-  // console.log(localStorage.getItem("balance"))
-}
+// function balanceChange() {
+//   let balance = Number(balanceDisplay.value).toFixed(2) || 0
+//   localStorage.setItem("balance", balance)
+//   balanceDisplay.value = balance
+//   // console.log(balance)
+//   // console.log(localStorage.getItem("balance"))
+// }
 
 function addBalance() {
   // checks for valid decimal
   let decimals = balanceAdd.value.toString().split(".")[1]
-  let balance = balanceDisplay.value || 0
+  let balance = balanceDisplay.innerText || 0
+  // let balance = balanceDisplay.value || 0
   if (decimals === undefined || decimals.length < 3) {
     let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
-    balanceDisplay.value = newBalance
+    balanceDisplay.innerText = newBalance
+    // balanceDisplay.value = newBalance
     balance = newBalance
     localStorage.setItem("balance", newBalance)
   }
-  // console.log(balance)
-  // console.log(localStorage.getItem("balance"))
+  console.log(balance)
+  console.log(localStorage.getItem("balance"))
 }
 
 balanceDisplay.addEventListener("change", () => balanceChange())
@@ -167,6 +168,7 @@ function addExpense() {
       // expenseDisplay.value = monthTotal
       expenseDisplay.innerHTML = monthTotal
       localStorage.setItem("monthTotal", monthTotal)
+
       //handles expenses in localStorage
       if (expenseData == null) {
         localStorage.setItem("expenseData", JSON.stringify({ date, expense }))
@@ -174,14 +176,11 @@ function addExpense() {
         localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({ date, expense }).flat())))
         // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
       }
-
       // console.log(date)
       // console.log(new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString())
-
       // console.log(currentDate)
-
-      // console.log(monthTotal)
-      console.log(expenseData)
+      console.log(monthTotal)
+      // console.log(JSON.parse(localStorage.getItem("expenseData")))
     }
   }
 }
