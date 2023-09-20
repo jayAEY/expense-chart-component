@@ -1,4 +1,5 @@
 let bars = document.querySelectorAll('.bar')
+let labels = document.querySelectorAll('.label')
 let tooltip = document.querySelector('#tooltip')
 
 let balanceDisplay = document.querySelector("#balance")
@@ -13,7 +14,9 @@ let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
 
 //handling spending data for last 7 days
-let currentDay = (new Date).getDay() - 1
+let currentDay = (new Date).getDay() 
+// let currentDay = (new Date).getDay() - 1
+
 let currentDate = new Date
 let lastWeek = []
 let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString()
@@ -35,6 +38,8 @@ expenseData.forEach(expense => {
   }
 })
 
+// SORT DIFFERENTLY??
+
 // combine spending for each day
 function mergeSpend(arr) {
   let data = JSON.parse(JSON.stringify(arr))
@@ -55,34 +60,29 @@ function mergeSpend(arr) {
   return res
 }
 
-// console.log(mergeSpend(lastWeek))
 //  HANDLE LAST WEEK LABELS
 let newLastWeek = mergeSpend(lastWeek)
-let chartDayLabels = []
-
-console.log(newLastWeek)
-newLastWeek.forEach(expense => {
-  
-  if (newLastWeek.length < 7) {
-    console.log(newLastWeek.length)
+let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
+let dayLabelsSorted = []
+for (let i = currentDay; i <= 7; i++) {
+  if ( i < 7 ) {
+    dayLabelsSorted.push(dayLabels[i])
+  } else if ( i == 7 ) {
+    for (let j = 0; j < currentDay; j++) {
+      dayLabelsSorted.push(dayLabels[j])
+    }
   }
-  let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
-  let dayIndex = new Date(expense.date).getDay() + 1
-  let expenseDayLabel = dayLabels[dayIndex]
-  
-  console.log(expenseDayLabel)
-  // console.log(new Date(expense.date).getDay() + 1 ,expense.date)
-
-
-})
-
-// console.log(new Date(mergeSpend(lastWeek)[0].date).getDay())
+}
+for (let i = 0; i < 7; i++) {
+labels[i].innerText = dayLabelsSorted[i]
+}
 
 // figure out why i can only add expense after refresh!!!!!
 
 
 function getData() {
   let data = mergeSpend(lastWeek) 
+  console.log(data)
   for (let i = 0; i < bars.length; i++) {
     if (data[i]) {
       changeHeight(bars[i], data[i].expense)
