@@ -20,6 +20,7 @@ let currentDay = (new Date).getDay()
 
 
 //CLEAN THINGS HERE?
+
 let currentDate = new Date
 let lastWeek = []
 let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString()
@@ -78,8 +79,6 @@ for (let i = 0; i < 7; i++) {
 labels[i].innerText = dayLabelsSorted[i]
 }
 
-// figure out why i can only add expense after refresh!!!!!
-
 // DISPLAY BARS ACCORDING TO DATA
 function getData() {
   let data = mergeSpend(lastWeek) 
@@ -92,7 +91,6 @@ function getData() {
       changeHeight(bars[i],0)
     }
   }
-  // bars[currentDay].style.backgroundColor = "hsl(186, 34%, 60%)";
 }
 
 function changeHeight(bar, spentInDay) {
@@ -122,23 +120,18 @@ function addBalance() {
   // checks for valid decimal
   let decimals = balanceAdd.value.toString().split(".")[1]
   let balance = balanceDisplay.innerText || 0
-  // let balance = balanceDisplay.value || 0
   if (decimals === undefined || decimals.length < 3) {
     let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
     balanceDisplay.innerText = newBalance
-    // balanceDisplay.value = newBalance
     balance = newBalance
     localStorage.setItem("balance", newBalance)
   }
-  console.log(balance)
-  console.log(localStorage.getItem("balance"))
 }
 
 balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
 
 function addExpense() {
-  // let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
   let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
   let date = new Date(expenseDate.value)
   //accounting for timezone offset
@@ -147,30 +140,25 @@ function addExpense() {
   let decimals = expenseAdd.value.toString().split(".")[1]
 
   if ((decimals === undefined || decimals.length < 3) && date) {
-    //sets monthly total
-    if (expense) {
-      let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
-      // expenseDisplay.value = monthTotal
-      expenseDisplay.innerHTML = monthTotal
-      localStorage.setItem("monthTotal", monthTotal)
-
+      //sets monthly total
+      if (expense) {
+        let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
+        expenseDisplay.innerHTML = monthTotal
+        localStorage.setItem("monthTotal", monthTotal)
       //handles expenses in localStorage
       if (expenseData == null) {
         localStorage.setItem("expenseData", JSON.stringify({ date, expense }))
-      } else {
+      } else if (expenseData) {
         localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({ date, expense }).flat())))
-        // localStorage.setItem("expenseData", JSON.stringify([...expenseData].concat({date, expense})))
       }
-      // console.log(date)
-      // console.log(new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString())
-      // console.log(currentDate)
-      console.log(monthTotal)
-      // console.log(JSON.parse(localStorage.getItem("expenseData")))
     }
+    expenseData = JSON.parse(localStorage.getItem("expenseData"))
+    // getData()
   }
 }
 
-// expenseDisplay.addEventListener("change", () => expenseChange())
 expenseButton.addEventListener("click", () => addExpense())
+expenseButton.addEventListener("click", () => getData())
+
 
 
