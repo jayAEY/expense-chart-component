@@ -18,6 +18,8 @@ let expenseButton = document.querySelector("#expense-submit")
 let currentDay = (new Date).getDay() 
 // let currentDay = (new Date).getDay() - 1
 
+
+//CLEAN THINGS HERE?
 let currentDate = new Date
 let lastWeek = []
 let lastMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 0).toLocaleDateString()
@@ -58,6 +60,7 @@ function mergeSpend(arr) {
   return res
 }
 
+//MAKE THIS INTO A FUNCTION OR 1 VARIABLE?
 // HANDLE DAY LABELS
 let newLastWeek = mergeSpend(lastWeek)
 let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
@@ -115,14 +118,6 @@ window.onload = getData
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 
-// function balanceChange() {
-//   let balance = Number(balanceDisplay.value).toFixed(2) || 0
-//   localStorage.setItem("balance", balance)
-//   balanceDisplay.value = balance
-//   // console.log(balance)
-//   // console.log(localStorage.getItem("balance"))
-// }
-
 function addBalance() {
   // checks for valid decimal
   let decimals = balanceAdd.value.toString().split(".")[1]
@@ -141,16 +136,6 @@ function addBalance() {
 
 balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
-
-// not needed?????
-// function expenseChange() {
-//   // let monthTotal = Number(expenseDisplay.value).toFixed(2)
-//   // expenseDisplay.value = monthTotal
-//   // let monthTotal = Number(expenseDisplay.innerHTML).toFixed(2)
-//   // expenseDisplay.innerHTML = monthTotal
-//   localStorage.setItem("monthTotal", monthTotal)
-//   // console.log(localStorage.getItem("monthTotal"))
-// }
 
 function addExpense() {
   // let expenseData = JSON.parse(localStorage.getItem("expenseData")) 
