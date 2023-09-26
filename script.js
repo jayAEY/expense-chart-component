@@ -116,9 +116,44 @@ function handleTooltip(bar) {
   tooltip.style.top = `${(barCoords.top) - 40}px`
 }
 
+// let date = new Date 
+    // date = new Date(date.setMinutes(date.getMinutes() - date.getTimezoneOffset()))
+// console.log(date) 
+// console.log(new Date((new Date).setMinutes((new Date).getTimezoneOffset())))
+let today = new Date((new Date).setMinutes((new Date).getTimezoneOffset()))  
+// console.log(today.setDate(0)) 
+let currentMonth = (new Date(today.setDate(0)))
+// .toLocaleDateString()
+// let currentMonth = new Date((new Date).setDate(0))
+
+// let compareDate = new Date((new Date).setDate(currentMonth.getDate() - 0))
+let compareDate = currentMonth.getDate()
+
+// console.log(new Date().setDate(31))
+
+// console.log(new Date())
+console.log(currentMonth)
+console.log(compareDate)
+
 function monthToMonth() {
-  
+  // let currentMonth = new Date((new Date).setDate(0))
+  // let lastMonthDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate()
+  let lastMonthDays = new Date((new Date).setDate(0)).getDate()
+  let lastMonth = []
+  // expenseData.forEach(expense => {
+  //   for (let i = 0; i < lastMonthDays; i++) {
+  //     let compareDate = (new Date((new Date).setDate(currentMonth.getDate() - i))).toLocaleDateString()
+  //     if (expenseDate == currentMonth || expense.date == compareDate) {
+  //       lastMonth.push(expense)
+  //     }
+  //   }
+  // })
+  // return (new Date((new Date).setDate(currentMonth.getDate() - 0))).toLocaleDateString()
+
+  // return lastMonth
 }
+
+monthToMonth()
 
 function addBalance() {
   // check for valid decimal
