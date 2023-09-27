@@ -18,11 +18,23 @@ let balanceButton = document.querySelector("#balance-submit")
 let expenseData = JSON.parse(localStorage.getItem("expenseData")) || []
 let expenseDisplay = document.querySelector("#monthly-total")
     expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
+let expenseChange = document.querySelector("#expense-change")    
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
 
 function getBarData() {
+  // handle month total and change
+  let lastMonthTotal = lastMonthSpending()
+  let monthTotal = currentMonthSpending()
+  expenseDisplay.innerText = monthTotal.toFixed(2)
+  localStorage.setItem("monthTotal", monthTotal)
+
+  let monthToMonthChange = ((monthTotal/lastMonthTotal) * 100).toFixed(1)
+  monthToMonthChange > 0 ? monthToMonthChange = `+${monthToMonthChange}%`: monthToMonthChange = `-${monthToMonthChange}%`
+  expenseChange.innerText = monthToMonthChange
+  
+  // change order of day labels based on current day
   let data = lastWeekSpending()
   let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
   let dayLabelsSorted = []
@@ -31,7 +43,7 @@ function getBarData() {
   // let currentDay = (new Date).getDay() - 1  
   let currentDay = (new Date).getDay()
 
-  // change order of day labels based on current day
+
   for (let i = currentDay + 1; i <= 7; i++) {
     if ( i < 7 ) {
       dayLabelsSorted.push(dayLabels[i])
@@ -65,6 +77,7 @@ function getBarData() {
       bar.style.height = `3%`
     }
   }
+
 }
 
 function lastWeekSpending() {
@@ -108,6 +121,55 @@ function lastWeekSpending() {
   return lastWeekMerged
 }
 
+
+function lastMonthSpending() {
+  let lastMonth = []
+  let today = new Date((new Date).setMinutes((new Date).getTimezoneOffset()))
+  let lastMonthLastDay = (new Date(today.setDate(0)))
+  let lastMonthDays = lastMonthLastDay.getDate()
+
+  expenseData.forEach(expense => {lastMonthLastDay
+    for (let i = 0; i < lastMonthDays; i++) {
+      let compareDate = new Date(new Date(lastMonthLastDay).setDate(lastMonthDays - i)).toLocaleDateString()
+      if (expense.date == lastMonthLastDay || expense.date == compareDate) {
+        lastMonth.push(expense)
+      }
+    }
+  })
+
+  let total = 0
+  lastMonth.forEach(expense => total += expense.expense)
+
+  return total
+}
+
+function currentMonthSpending() {
+  let thisMonth = []
+  let nextMonth = (new Date).getMonth() + 1
+  let thisMonthLastDay = new Date((new Date((new Date).setMonth(nextMonth))).setDate(0))
+  let thisMonthDays = (new Date(new Date(((new Date).setMonth(nextMonth))).setDate(0))).getDate()
+
+  expenseData.forEach(expense => {
+    for (let i = 0; i < thisMonthDays; i++) {
+      let compareDate = new Date(new Date(thisMonthLastDay).setDate(thisMonthDays - i)).toLocaleDateString()
+      if (expense.date == thisMonthLastDay || expense.date == compareDate) {
+        thisMonth.push(expense)
+      }
+    }
+  })
+
+  let thisMonthTotal = 0
+  thisMonth.forEach(expense => thisMonthTotal += expense.expense)
+
+  return thisMonthTotal
+}
+
+// console.log(lastMonthSpending())
+// console.log(currentMonthSpending())
+// console.log(localStorage.getItem("expenseData"))
+// sort((a, b) => new Date(a.date) - new Date(b.date))
+console.log(localStorage.getItem("monthTotal"))
+
 function handleTooltip(bar) {
   let barCoords = bar.getBoundingClientRect()
   tooltip.style.display = "block"
@@ -115,45 +177,6 @@ function handleTooltip(bar) {
   tooltip.style.left = `${(barCoords.x - ((tooltip.getBoundingClientRect().width - barCoords.width) / 2))}px`
   tooltip.style.top = `${(barCoords.top) - 40}px`
 }
-
-// let date = new Date 
-    // date = new Date(date.setMinutes(date.getMinutes() - date.getTimezoneOffset()))
-// console.log(date) 
-// console.log(new Date((new Date).setMinutes((new Date).getTimezoneOffset())))
-let today = new Date((new Date).setMinutes((new Date).getTimezoneOffset()))  
-// console.log(today.setDate(0)) 
-let currentMonth = (new Date(today.setDate(0)))
-// .toLocaleDateString()
-// let currentMonth = new Date((new Date).setDate(0))
-
-// let compareDate = new Date((new Date).setDate(currentMonth.getDate() - 0))
-let compareDate = currentMonth.getDate()
-
-// console.log(new Date().setDate(31))
-
-// console.log(new Date())
-console.log(currentMonth)
-console.log(compareDate)
-
-function monthToMonth() {
-  // let currentMonth = new Date((new Date).setDate(0))
-  // let lastMonthDays = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate()
-  let lastMonthDays = new Date((new Date).setDate(0)).getDate()
-  let lastMonth = []
-  // expenseData.forEach(expense => {
-  //   for (let i = 0; i < lastMonthDays; i++) {
-  //     let compareDate = (new Date((new Date).setDate(currentMonth.getDate() - i))).toLocaleDateString()
-  //     if (expenseDate == currentMonth || expense.date == compareDate) {
-  //       lastMonth.push(expense)
-  //     }
-  //   }
-  // })
-  // return (new Date((new Date).setDate(currentMonth.getDate() - 0))).toLocaleDateString()
-
-  // return lastMonth
-}
-
-monthToMonth()
 
 function addBalance() {
   // check for valid decimal
@@ -179,10 +202,6 @@ function addExpense() {
   let decimals = expenseAdd.value.toString().split(".")[1]
   if ((decimals === undefined || decimals.length < 3) && date) {
     if (expense) {
-      // set monthly total
-      let monthTotal = (Number(localStorage.getItem("monthTotal")) + expense).toFixed(2)
-      expenseDisplay.innerHTML = monthTotal
-      localStorage.setItem("monthTotal", monthTotal)
       // handle expenses in localStorage
       if (expenseData == null) {
         localStorage.setItem("expenseData", JSON.stringify({ date, expense }))
@@ -199,6 +218,7 @@ function addExpense() {
 }
 
 window.onload = getBarData() 
+// window.onload = lastMonthSpending()
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 balanceDisplay.addEventListener("change", () => balanceChange())
