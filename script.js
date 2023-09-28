@@ -5,6 +5,10 @@
 // - displaying last week data properly (check for timezone offset?)
 // - speding increase month to month
 // - ensure all displayed data matches localStorage
+// - Add clear all data button?
+// - handle value limit?
+// - check timezome offsets?
+// - refactor code ?
 
 let bars = document.querySelectorAll('.bar')
 let labels = document.querySelectorAll('.label')
@@ -24,25 +28,29 @@ let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
 
 function getBarData() {
-  // handle month total and change
+  // handle month totals and month to month change
   let lastMonthTotal = lastMonthSpending()
   let monthTotal = currentMonthSpending()
   expenseDisplay.innerText = monthTotal.toFixed(2)
-  localStorage.setItem("monthTotal", monthTotal)
 
-  let monthToMonthChange = ((monthTotal/lastMonthTotal) * 100).toFixed(1)
-  monthToMonthChange > 0 ? monthToMonthChange = `+${monthToMonthChange}%`: monthToMonthChange = `-${monthToMonthChange}%`
-  expenseChange.innerText = monthToMonthChange
+  let monthToMonthChange = monthTotal - lastMonthTotal
+      monthToMonthChange = ((monthToMonthChange / lastMonthTotal) * 100).toFixed(2)
+  console.log(lastMonthTotal, monthTotal)
+  if (!isNaN(monthToMonthChange)) {
+    monthToMonthChange >= 0 ? monthToMonthChange = `+${monthToMonthChange}%`: monthToMonthChange = `${monthToMonthChange}%`
+    expenseChange.innerText = monthToMonthChange
+  } else {
+    expenseChange.innerText = "0%"
+  }
   
   // change order of day labels based on current day
   let data = lastWeekSpending()
   let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
   let dayLabelsSorted = []
 
-  // MIGHT HAVE TO ADD TIMEE OFFSET?
+  // MIGHT HAVE TO ADD TIME OFFSET?
   // let currentDay = (new Date).getDay() - 1  
   let currentDay = (new Date).getDay()
-
 
   for (let i = currentDay + 1; i <= 7; i++) {
     if ( i < 7 ) {
@@ -53,10 +61,12 @@ function getBarData() {
       }
     }
   }
+
   // change order of day labels based on current day
   for (let i = 0; i < 7; i++) {
     labels[i].innerText = dayLabelsSorted[i]
   }
+
   //change bars based on data
   bars[6].style.backgroundColor = "hsl(186, 34%, 60%)";
   for (let i = 0; i < bars.length; i++) {
@@ -121,7 +131,6 @@ function lastWeekSpending() {
   return lastWeekMerged
 }
 
-
 function lastMonthSpending() {
   let lastMonth = []
   let today = new Date((new Date).setMinutes((new Date).getTimezoneOffset()))
@@ -164,12 +173,6 @@ function currentMonthSpending() {
   return thisMonthTotal
 }
 
-// console.log(lastMonthSpending())
-// console.log(currentMonthSpending())
-// console.log(localStorage.getItem("expenseData"))
-// sort((a, b) => new Date(a.date) - new Date(b.date))
-console.log(localStorage.getItem("monthTotal"))
-
 function handleTooltip(bar) {
   let barCoords = bar.getBoundingClientRect()
   tooltip.style.display = "block"
@@ -179,11 +182,10 @@ function handleTooltip(bar) {
 }
 
 function addBalance() {
-  // check for valid decimal
+  // check for valid decimal and number
   let decimals = balanceAdd.value.toString().split(".")[1]
   let balance = balanceDisplay.innerText
-  // let balance = balanceDisplay.innerText || 0
-  if (decimals === undefined || decimals.length < 3) {
+  if ((decimals === undefined || decimals.length < 3) && balanceAdd.value !== "") {
     let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
     balanceDisplay.innerText = newBalance
     balance = newBalance
@@ -197,10 +199,10 @@ function addExpense() {
  
   // account for timezone offset
   date = new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString()
- 
-  // check for valid decimal
+  
+  // check for valid decimal, number and date
   let decimals = expenseAdd.value.toString().split(".")[1]
-  if ((decimals === undefined || decimals.length < 3) && date) {
+  if ((decimals === undefined || decimals.length < 3) && expenseAdd.value > 0 && date != "Invalid Date") {
     if (expense) {
       // handle expenses in localStorage
       if (expenseData == null) {
@@ -218,7 +220,6 @@ function addExpense() {
 }
 
 window.onload = getBarData() 
-// window.onload = lastMonthSpending()
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 balanceDisplay.addEventListener("change", () => balanceChange())
