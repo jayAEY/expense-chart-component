@@ -18,12 +18,12 @@
           <p>My balance</p>
           <h1 class="dollar-sign">$</h1>
           <h1 id="balance">0.00</h1>
-          <!-- <input id="balance" type="number" min="0.00" step="0.01" placeholder="0.00"> -->
         </div>
         <img id="logo" alt="logo" src="./images/logo.svg">
       </div>
       <form id="add-balance" onsubmit="return false">
-        <input id="balance-add" type="number" placeholder="Add to balance" min="0.00" step="0.01"required > 
+        <input id="balance-add" type="number" placeholder="Add to balance" step="0.01" required > 
+        <!-- <input id="balance-add" type="number" placeholder="Add to balance" oninput="validity.valid||(value='')" min="0.00" step="0.01"required >  -->
         <input id="balance-submit" type="submit" value="Add">
       </form>   
     </div>
@@ -60,7 +60,7 @@
           <!-- <input id="monthly-total" type="number" min="0.00" step="0.01" placeholder="0.00"> -->
         </div>
         <div id="change">
-          <h2>+2.4%</h2>
+          <h2 id="expense-change">0.00%</h2>
           <p>from last month</p>
         </div>
       </div>
