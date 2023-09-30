@@ -23,7 +23,6 @@
       </div>
       <form id="add-balance" onsubmit="return false">
         <input id="balance-add" type="number" placeholder="Add to balance" step="0.01" required > 
-        <!-- <input id="balance-add" type="number" placeholder="Add to balance" oninput="validity.valid||(value='')" min="0.00" step="0.01"required >  -->
         <input id="balance-submit" type="submit" value="Add">
       </form>   
     </div>
@@ -54,10 +53,8 @@
       <div id="total-section">
         <div id="total">
           <p>Total this month</p>
-          <!-- <h1 id="total-dollars">$478.33</h1> -->
           <h1 class="dollar-sign">$</h1>
           <h1 id="monthly-total">0.00</h1>
-          <!-- <input id="monthly-total" type="number" min="0.00" step="0.01" placeholder="0.00"> -->
         </div>
         <div id="change">
           <h2 id="expense-change">0.00%</h2>
