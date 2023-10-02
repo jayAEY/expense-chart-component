@@ -6,7 +6,6 @@
 // - speding increase month to month
 // - ensure all displayed data matches localStorage
 // - check reset button
-// - handle value limit?
 // - check timezome offsets?
 // - refactor code ?
 
@@ -35,7 +34,6 @@ function getBarData() {
 
   let monthToMonthChange = monthTotal - lastMonthTotal
       monthToMonthChange = ((monthToMonthChange / lastMonthTotal) * 100).toFixed(2)
-  console.log(lastMonthTotal, monthTotal)
   if (!isNaN(monthToMonthChange)) {
     monthToMonthChange >= 0 ? monthToMonthChange = `+${monthToMonthChange}%`: monthToMonthChange = `${monthToMonthChange}%`
     expenseChange.innerText = monthToMonthChange
@@ -182,40 +180,46 @@ function handleTooltip(bar) {
 }
 
 function addBalance() {
-  // check for valid decimal and number
-  let decimals = balanceAdd.value.toString().split(".")[1]
+  // limits balance to length of 17 including decimal and minus sign
   let balance = balanceDisplay.innerText
-  if ((decimals === undefined || decimals.length < 3) && balanceAdd.value !== "") {
-    let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
-    balanceDisplay.innerText = newBalance
-    balance = newBalance
-    localStorage.setItem("balance", newBalance)
+  if (balance.length < 17) {
+    // check for valid decimal and number
+    let decimals = balanceAdd.value.toString().split(".")[1]
+    if ((decimals === undefined || decimals.length < 3) && balanceAdd.value !== "") {
+      let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
+      balanceDisplay.innerText = newBalance
+      balance = newBalance
+      localStorage.setItem("balance", newBalance)
+    }
   }
 }
 
 function addExpense() {
-  let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
-  let date = new Date(expenseDate.value)
- 
-  // account for timezone offset
-  date = new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString()
+  // limits spending to 16 digits and 
+  if (expenseDisplay.innerText.length < 16) {
+    let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
+    let date = new Date(expenseDate.value)
   
-  // check for valid decimal, number and date
-  let decimals = expenseAdd.value.toString().split(".")[1]
-  if ((decimals === undefined || decimals.length < 3) && expenseAdd.value > 0 && date != "Invalid Date") {
-    if (expense) {
-      // handle expenses in localStorage
-      if (expenseData == null) {
-        localStorage.setItem("expenseData", JSON.stringify({ date, expense }))
-      } else {
-        localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({ date, expense }).flat())))
+    // account for timezone offset
+    date = new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString()
+    
+    // check for valid decimal, number and date
+    let decimals = expenseAdd.value.toString().split(".")[1]
+    if ((decimals === undefined || decimals.length < 3) && expenseAdd.value > 0 && date != "Invalid Date") {
+      if (expense) {
+        // handle expenses in localStorage
+        if (expenseData == null) {
+          localStorage.setItem("expenseData", JSON.stringify({ date, expense }))
+        } else {
+          localStorage.setItem("expenseData", JSON.stringify(([expenseData].concat({ date, expense }).flat())))
+        }
+        // subtract expense from balance
+        let newBalance = (parseFloat(balanceDisplay.innerText) - expense).toFixed(2)
+        localStorage.setItem("balance", newBalance )
+        balanceDisplay.innerText = newBalance
       }
-      // subtract expense from balance
-      let newBalance = (parseFloat(balanceDisplay.innerText) - expense).toFixed(2)
-      localStorage.setItem("balance", newBalance )
-      balanceDisplay.innerText = newBalance
+      expenseData = JSON.parse(localStorage.getItem("expenseData"))
     }
-    expenseData = JSON.parse(localStorage.getItem("expenseData"))
   }
 }
 
