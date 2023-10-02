@@ -1,7 +1,8 @@
 //CHECK ALL FEATURES
-// - adding to balance 
-// - adding expenses 
-// - subtracting expenses from balance
+// - adding to balance ✔ 
+// - adding expenses ✔ 
+// - subtracting expenses from balance✔ 
+
 // - displaying last week data properly (check for timezone offset?)
 // - speding increase month to month
 // - ensure all displayed data matches localStorage
@@ -73,19 +74,19 @@ function getBarData() {
     data[i] ? spentInDay = data[i].expense : null
     if (data[i]) {
       bar.style.dataSpent = spentInDay
-      if (spentInDay > 55) {
+      if (spentInDay > 490) {
         bar.style.height = "100%"
       } else if (spentInDay < 2) {
-        bar.style.height = `3%`
+        bar.style.height = `2%`
       } else {
-        bar.style.height = `${spentInDay * 1.8}%`
+        bar.style.height = `${2 + (spentInDay * 0.2)}%`
       }
     } else {
       bar.style.dataSpent = 0
-      bar.style.height = `3%`
+      bar.style.height = `2%`
     }
   }
-
+  
 }
 
 function lastWeekSpending() {
@@ -188,15 +189,14 @@ function addBalance() {
     if ((decimals === undefined || decimals.length < 3) && balanceAdd.value !== "") {
       let newBalance = (parseFloat(balance) + parseFloat(balanceAdd.value)).toFixed(2)
       balanceDisplay.innerText = newBalance
-      balance = newBalance
       localStorage.setItem("balance", newBalance)
     }
   }
 }
 
 function addExpense() {
-  // limits spending to 16 digits and 
-  if (expenseDisplay.innerText.length < 16) {
+  // limits spending total and the expense add input limit to 10 digits
+  if (expenseDisplay.innerText.length < 11 && expenseAdd.value.length < 11) {
     let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
     let date = new Date(expenseDate.value)
   
@@ -250,6 +250,3 @@ balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
 expenseButton.addEventListener("click", () => addExpense())
 expenseButton.addEventListener("click", () => getBarData())
-
-
-
