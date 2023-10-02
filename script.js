@@ -5,14 +5,14 @@
 // - displaying last week data properly (check for timezone offset?)
 // - speding increase month to month
 // - ensure all displayed data matches localStorage
-// - Add clear all data button?
+// - check reset button
 // - handle value limit?
 // - check timezome offsets?
 // - refactor code ?
 
-let bars = document.querySelectorAll('.bar')
-let labels = document.querySelectorAll('.label')
-let tooltip = document.querySelector('#tooltip')
+let bars = document.querySelectorAll(".bar")
+let labels = document.querySelectorAll(".label")
+let tooltip = document.querySelector("#tooltip")
 
 let balanceDisplay = document.querySelector("#balance")
     balanceDisplay.innerText = localStorage.getItem("balance") || "0.00"
@@ -217,6 +217,26 @@ function addExpense() {
     }
     expenseData = JSON.parse(localStorage.getItem("expenseData"))
   }
+}
+
+function reset() {
+  let warningOverlay = document.querySelector("#warning-overlay")
+  let warning = document.querySelector("#warning-message")
+  let yes = document.querySelector("#yes")
+  let no = document.querySelector("#no") 
+
+  warningOverlay.style.display = "flex"
+  warning.style.display = "flex"
+
+  // handles clicking on yes and no buttons
+  yes.addEventListener("click", () => {
+    localStorage.clear()
+    location.reload()
+  })
+  no.addEventListener("click", () => { 
+    warningOverlay.style.display = "none"
+    warning.style.display = "none"
+  })
 }
 
 window.onload = getBarData() 

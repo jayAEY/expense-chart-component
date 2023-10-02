@@ -62,11 +62,27 @@
         </div>
       </div>
     </div>
+
     <form id="expense-panel" onsubmit="return false">
       <input id="expense-add" type="number" placeholder="Add expense" min="0.00" step="0.01" required> 
       <input id="expense-date" value=currentDay type="date" required>
       <input id="expense-submit" type="submit" value="Add">
     </form>
+
+    <div id="warning-overlay">
+      <div id="warning-message">
+        Are you sure you want to reset all spending and balance data?<br>
+        <div id="warning-buttons">
+          <button id="yes">Yes</button>
+          <button id="no">No</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="reset-panel" >
+      <button id="reset" onclick="reset()">Reset all</button>
+    </div>
+    
   </main>
   <script src="script.js"></script>
 </body>
