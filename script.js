@@ -2,27 +2,27 @@
 // - adding to balance ✔ 
 // - adding expenses ✔ 
 // - subtracting expenses from balance✔ 
+// - displaying last week data properly (check for timezone offset?)✔
+// - speding increase month to month✔
+// - ensure all displayed data matches localStorage✔
+// - check reset button✔
 
-// - displaying last week data properly (check for timezone offset?)
-// - speding increase month to month
-// - ensure all displayed data matches localStorage
-// - check reset button
-// - check timezome offsets?
-// - refactor code ?
+// - check timezome offsets? ( add into lastweekspending?)
+// - refactor code ? (combine next month and current month spending)
 
 let bars = document.querySelectorAll(".bar")
 let labels = document.querySelectorAll(".label")
 let tooltip = document.querySelector("#tooltip")
 
 let balanceDisplay = document.querySelector("#balance")
-    balanceDisplay.innerText = localStorage.getItem("balance") || "0.00"
+balanceDisplay.innerText = localStorage.getItem("balance") || "0.00"
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
 let expenseData = JSON.parse(localStorage.getItem("expenseData")) || []
 let expenseDisplay = document.querySelector("#monthly-total")
-    expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
-let expenseChange = document.querySelector("#expense-change")    
+expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
+let expenseChange = document.querySelector("#expense-change")
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
 let expenseButton = document.querySelector("#expense-submit")
@@ -34,17 +34,17 @@ function getBarData() {
   expenseDisplay.innerText = monthTotal.toFixed(2)
 
   let monthToMonthChange = monthTotal - lastMonthTotal
-      monthToMonthChange = ((monthToMonthChange / lastMonthTotal) * 100).toFixed(2)
+  monthToMonthChange = ((monthToMonthChange / lastMonthTotal) * 100).toFixed(2)
   if (!isNaN(monthToMonthChange)) {
-    monthToMonthChange >= 0 ? monthToMonthChange = `+${monthToMonthChange}%`: monthToMonthChange = `${monthToMonthChange}%`
+    monthToMonthChange >= 0 ? monthToMonthChange = `+${monthToMonthChange}%` : monthToMonthChange = `${monthToMonthChange}%`
     expenseChange.innerText = monthToMonthChange
   } else {
     expenseChange.innerText = "0%"
   }
-  
+
   // change order of day labels based on current day
   let data = lastWeekSpending()
-  let dayLabels = ["sun","mon", "tue", "wed", "thu", "fri", "sat"]
+  let dayLabels = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
   let dayLabelsSorted = []
 
   // MIGHT HAVE TO ADD TIME OFFSET?
@@ -52,9 +52,9 @@ function getBarData() {
   let currentDay = (new Date).getDay()
 
   for (let i = currentDay + 1; i <= 7; i++) {
-    if ( i < 7 ) {
+    if (i < 7) {
       dayLabelsSorted.push(dayLabels[i])
-    } else if ( i == 7 ) {
+    } else if (i == 7) {
       for (let j = 0; j < currentDay + 1; j++) {
         dayLabelsSorted.push(dayLabels[j])
       }
@@ -86,7 +86,7 @@ function getBarData() {
       bar.style.height = `2%`
     }
   }
-  
+
 }
 
 function lastWeekSpending() {
@@ -97,7 +97,7 @@ function lastWeekSpending() {
   // adds blank expenses for each day in last week to display bars properly
   for (let i = 0; i < 7; i++) {
     let compareDate = (new Date((new Date).setDate(currentDate.getDate() - i))).toLocaleDateString()
-    lastWeek.push({ date : compareDate, expense : 0 })
+    lastWeek.push({ date: compareDate, expense: 0 })
   }
 
   // check for expenses from last week and pushes them into lastWeek
@@ -110,7 +110,7 @@ function lastWeekSpending() {
     }
   })
 
-  // FIGURE OUT WHATS GOING ON WITH THIS PARSE STRINGIFY????? MIGHT BE THE += EXPENSE
+  // create copy to add expenses properly
   lastWeek = JSON.parse(JSON.stringify(lastWeek))
 
   // sort and merge expenses according to days
@@ -118,15 +118,19 @@ function lastWeekSpending() {
   lastWeek.forEach(expense => {
     if (lastWeekMerged.length > 0) {
       let findSameDate = lastWeekMerged.indexOf(lastWeekMerged.find((e) => e.date == expense.date))
+      // if date in merged and unmerged last week match, combine expense and push into merged
+      // push if there is no match
       if (findSameDate != -1) {
         lastWeekMerged[findSameDate].expense += expense.expense
       } else {
         lastWeekMerged.push(expense)
       }
+    //push if merged is empty  
     } else if (lastWeekMerged.length == 0) {
       lastWeekMerged.push(expense)
     }
   });
+
   return lastWeekMerged
 }
 
@@ -136,7 +140,9 @@ function lastMonthSpending() {
   let lastMonthLastDay = (new Date(today.setDate(0)))
   let lastMonthDays = lastMonthLastDay.getDate()
 
-  expenseData.forEach(expense => {lastMonthLastDay
+  // add all expense data from this month into array
+  expenseData.forEach(expense => {
+    lastMonthLastDay
     for (let i = 0; i < lastMonthDays; i++) {
       let compareDate = new Date(new Date(lastMonthLastDay).setDate(lastMonthDays - i)).toLocaleDateString()
       if (expense.date == lastMonthLastDay || expense.date == compareDate) {
@@ -145,9 +151,9 @@ function lastMonthSpending() {
     }
   })
 
+  // sum up monthly expenses
   let total = 0
   lastMonth.forEach(expense => total += expense.expense)
-
   return total
 }
 
@@ -155,8 +161,9 @@ function currentMonthSpending() {
   let thisMonth = []
   let nextMonth = (new Date).getMonth() + 1
   let thisMonthLastDay = new Date((new Date((new Date).setMonth(nextMonth))).setDate(0))
-  let thisMonthDays = (new Date(new Date(((new Date).setMonth(nextMonth))).setDate(0))).getDate()
+  let thisMonthDays = thisMonthLastDay.getDate()
 
+  // add all expense data from this month into array
   expenseData.forEach(expense => {
     for (let i = 0; i < thisMonthDays; i++) {
       let compareDate = new Date(new Date(thisMonthLastDay).setDate(thisMonthDays - i)).toLocaleDateString()
@@ -166,9 +173,9 @@ function currentMonthSpending() {
     }
   })
 
+  // sum up monthly expenses
   let thisMonthTotal = 0
   thisMonth.forEach(expense => thisMonthTotal += expense.expense)
-
   return thisMonthTotal
 }
 
@@ -199,10 +206,10 @@ function addExpense() {
   if (expenseDisplay.innerText.length < 11 && expenseAdd.value.length < 11) {
     let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
     let date = new Date(expenseDate.value)
-  
+
     // account for timezone offset
     date = new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString()
-    
+
     // check for valid decimal, number and date
     let decimals = expenseAdd.value.toString().split(".")[1]
     if ((decimals === undefined || decimals.length < 3) && expenseAdd.value > 0 && date != "Invalid Date") {
@@ -215,7 +222,7 @@ function addExpense() {
         }
         // subtract expense from balance
         let newBalance = (parseFloat(balanceDisplay.innerText) - expense).toFixed(2)
-        localStorage.setItem("balance", newBalance )
+        localStorage.setItem("balance", newBalance)
         balanceDisplay.innerText = newBalance
       }
       expenseData = JSON.parse(localStorage.getItem("expenseData"))
@@ -227,7 +234,7 @@ function reset() {
   let warningOverlay = document.querySelector("#warning-overlay")
   let warning = document.querySelector("#warning-message")
   let yes = document.querySelector("#yes")
-  let no = document.querySelector("#no") 
+  let no = document.querySelector("#no")
 
   warningOverlay.style.display = "flex"
   warning.style.display = "flex"
@@ -237,13 +244,13 @@ function reset() {
     localStorage.clear()
     location.reload()
   })
-  no.addEventListener("click", () => { 
+  no.addEventListener("click", () => {
     warningOverlay.style.display = "none"
     warning.style.display = "none"
   })
 }
 
-window.onload = getBarData() 
+window.onload = getBarData()
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
 balanceDisplay.addEventListener("change", () => balanceChange())
