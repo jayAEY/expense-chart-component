@@ -1,27 +1,25 @@
 //CHECK ALL FEATURES
 // - adding to balance ✔ 
 // - adding expenses ✔ 
-// - subtracting expenses from balance✔ 
-// - displaying last week data properly (check for timezone offset?)✔
-// - speding increase month to month✔
-// - ensure all displayed data matches localStorage✔
-// - check reset button✔
-
-// - check timezome offsets? ( add into lastweekspending?)
-// - refactor code ? (combine next month and current month spending)
+// - subtracting expenses from balance ✔ 
+// - displaying last week data properly (check for timezone offset?) ✔
+// - ensure all displayed data matches localStorage ✔
+// - spending increase month to month ✔
+// - check reset button ✔
 
 let bars = document.querySelectorAll(".bar")
 let labels = document.querySelectorAll(".label")
 let tooltip = document.querySelector("#tooltip")
 
 let balanceDisplay = document.querySelector("#balance")
-balanceDisplay.innerText = localStorage.getItem("balance") || "0.00"
+    balanceDisplay.innerText = localStorage.getItem("balance") || "0.00"
 let balanceAdd = document.querySelector("#balance-add")
 let balanceButton = document.querySelector("#balance-submit")
 
 let expenseData = JSON.parse(localStorage.getItem("expenseData")) || []
 let expenseDisplay = document.querySelector("#monthly-total")
-expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
+    expenseDisplay.innerText = localStorage.getItem("monthTotal") || "0.00"
+
 let expenseChange = document.querySelector("#expense-change")
 let expenseAdd = document.querySelector("#expense-add")
 let expenseDate = document.querySelector("#expense-date")
@@ -29,12 +27,15 @@ let expenseButton = document.querySelector("#expense-submit")
 
 function getBarData() {
   // handle month totals and month to month change
-  let lastMonthTotal = lastMonthSpending()
-  let monthTotal = currentMonthSpending()
+  let thisMonth = (new Date).getMonth()
+  let lastMonth = thisMonth -1
+  let monthTotal = getMonthSpending(thisMonth)
+  let lastMonthTotal = getMonthSpending(lastMonth)
   expenseDisplay.innerText = monthTotal.toFixed(2)
 
   let monthToMonthChange = monthTotal - lastMonthTotal
-  monthToMonthChange = ((monthToMonthChange / lastMonthTotal) * 100).toFixed(2)
+      monthToMonthChange = ((monthToMonthChange / lastMonthTotal) * 100).toFixed(2)
+
   if (!isNaN(monthToMonthChange)) {
     monthToMonthChange >= 0 ? monthToMonthChange = `+${monthToMonthChange}%` : monthToMonthChange = `${monthToMonthChange}%`
     expenseChange.innerText = monthToMonthChange
@@ -47,8 +48,6 @@ function getBarData() {
   let dayLabels = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"]
   let dayLabelsSorted = []
 
-  // MIGHT HAVE TO ADD TIME OFFSET?
-  // let currentDay = (new Date).getDay() - 1  
   let currentDay = (new Date).getDay()
 
   for (let i = currentDay + 1; i <= 7; i++) {
@@ -86,7 +85,6 @@ function getBarData() {
       bar.style.height = `2%`
     }
   }
-
 }
 
 function lastWeekSpending() {
@@ -134,49 +132,26 @@ function lastWeekSpending() {
   return lastWeekMerged
 }
 
-function lastMonthSpending() {
-  let lastMonth = []
-  let today = new Date((new Date).setMinutes((new Date).getTimezoneOffset()))
-  let lastMonthLastDay = (new Date(today.setDate(0)))
-  let lastMonthDays = lastMonthLastDay.getDate()
+function getMonthSpending(month) {
+  let monthData = []
+  let today = new Date()
+  let monthLastDay = new Date(new Date((new Date).setMonth(month + 1)).setDate(0))
+  let monthDays = monthLastDay.getDate()
 
-  // add all expense data from this month into array
+  // add all expense data from month into array
   expenseData.forEach(expense => {
-    lastMonthLastDay
-    for (let i = 0; i < lastMonthDays; i++) {
-      let compareDate = new Date(new Date(lastMonthLastDay).setDate(lastMonthDays - i)).toLocaleDateString()
-      if (expense.date == lastMonthLastDay || expense.date == compareDate) {
-        lastMonth.push(expense)
+    for (let i = 0; i < monthDays; i++) {
+      let compareDate = new Date(monthLastDay.setDate(monthDays - i)).toLocaleDateString()
+      if (expense.date == monthLastDay || expense.date == compareDate) {
+        monthData.push(expense)
       }
     }
   })
 
   // sum up monthly expenses
   let total = 0
-  lastMonth.forEach(expense => total += expense.expense)
-  return total
-}
-
-function currentMonthSpending() {
-  let thisMonth = []
-  let nextMonth = (new Date).getMonth() + 1
-  let thisMonthLastDay = new Date((new Date((new Date).setMonth(nextMonth))).setDate(0))
-  let thisMonthDays = thisMonthLastDay.getDate()
-
-  // add all expense data from this month into array
-  expenseData.forEach(expense => {
-    for (let i = 0; i < thisMonthDays; i++) {
-      let compareDate = new Date(new Date(thisMonthLastDay).setDate(thisMonthDays - i)).toLocaleDateString()
-      if (expense.date == thisMonthLastDay || expense.date == compareDate) {
-        thisMonth.push(expense)
-      }
-    }
-  })
-
-  // sum up monthly expenses
-  let thisMonthTotal = 0
-  thisMonth.forEach(expense => thisMonthTotal += expense.expense)
-  return thisMonthTotal
+  monthData.forEach(expense => total += expense.expense)
+  return total  
 }
 
 function handleTooltip(bar) {
@@ -207,7 +182,7 @@ function addExpense() {
     let expense = Number(parseFloat(expenseAdd.value).toFixed(2))
     let date = new Date(expenseDate.value)
 
-    // account for timezone offset
+    // account for timezone offset in locale string
     date = new Date(date.setMinutes(date.getMinutes() + date.getTimezoneOffset())).toLocaleDateString()
 
     // check for valid decimal, number and date
@@ -228,6 +203,8 @@ function addExpense() {
       expenseData = JSON.parse(localStorage.getItem("expenseData"))
     }
   }
+  // update bars
+  getBarData()
 }
 
 function reset() {
@@ -253,7 +230,5 @@ function reset() {
 window.onload = getBarData()
 bars.forEach(bar => bar.addEventListener("mouseover", () => handleTooltip(bar)))
 bars.forEach(bar => bar.addEventListener("mouseout", () => tooltip.style.display = "none"))
-balanceDisplay.addEventListener("change", () => balanceChange())
 balanceButton.addEventListener("click", () => addBalance())
 expenseButton.addEventListener("click", () => addExpense())
-expenseButton.addEventListener("click", () => getBarData())
