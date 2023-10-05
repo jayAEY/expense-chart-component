@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap");
 
 *,
 *::before,
@@ -13,7 +13,7 @@ body {
   height: 100vh;
   background-color: hsl(27, 66%, 92%);
   font-size: 12px;
-  font-family: 'DM Sans', sans-serif;
+  font-family: "DM Sans", sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,9 +39,8 @@ main {
   z-index: 1;
 }
 
-input[type=number] {
+input[type="number"] {
   appearance: textfield;
-  /* -moz-appearance: textfield; */
 }
 
 input::-webkit-inner-spin-button,
@@ -63,8 +62,6 @@ input:focus {
 #balance-panel {
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
-  /* justify-content: space-between; */
   padding: 18px;
   background-color: hsl(10, 79%, 65%);
   color: hsl(33, 100%, 98%);
@@ -95,15 +92,14 @@ input:focus {
 #balance-add {
   border: none;
   background-color: hsl(33, 31%, 94%);
-  color:  hsl(10, 79%, 65%);;
+  color: hsl(10, 79%, 65%);
   padding: 4px;
-  /* width: 135px; */
   width: 83%;
   border-radius: 3px;
 }
 
 #balance-submit {
-  background-color:hsl(33, 31%, 94%);
+  background-color: hsl(33, 31%, 94%);
   color: hsl(28, 10%, 53%);
   padding: 4px 10px;
   border: none;
@@ -156,7 +152,7 @@ input:focus {
 }
 
 .label {
-  width: calc((100%/7) - 10px);
+  width: calc((100% / 7) - 10px);
 }
 
 #bars {
@@ -169,7 +165,7 @@ input:focus {
 
 .bar {
   background-color: hsl(10, 79%, 65%);
-  width: calc((100%/7) - 10px);
+  width: calc((100% / 7) - 10px);
   border-radius: 4px;
   height: 1px;
   transition: all 0.3s;
@@ -291,9 +287,8 @@ input:focus {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.69);
-  z-index: 1; 
+  z-index: 1;
 }
-
 
 #warning-message {
   display: flex;
@@ -320,9 +315,10 @@ input:focus {
   gap: 10px;
 }
 
-#yes, #no {
+#yes,
+#no {
   background-color: hsl(33, 31%, 94%);
-  color: hsl(10, 79%, 65%); 
+  color: hsl(10, 79%, 65%);
   padding: 4px 16px;
   border: none;
   border-radius: 3px;
@@ -330,7 +326,9 @@ input:focus {
   transition: all 0.1s;
 }
 
-#reset:hover, #yes:hover, #no:hover {
+#reset:hover,
+#yes:hover,
+#no:hover {
   scale: 1.05;
   opacity: 0.9;
 }
@@ -346,7 +344,7 @@ input:focus {
 
   #expense-add {
     width: 48%;
-  }  
+  }
 
   #expense {
     width: 180px;
