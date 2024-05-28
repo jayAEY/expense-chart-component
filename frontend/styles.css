@@ -1,0 +1,447 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap");
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100svw;
+  height: 100svh;
+  background-color: hsl(27, 66%, 92%);
+  font-size: 12px;
+  font-family: "DM Sans", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+nav {
+  display: flex;
+  top: 0;
+  position: fixed;
+  width: 100svw;
+  height: 40px;
+  background-color: hsl(10, 79%, 65%);
+}
+
+nav > button {
+  height: 100%;
+  background-color: inherit;
+  color: hsl(33, 31%, 94%);
+  padding: 4px 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+nav > button:hover {
+  color: hsl(25, 47%, 15%);
+  background-color: hsl(33, 31%, 94%);
+}
+
+#register-login-overlay {
+  display: flex;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100svw;
+  height: 100svh;
+  background-color: hsla(25, 47%, 15%, 0.7);
+  z-index: 2;
+}
+
+#register-login-overlay > form {
+  display: flex;
+  display: none;
+  gap: 10px;
+  flex-direction: column;
+  background-color: hsl(33, 100%, 98%);
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+#register-login-overlay > form > label {
+  color: hsl(10, 79%, 65%);
+  margin-bottom: -8 px;
+}
+
+#register-login-overlay > form > h1 {
+  margin-bottom: -30px;
+}
+
+.form-close {
+  position: relative;
+  color: hsl(10, 79%, 65%);
+  top: -10px;
+  left: 150px;
+  z-index: 3;
+  cursor: pointer;
+}
+
+.form-close:hover {
+  color: hsl(25, 47%, 15%);
+}
+
+#register-login-overlay > form > button {
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 31%, 94%);
+  padding: 4px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#register-login-overlay > form > button:hover {
+  scale: 1.05;
+}
+
+#register-login-overlay > form > a {
+  font-weight: bolder;
+  margin-top: -12px;
+  text-decoration: none;
+  color: hsl(10, 79%, 65%);
+  transition: all 0.1s;
+}
+
+#register-login-overlay > form > a:hover {
+  scale: 1.02;
+  color: hsl(25, 47%, 15%);
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 350px;
+  min-width: 310px;
+  transition: all 0.5s;
+}
+
+#balance {
+  font-size: 25px;
+  transition: all 0.5s;
+  width: 190px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  color: hsl(33, 100%, 98%);
+  padding-left: 16px;
+  z-index: 1;
+}
+
+input[type="number"] {
+  appearance: textfield;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input:focus {
+  outline: none;
+}
+
+.dollar-sign {
+  position: relative;
+  margin-bottom: -33px;
+  font-weight: 100;
+}
+
+#balance-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 100%, 98%);
+  height: 110px;
+  border-radius: 12px;
+}
+
+#total-balance {
+  display: flex;
+  justify-content: space-between;
+}
+
+#balance-text {
+  display: flex;
+  flex-direction: column;
+}
+
+#logo {
+  width: 60px;
+}
+
+#add-balance {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+#balance-add {
+  border: none;
+  background-color: hsl(33, 31%, 94%);
+  color: hsl(10, 79%, 65%);
+  padding: 4px;
+  width: 83%;
+  border-radius: 3px;
+}
+
+#balance-submit {
+  background-color: hsl(33, 31%, 94%);
+  color: hsl(28, 10%, 53%);
+  padding: 4px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#balance-submit:hover {
+  scale: 1.05;
+}
+
+#spending-panel {
+  padding: 18px;
+  background-color: hsl(33, 100%, 98%);
+  color: hsl(28, 10%, 53%);
+  height: 380px;
+  border-radius: 12px;
+}
+
+#spending-panel h1 {
+  color: hsl(25, 47%, 15%);
+}
+
+#spending-panel h2 {
+  color: hsl(25, 47%, 15%);
+  font-size: 14px;
+}
+
+#total {
+  display: flex;
+  flex-direction: column;
+}
+
+#chart {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-bottom: 18px;
+  width: 100%;
+  height: 58%;
+  gap: 12px;
+  overflow: hidden;
+}
+
+#labels {
+  display: flex;
+  text-align: center;
+  justify-content: space-around;
+}
+
+.label {
+  width: calc((100% / 7) - 10px);
+}
+
+#bars {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 100%;
+  margin-top: 15px;
+}
+
+.bar {
+  background-color: hsl(10, 79%, 65%);
+  width: calc((100% / 7) - 10px);
+  border-radius: 4px;
+  height: 1px;
+  transition: all 0.3s;
+  transform-origin: bottom;
+}
+
+.bar:hover {
+  opacity: 0.7;
+  scale: 1.05;
+}
+
+#total-section {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  border-top: 3px solid hsl(27, 66%, 92%);
+  align-items: center;
+  justify-content: space-between;
+}
+
+#monthly-total {
+  width: 200px;
+  font-size: 25px;
+  transition: all 0.5s;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  padding-left: 16px;
+  z-index: 1;
+}
+
+#change {
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+}
+
+#tooltip {
+  display: none;
+  position: absolute;
+  width: fit-content;
+  left: 20%;
+  padding: 5px;
+  background-color: hsl(25, 47%, 15%);
+  border-radius: 3px;
+  color: hsl(33, 100%, 98%);
+  text-align: center;
+  font-weight: 700;
+}
+
+#expense-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px;
+  background-color: hsl(33, 100%, 98%);
+  color: hsl(10, 79%, 65%);
+  height: 55px;
+  border-radius: 12px;
+}
+
+#expense-add {
+  border: none;
+  background-color: hsl(33, 31%, 94%);
+  padding: 4px;
+  width: 40%;
+  border-radius: 3px;
+}
+
+#expense-date {
+  background-color: hsl(33, 31%, 94%);
+  border: none;
+  color: hsl(28, 10%, 53%);
+  padding: 4px;
+  border-radius: 3px;
+  cursor: text;
+}
+
+#expense-submit {
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 31%, 94%);
+  padding: 4px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#expense-submit:hover {
+  scale: 1.05;
+}
+
+#reset-panel {
+  display: flex;
+  align-self: center;
+  justify-content: center;
+  padding: 12px;
+  background-color: hsl(33, 100%, 98%);
+  width: 100%;
+  border-radius: 12px;
+}
+
+#reset {
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 31%, 94%);
+  padding: 4px 6px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#warning-overlay {
+  display: none;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.69);
+  z-index: 1;
+}
+
+#warning-message {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  top: 40%;
+  text-align: center;
+  justify-content: center;
+  background-color: hsl(10, 79%, 65%);
+  color: hsl(33, 100%, 98%);
+  font-size: 20pt;
+  font-weight: bolder;
+  line-height: 1.2;
+  padding: 10px;
+  width: 270px;
+  height: 185px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.2);
+}
+
+#warning-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+#yes,
+#no {
+  background-color: hsl(33, 31%, 94%);
+  color: hsl(10, 79%, 65%);
+  padding: 4px 16px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+#reset:hover,
+#yes:hover,
+#no:hover {
+  scale: 1.05;
+  opacity: 0.9;
+}
+
+@media screen and (min-width: 500px) {
+  main {
+    width: 400px;
+  }
+
+  #balance-add {
+    width: 85%;
+  }
+
+  #expense-add {
+    width: 48%;
+  }
+
+  #expense {
+    width: 180px;
+  }
+}
