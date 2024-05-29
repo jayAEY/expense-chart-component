@@ -6,6 +6,7 @@
 // - ensure all displayed data matches localStorage ✔
 // - spending increase month to month ✔
 // - check reset button ✔
+// import axios from "axios";
 
 let bars = document.querySelectorAll(".bar");
 let labels = document.querySelectorAll(".label");
@@ -25,13 +26,65 @@ let expenseAdd = document.querySelector("#expense-add");
 let expenseDate = document.querySelector("#expense-date");
 let expenseButton = document.querySelector("#expense-submit");
 
-let login = document.querySelector("#login");
-let register = document.querySelector("#register");
+let loginButton = document.querySelector("#login-button");
+let registerButton = document.querySelector("#register-button");
+
+let loginForm = document.querySelector("#login-form");
+let registerForm = document.querySelector("#register-form");
 let registerLoginOverlay = document.querySelector("#register-login-overlay");
+let closeButtons = document.querySelectorAll(".form-close");
 
-// #register-login-overlay {
+let loginEmail = loginForm[0];
+let loginPassword = loginForm[1];
+let registerEmail = registerForm[0];
+let registerPassword = registerForm[1];
+let loginSubmit = document.querySelector("#login-submit");
+let registerSubmit = document.querySelector("#register-submit");
 
-// id="register"
+let { email, password } = "";
+
+function openLoginAndRegister(elem) {
+  registerLoginOverlay.style.display = "flex";
+  elem.innerText == "Login"
+    ? (loginForm.style.display = "flex")
+    : (registerForm.style.display = "flex");
+}
+
+function closeLoginAndRegister() {
+  registerLoginOverlay.style.display = "none";
+  loginForm.style.display = "none";
+  registerForm.style.display = "none";
+}
+
+function loginAndRegister(e, email, password) {
+  e.preventDefault();
+  let action = e.target.id.split("-")[0];
+  // console.log(action, email, password);
+  axios.get("/", (req, res) => {
+    // return res;
+  });
+
+  if (action === "login") {
+    console.log("login");
+  }
+  if (action === "register") {
+    console.log("register");
+  }
+}
+
+loginButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
+registerButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
+// registerLoginOverlay.addEventListener("click", closeLoginAndRegister);
+closeButtons.forEach((elem) =>
+  elem.addEventListener("click", closeLoginAndRegister)
+);
+
+loginForm.addEventListener("submit", (e) =>
+  loginAndRegister(e, loginEmail.value, loginPassword.value)
+);
+registerForm.addEventListener("submit", (e) =>
+  loginAndRegister(e, registerEmail.value, registerPassword.value)
+);
 
 function getBarData() {
   // handle month totals and month to month change

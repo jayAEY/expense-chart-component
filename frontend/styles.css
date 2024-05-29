@@ -43,7 +43,7 @@ nav > button:hover {
 }
 
 #register-login-overlay {
-  display: flex;
+  /* display: flex; */
   display: none;
   justify-content: center;
   align-items: center;
@@ -107,6 +107,7 @@ nav > button:hover {
   text-decoration: none;
   color: hsl(10, 79%, 65%);
   transition: all 0.1s;
+  cursor: pointer;
 }
 
 #register-login-overlay > form > a:hover {

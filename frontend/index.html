@@ -18,57 +18,77 @@
       href="./styles.css"
     />
     <title>Frontend Mentor | Expenses chart component</title>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js"
+      integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
 
   <body>
     <nav id="navbar">
-      <button>Login</button>
-      <button>Register</button>
+      <button id="login-button">Login</button>
+      <button id="register-button">Register</button>
     </nav>
     <div id="register-login-overlay">
       <form
-        id="register"
-        onsubmit=""
+        id="register-form"
+        action=""
       >
         <h1>Sign up</h1>
         <h2 class="form-close">x</h2>
         <label for="email"><h3>Email</h3></label>
         <input
-          name="text"
+          id="register-email"
+          name="email"
           placeholder="email"
           required
         />
         <label for="password"><h3>Password</h3></label>
         <input
-          name="text"
+          id="register-password"
+          name="password"
           placeholder="password"
           required
         />
-        <button type="submit">Create Account</button>
-        <p>Already have an account?</p>
-        <a href="">Login</a>
+        <button
+          type="submit"
+          id="register-submit"
+        >
+          Create Account
+        </button>
+        <!-- <p>Already have an account?</p> -->
+        <!-- <a>Login</a> -->
       </form>
       <form
-        id="login"
-        onsubmit=""
+        id="login-form"
+        action=""
       >
         <h1>Login</h1>
         <h2 class="form-close">x</h2>
         <label for="email"><h3>Email</h3></label>
         <input
-          name="text"
+          id="login-email"
+          name="email"
           placeholder="email"
           required
         />
         <label for="password"><h3>Password</h3></label>
         <input
-          name="text"
+          id="login-password"
+          name="password"
           placeholder="password"
           required
         />
-        <button type="submit">Login</button>
-        <p>Don't have an account?</p>
-        <a href="">Create Account</a>
+        <button
+          type="submit"
+          id="login-submit"
+        >
+          Login
+        </button>
+        <!-- <p>Don't have an account?</p> -->
+        <!-- <a>Create Account</a> -->
       </form>
     </div>
     <main>
@@ -208,6 +228,9 @@
         </button>
       </div>
     </main>
-    <script src="script.js"></script>
+    <script
+      src="script.js"
+      type="module"
+    ></script>
   </body>
 </html>
