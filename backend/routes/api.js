@@ -144,14 +144,14 @@ router.post("/api/login", async (req, res) => {
 //   return res.json({ login: true, email: req.email, avatar: req.avatar });
 // });
 
-// router.get("/api/logout", (req, res) => {
-//   res.clearCookie("token", {
-//     httpOnly: true,
-//     secure: true,
-//     sameSite: "none",
-//     partitioned: true,
-//   });
-//   return res.send("You are now logged out");
-// });
+router.get("/api/logout", (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    partitioned: true,
+  });
+  return res.send("You are now logged out");
+});
 
 module.exports = router;

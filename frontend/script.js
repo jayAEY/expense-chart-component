@@ -102,8 +102,24 @@ function loginAndRegister(e, email, password) {
   }
 }
 
+function logout() {
+  axios
+    .get(`${baseURL}/api/logout`)
+    .then((res) => {
+      (loginButton.style.display = "block"),
+        (registerButton.style.display = "block"),
+        (logoutButton.style.display = "none"),
+        alert(res.data),
+        closeLoginAndRegister();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
 loginButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
 registerButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
+logoutButton.addEventListener("click", logout);
 // registerLoginOverlay.addEventListener("click", closeLoginAndRegister);
 closeButtons.forEach((elem) =>
   elem.addEventListener("click", closeLoginAndRegister)
