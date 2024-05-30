@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const router = express.Router();
-const UserModel = require("../models/Users.js");
+const UsersModel = require("../models/Users.js");
 // const nodemailer = require("nodemailer");
 
 dotenv.config();
@@ -30,25 +30,25 @@ router.get("/", (req, res) => {
   res.json("connected");
 });
 
-router.get("/api/test", (req, res) => {
-  res.json(new Date());
+router.post("/api/test", (req, res) => {
+  const { loginEmail, loginPassword } = req.body;
+  res.json({ loginEmail, loginPassword });
 });
 
 router.post("/api/register", async (req, res) => {
-  const { email, password, avatar } = req.body;
+  const { registerEmail, registerPassword } = req.body;
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UsersModel.findOne({ email: registerEmail });
     if (user) {
       return res.send("User Already exists!");
     } else {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = new UserModel({
-        email,
+      const hashedPassword = await bcrypt.hash(registerPassword, 10);
+      const newUser = new UsersModel({
+        email: registerEmail,
         password: hashedPassword,
-        avatar,
       });
       await newUser.save();
-      res.send(`${email} is now registered!`);
+      res.send(`${registerEmail} is now registered!`);
     }
   } catch (err) {
     console.log(err);
@@ -57,18 +57,18 @@ router.post("/api/register", async (req, res) => {
 });
 
 router.post("/api/login", async (req, res) => {
-  const { email, password } = req.body;
+  const { loginEmail, loginPassword } = req.body;
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UsersModel.findOne({ email: loginEmail });
     if (!user) {
       return res.send("No user exists");
     } else {
-      const validatedPassword = await bcrypt.compare(password, user.password);
+      const validatedPassword = await bcrypt.compare(
+        loginPassword,
+        user.password
+      );
       if (validatedPassword) {
-        const token = jwt.sign(
-          { email, avatar: user.avatar },
-          process.env.JWT_KEY
-        );
+        const token = jwt.sign({ email: loginEmail }, process.env.JWT_KEY);
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
@@ -89,7 +89,7 @@ router.post("/api/login", async (req, res) => {
 // router.post("/api/forgot-password", async (req, res) => {
 //   const { email } = req.body;
 //   try {
-//     const user = await UserModel.findOne({ email });
+//     const user = await UsersModel.findOne({ email });
 //     if (!user) {
 //       return res.send("No user exists");
 //     } else {
@@ -129,7 +129,7 @@ router.post("/api/login", async (req, res) => {
 //   try {
 //     jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
 //       const hashedPassword = await bcrypt.hash(password, 10);
-//       await UserModel.findByIdAndUpdate(
+//       await UsersModel.findByIdAndUpdate(
 //         { _id: id },
 //         { password: hashedPassword }
 //       );
@@ -140,18 +140,18 @@ router.post("/api/login", async (req, res) => {
 //   }
 // });
 
-router.get("/api/verify", verifyUser, (req, res) => {
-  return res.json({ login: true, email: req.email, avatar: req.avatar });
-});
+// router.get("/api/verify", verifyUser, (req, res) => {
+//   return res.json({ login: true, email: req.email, avatar: req.avatar });
+// });
 
-router.get("/api/logout", (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    partitioned: true,
-  });
-  return res.send("You are now logged out");
-});
+// router.get("/api/logout", (req, res) => {
+//   res.clearCookie("token", {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: "none",
+//     partitioned: true,
+//   });
+//   return res.send("You are now logged out");
+// });
 
 module.exports = router;

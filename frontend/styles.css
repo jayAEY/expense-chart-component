@@ -42,6 +42,10 @@ nav > button:hover {
   background-color: hsl(33, 31%, 94%);
 }
 
+#logout-button {
+  display: none;
+}
+
 #register-login-overlay {
   /* display: flex; */
   display: none;

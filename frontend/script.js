@@ -28,20 +28,24 @@ let expenseButton = document.querySelector("#expense-submit");
 
 let loginButton = document.querySelector("#login-button");
 let registerButton = document.querySelector("#register-button");
+let logoutButton = document.querySelector("#logout-button");
 
 let loginForm = document.querySelector("#login-form");
 let registerForm = document.querySelector("#register-form");
 let registerLoginOverlay = document.querySelector("#register-login-overlay");
 let closeButtons = document.querySelectorAll(".form-close");
 
-let loginEmail = loginForm[0];
-let loginPassword = loginForm[1];
-let registerEmail = registerForm[0];
-let registerPassword = registerForm[1];
+let loginEmail = loginForm[0].value;
+let loginPassword = loginForm[1].value;
+let registerEmail = registerForm[0].value;
+let registerPassword = registerForm[1].value;
 let loginSubmit = document.querySelector("#login-submit");
 let registerSubmit = document.querySelector("#register-submit");
 
 let { email, password } = "";
+const baseURL = "http://localhost:3000";
+
+axios.defaults.withCredentials = true;
 
 function openLoginAndRegister(elem) {
   registerLoginOverlay.style.display = "flex";
@@ -59,16 +63,42 @@ function closeLoginAndRegister() {
 function loginAndRegister(e, email, password) {
   e.preventDefault();
   let action = e.target.id.split("-")[0];
-  // console.log(action, email, password);
-  axios.get("/", (req, res) => {
-    // return res;
-  });
 
   if (action === "login") {
-    console.log("login");
+    loginEmail = loginForm[0].value;
+    loginPassword = loginForm[1].value;
+    registerEmail = registerForm[0].value;
+    registerPassword = registerForm[1].value;
+    axios
+      .post(`${baseURL}/api/login`, { loginEmail, loginPassword })
+      .then((res) =>
+        res.data === "You are now logged in"
+          ? ((loginButton.style.display = "none"),
+            (registerButton.style.display = "none"),
+            (logoutButton.style.display = "block"),
+            alert(res.data),
+            closeLoginAndRegister())
+          : alert(res.data)
+      )
+      .catch((err) => {
+        console.log(err);
+        alert(`Error: ${err}`);
+      });
   }
   if (action === "register") {
-    console.log("register");
+    registerEmail = registerForm[0].value;
+    registerPassword = registerForm[1].value;
+    axios
+      .post(`${baseURL}/api/register`, { registerEmail, registerPassword })
+      .then((res) =>
+        res.data === `${registerEmail} is now registered!`
+          ? (alert(res.data), closeLoginAndRegister())
+          : alert(res.data)
+      )
+      .catch((err) => {
+        console.log(err);
+        alert(`Error: ${err}`);
+      });
   }
 }
 
