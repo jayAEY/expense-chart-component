@@ -25,9 +25,10 @@ nav {
   width: 100svw;
   height: 40px;
   background-color: hsl(10, 79%, 65%);
+  justify-content: space-between;
 }
 
-nav > button {
+nav > div > button {
   height: 100%;
   background-color: inherit;
   color: hsl(33, 31%, 94%);
@@ -37,13 +38,20 @@ nav > button {
   transition: all 0.1s;
 }
 
-nav > button:hover {
+nav > div > button:hover {
   color: hsl(25, 47%, 15%);
   background-color: hsl(33, 31%, 94%);
 }
 
 #logout-button {
   display: none;
+}
+
+#user-display {
+  display: none;
+  color: hsl(33, 31%, 94%);
+  padding: 4px 10px;
+  align-content: center;
 }
 
 #register-login-overlay {

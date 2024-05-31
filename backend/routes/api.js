@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const router = express.Router();
 const UsersModel = require("../models/Users.js");
-// const nodemailer = require("nodemailer");
 
 dotenv.config();
 
@@ -19,7 +18,7 @@ const verifyUser = (req, res, next) => {
         return res.json({ message: "Invalid Token" });
       } else {
         req.email = decoded.email;
-        req.avatar = decoded.avatar;
+        // req.avatar = decoded.avatar;
         next();
       }
     });
@@ -68,14 +67,17 @@ router.post("/api/login", async (req, res) => {
         user.password
       );
       if (validatedPassword) {
-        const token = jwt.sign({ email: loginEmail }, process.env.JWT_KEY);
+        const token = jwt.sign(
+          { email: loginEmail, data: user.data },
+          process.env.JWT_KEY
+        );
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
           sameSite: "none",
           partitioned: true,
         });
-        return res.send("You are now logged in");
+        return res.send(["You are now logged in", user.data]);
       } else {
         return res.send("Wrong Password");
       }
@@ -86,63 +88,25 @@ router.post("/api/login", async (req, res) => {
   }
 });
 
-// router.post("/api/forgot-password", async (req, res) => {
-//   const { email } = req.body;
-//   try {
-//     const user = await UsersModel.findOne({ email });
-//     if (!user) {
-//       return res.send("No user exists");
-//     } else {
-//       const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-//         expiresIn: "1d",
-//       });
+router.post("/api/save", async (req, res) => {
+  const { currentEmail, data } = req.body;
+  try {
+    await UsersModel.findOneAndUpdate({ email: currentEmail }, { data });
+    res.send("mongoose updated");
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+});
 
-//       let transporter = nodemailer.createTransport({
-//         service: "gmail",
-//         auth: { user: "joapuya@gmail.com", pass: process.env.APP_PASSWORD },
-//       });
+router.get("/api/verify", verifyUser, (req, res) => {
+  return res.send({
+    login: true,
+    email: req.email,
 
-//       let mailOptions = {
-//         from: "PasswordAdmin",
-//         to: email,
-//         subject: "Password Reset",
-//         text: `${process.env.FRONTEND_URL}/${user._id}/${token}`,
-//       };
-
-//       transporter.sendMail(mailOptions, (err, info) => {
-//         try {
-//           return res.send("Email sent");
-//         } catch (err) {
-//           console.log(err);
-//         }
-//       });
-//     }
-//   } catch (err) {
-//     console.log(err);
-//     res.send(err);
-//   }
-// });
-
-// router.post("/api/reset-password/:id/:token", (req, res) => {
-//   const { id, token } = req.params;
-//   const { password } = req.body;
-//   try {
-//     jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
-//       const hashedPassword = await bcrypt.hash(password, 10);
-//       await UsersModel.findByIdAndUpdate(
-//         { _id: id },
-//         { password: hashedPassword }
-//       );
-//       return res.send("Success");
-//     });
-//   } catch (err) {
-//     return res.send(err);
-//   }
-// });
-
-// router.get("/api/verify", verifyUser, (req, res) => {
-//   return res.json({ login: true, email: req.email, avatar: req.avatar });
-// });
+    // avatar: req.avatar
+  });
+});
 
 router.get("/api/logout", (req, res) => {
   res.clearCookie("token", {

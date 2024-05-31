@@ -29,6 +29,7 @@ let expenseButton = document.querySelector("#expense-submit");
 let loginButton = document.querySelector("#login-button");
 let registerButton = document.querySelector("#register-button");
 let logoutButton = document.querySelector("#logout-button");
+let userDisplay = document.querySelector("#user-display");
 
 let loginForm = document.querySelector("#login-form");
 let registerForm = document.querySelector("#register-form");
@@ -46,6 +47,25 @@ let { email, password } = "";
 const baseURL = "http://localhost:3000";
 
 axios.defaults.withCredentials = true;
+
+//authentication
+window.onload = verify();
+
+function verify() {
+  axios
+    .get(`${baseURL}/api/verify`)
+    .then((res) => {
+      res.data.login === true &&
+        ((loginButton.style.display = "none"),
+        (registerButton.style.display = "none"),
+        (logoutButton.style.display = "inline-block"),
+        (userDisplay.style.display = "inline-block"),
+        (userDisplay.innerText = `Welcome ${res.data.email}!`));
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
 
 function openLoginAndRegister(elem) {
   registerLoginOverlay.style.display = "flex";
@@ -75,7 +95,9 @@ function loginAndRegister(e, email, password) {
         res.data === "You are now logged in"
           ? ((loginButton.style.display = "none"),
             (registerButton.style.display = "none"),
-            (logoutButton.style.display = "block"),
+            (logoutButton.style.display = "inline-block"),
+            (userDisplay.style.display = "inline-block"),
+            (userDisplay.innerText = `Welcome ${loginEmail}!`),
             alert(res.data),
             closeLoginAndRegister())
           : alert(res.data)
@@ -85,6 +107,7 @@ function loginAndRegister(e, email, password) {
         alert(`Error: ${err}`);
       });
   }
+
   if (action === "register") {
     registerEmail = registerForm[0].value;
     registerPassword = registerForm[1].value;
@@ -106,9 +129,11 @@ function logout() {
   axios
     .get(`${baseURL}/api/logout`)
     .then((res) => {
-      (loginButton.style.display = "block"),
-        (registerButton.style.display = "block"),
+      (loginButton.style.display = "inline-block"),
+        (registerButton.style.display = "inline-block"),
         (logoutButton.style.display = "none"),
+        (userDisplay.style.display = "none"),
+        (userDisplay.innerText = ""),
         alert(res.data),
         closeLoginAndRegister();
     })
@@ -120,7 +145,6 @@ function logout() {
 loginButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
 registerButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
 logoutButton.addEventListener("click", logout);
-// registerLoginOverlay.addEventListener("click", closeLoginAndRegister);
 closeButtons.forEach((elem) =>
   elem.addEventListener("click", closeLoginAndRegister)
 );
@@ -132,6 +156,7 @@ registerForm.addEventListener("submit", (e) =>
   loginAndRegister(e, registerEmail.value, registerPassword.value)
 );
 
+// data handling
 function getBarData() {
   // handle month totals and month to month change
   let thisMonth = new Date().getMonth();

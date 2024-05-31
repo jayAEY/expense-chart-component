@@ -15,7 +15,7 @@
     />
     <link
       rel="stylesheet"
-      href="./styles.css"
+      href="./styles/styles.css"
     />
     <title>Frontend Mentor | Expenses chart component</title>
     <script
@@ -28,9 +28,12 @@
 
   <body>
     <nav id="navbar">
-      <button id="login-button">Login</button>
-      <button id="register-button">Register</button>
-      <button id="logout-button">Logout</button>
+      <h2 id="user-display"></h2>
+      <div>
+        <button id="login-button">Login</button>
+        <button id="register-button">Register</button>
+        <button id="logout-button">Logout</button>
+      </div>
     </nav>
     <div id="register-login-overlay">
       <form
@@ -122,6 +125,7 @@
             placeholder="Add to balance"
             step="0.01"
             max="99999999999999"
+            autocomplete="off"
             required
           />
           <input
@@ -200,12 +204,14 @@
           min="0.00"
           max="9999999999"
           step="0.01"
+          autocomplete="off"
           required
         />
         <input
           id="expense-date"
           value="currentDay"
           type="date"
+          autocomplete="off"
           required
         />
         <input
@@ -227,16 +233,11 @@
       </div>
 
       <div id="reset-panel">
-        <button
-          id="reset"
-          onclick="reset()"
-        >
-          Reset all
-        </button>
+        <button id="reset">Reset all</button>
       </div>
     </main>
     <script
-      src="script.js"
+      src="./scripts/script.js"
       type="module"
     ></script>
   </body>
