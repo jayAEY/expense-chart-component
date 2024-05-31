@@ -1,13 +1,12 @@
 //CHECK ALL FEATURES
-// - adding to balance
-// - adding expenses
-// - subtracting expenses from balance
+// - adding to balance ✔
+// - adding expenses ✔
+// - subtracting expenses from balance ✔
 // - displaying last week data properly (check for timezone offset?) ✔
 // - ensure all displayed data matches localStorage ✔
-// - spending increase month to month
-// - check reset button
+// - spending increase month to month ✔
+// - check reset button ✔
 // - authentication ✔
-// import axios from "axios";
 
 let loginButton = document.querySelector("#login-button");
 let registerButton = document.querySelector("#register-button");
@@ -50,20 +49,24 @@ const baseURL = "http://localhost:3000";
 
 axios.defaults.withCredentials = true;
 
-//authentication
+//authentication and db handling
 window.onload = verify();
 
 function verify() {
   axios
     .get(`${baseURL}/api/verify`)
     .then((res) => {
-      res.data.login === true &&
-        ((loginButton.style.display = "none"),
-        (registerButton.style.display = "none"),
-        (logoutButton.style.display = "inline-block"),
-        (userDisplay.style.display = "inline-block"),
-        (currentEmail = res.data.email),
-        (userDisplay.innerText = `Welcome ${currentEmail}!`));
+      res.data.login === true
+        ? (res.data.data &&
+            (localStorage.setItem("balance", res.data.data.balance),
+            localStorage.setItem("expenseData", res.data.data.expenseData)),
+          (loginButton.style.display = "none"),
+          (registerButton.style.display = "none"),
+          (logoutButton.style.display = "inline-block"),
+          (userDisplay.style.display = "inline-block"),
+          (currentEmail = res.data.email),
+          (userDisplay.innerText = `Welcome ${currentEmail}!`))
+        : (currentEmail = "");
     })
     .catch((err) => {
       console.log(err);
@@ -71,15 +74,10 @@ function verify() {
 }
 
 function saveDataToDB() {
-  // let data = { balance: "0", expenseData: "" };
   let data = {
     balance: localStorage.getItem("balance"),
     expenseData: localStorage.getItem("expenseData"),
   };
-  // localStorage.getItem("balance") &&
-  //   (data[balance] = localStorage.getItem("balance"));
-  // localStorage.getItem("expenseData") &&
-  //   (data[expenseData] = localStorage.getItem("balance"));
   axios
     .post(`${baseURL}/api/save`, { currentEmail, data })
     .then((res) => console.log(res.data))
@@ -156,13 +154,13 @@ function logout() {
   axios
     .get(`${baseURL}/api/logout`)
     .then((res) => {
+      saveDataToDB();
       loginButton.style.display = "inline-block";
       registerButton.style.display = "inline-block";
       logoutButton.style.display = "none";
       userDisplay.style.display = "none";
       userDisplay.innerText = "";
       currentEmail = "";
-      // saveDataToDB();
       alert(res.data);
       closeLoginAndRegister();
       localStorage.removeItem("balance");
@@ -418,10 +416,13 @@ function reset() {
   warning.style.display = "flex";
 
   // handles clicking on yes and no buttons
-  yes.addEventListener("click", () => {
-    localStorage.clear();
+  yes.addEventListener("click", async () => {
+    localStorage.setItem("balance", "0.00");
+    localStorage.setItem("expenseData", "[]");
     saveDataToDB();
-    location.reload();
+    warningOverlay.style.display = "none";
+    warning.style.display = "none";
+    setTimeout(() => location.reload(), 1000);
   });
   no.addEventListener("click", () => {
     warningOverlay.style.display = "none";

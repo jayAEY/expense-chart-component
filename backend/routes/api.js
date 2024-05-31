@@ -18,7 +18,6 @@ const verifyUser = (req, res, next) => {
         return res.json({ message: "Invalid Token" });
       } else {
         req.email = decoded.email;
-        // req.avatar = decoded.avatar;
         next();
       }
     });
@@ -67,10 +66,7 @@ router.post("/api/login", async (req, res) => {
         user.password
       );
       if (validatedPassword) {
-        const token = jwt.sign(
-          { email: loginEmail, data: user.data },
-          process.env.JWT_KEY
-        );
+        const token = jwt.sign({ email: loginEmail }, process.env.JWT_KEY);
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
@@ -99,12 +95,12 @@ router.post("/api/save", async (req, res) => {
   }
 });
 
-router.get("/api/verify", verifyUser, (req, res) => {
+router.get("/api/verify", verifyUser, async (req, res) => {
+  let user = UsersModel.findOne({ email: req.email });
   return res.send({
     login: true,
     email: req.email,
-
-    // avatar: req.avatar
+    data: req.data,
   });
 });
 
