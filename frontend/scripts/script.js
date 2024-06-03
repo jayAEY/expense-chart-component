@@ -60,11 +60,11 @@ function verify() {
       res.data.login === true
         ? ((currentEmail = res.data.email),
           (userDisplay.innerText = `Welcome ${currentEmail}!`),
+          (registerLoginOverlay.style.display = "none"),
+          (userDisplay.style.display = "inline-block"),
           res.data.data &&
             (localStorage.setItem("balance", res.data.data.balance),
-            localStorage.setItem("expenseData", res.data.data.expenseData),
-            (userDisplay.style.display = "inline-block"),
-            (registerLoginOverlay.style.display = "none")))
+            localStorage.setItem("expenseData", res.data.data.expenseData)))
         : (registerLoginOverlay.style.display = "flex");
     })
     .catch((err) => {
@@ -140,7 +140,10 @@ function loginAndRegister(e, email, password) {
       .post(`${baseURL}/api/register`, { registerEmail, registerPassword })
       .then((res) =>
         res.data === `${registerEmail} is now registered!`
-          ? (alert(res.data), closeLoginAndRegister())
+          ? ((localStorage.setItem("balance", "0"),
+            localStorage.setItem("expenseData", "[]")),
+            alert(res.data),
+            closeLoginAndRegister())
           : alert(res.data)
       )
       .catch((err) => {
