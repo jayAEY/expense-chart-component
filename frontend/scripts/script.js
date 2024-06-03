@@ -7,7 +7,7 @@
 // - spending increase month to month ✔
 // - check reset button ✔
 // - authentication ✔
-
+let home = document.querySelector("#home");
 let loginButton = document.querySelector("#login-button");
 let registerButton = document.querySelector("#register-button");
 let logoutButton = document.querySelector("#logout-button");
@@ -18,10 +18,11 @@ let registerForm = document.querySelector("#register-form");
 let registerLoginOverlay = document.querySelector("#register-login-overlay");
 let closeButtons = document.querySelectorAll(".form-close");
 
-let loginEmail = loginForm[0].value;
-let loginPassword = loginForm[1].value;
-let registerEmail = registerForm[0].value;
-let registerPassword = registerForm[1].value;
+let loginEmail = document.querySelector("#login-email").value;
+let loginPassword = document.querySelector("#login-password").value;
+let registerEmail = document.querySelector("#register-email").value;
+let registerPassword = document.querySelector("#register-password").value;
+
 let loginSubmit = document.querySelector("#login-submit");
 let registerSubmit = document.querySelector("#register-submit");
 
@@ -57,16 +58,14 @@ function verify() {
     .get(`${baseURL}/api/verify`)
     .then((res) => {
       res.data.login === true
-        ? (res.data.data &&
+        ? ((currentEmail = res.data.email),
+          (userDisplay.innerText = `Welcome ${currentEmail}!`),
+          res.data.data &&
             (localStorage.setItem("balance", res.data.data.balance),
-            localStorage.setItem("expenseData", res.data.data.expenseData)),
-          (loginButton.style.display = "none"),
-          (registerButton.style.display = "none"),
-          (logoutButton.style.display = "inline-block"),
-          (userDisplay.style.display = "inline-block"),
-          (currentEmail = res.data.email),
-          (userDisplay.innerText = `Welcome ${currentEmail}!`))
-        : (currentEmail = "");
+            localStorage.setItem("expenseData", res.data.data.expenseData),
+            (userDisplay.style.display = "inline-block"),
+            (registerLoginOverlay.style.display = "none")))
+        : (registerLoginOverlay.style.display = "flex");
     })
     .catch((err) => {
       console.log(err);
@@ -88,6 +87,7 @@ function saveDataToDB() {
 }
 
 function openLoginAndRegister(elem) {
+  home.style.display = "none";
   registerLoginOverlay.style.display = "flex";
   elem.innerText == "Login"
     ? (loginForm.style.display = "flex")
@@ -95,7 +95,7 @@ function openLoginAndRegister(elem) {
 }
 
 function closeLoginAndRegister() {
-  registerLoginOverlay.style.display = "none";
+  home.style.display = "flex";
   loginForm.style.display = "none";
   registerForm.style.display = "none";
 }
@@ -103,30 +103,30 @@ function closeLoginAndRegister() {
 function loginAndRegister(e, email, password) {
   e.preventDefault();
   let action = e.target.id.split("-")[0];
+  console.log(loginEmail, loginPassword, registerEmail, registerPassword);
 
   if (action === "login") {
-    loginEmail = loginForm[0].value;
-    loginPassword = loginForm[1].value;
-    registerEmail = registerForm[0].value;
-    registerPassword = registerForm[1].value;
+    loginEmail = document.querySelector("#login-email").value;
+    loginPassword = document.querySelector("#login-password").value;
     axios
       .post(`${baseURL}/api/login`, { loginEmail, loginPassword })
-      .then((res) =>
+      .then((res) => {
         res.data[0] === "You are now logged in"
-          ? ((loginButton.style.display = "none"),
-            (registerButton.style.display = "none"),
-            (logoutButton.style.display = "inline-block"),
+          ? ((logoutButton.style.display = "inline-block"),
             (userDisplay.style.display = "inline-block"),
             (currentEmail = loginEmail),
             (userDisplay.innerText = `Welcome ${currentEmail}!`),
+            (registerLoginOverlay.style.display = "none"),
             res.data[1] &&
               (localStorage.setItem("balance", res.data[1].balance),
               localStorage.setItem("expenseData", res.data[1].expenseData)),
             alert(res.data[0]),
             closeLoginAndRegister(),
             location.reload())
-          : alert(res.data)
-      )
+          : ((currentEmail = ""),
+            (registerLoginOverlay.style.display = "flex"));
+        alert(res.data);
+      })
       .catch((err) => {
         console.log(err);
         alert(`Error: ${err}`);
@@ -134,8 +134,8 @@ function loginAndRegister(e, email, password) {
   }
 
   if (action === "register") {
-    registerEmail = registerForm[0].value;
-    registerPassword = registerForm[1].value;
+    registerEmail = document.querySelector("#register-email").value;
+    registerPassword = document.querySelector("#register-password").value;
     axios
       .post(`${baseURL}/api/register`, { registerEmail, registerPassword })
       .then((res) =>
