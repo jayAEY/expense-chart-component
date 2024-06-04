@@ -76,8 +76,8 @@
         >
           Create Account
         </button>
-        <!-- <p>Already have an account?</p> -->
-        <!-- <a>Login</a> -->
+        <p>Already have an account?</p>
+        <a id="login-link">Login</a>
       </form>
       <form
         id="login-form"
@@ -108,8 +108,36 @@
         >
           Login
         </button>
-        <!-- <p>Don't have an account?</p> -->
-        <!-- <a>Create Account</a> -->
+        <p>Don't have an account?</p>
+        <a id="register-link">Create Account</a>
+        <p>Forgot your password?</p>
+        <a id="reset-link">Reset your password</a>
+      </form>
+      <form
+        id="reset-form"
+        action=""
+      >
+        <h1>Forgot<br />Password?</h1>
+        <h2 class="form-close">x</h2>
+        <p>
+          Enter your email to receive <br />
+          a password reset link
+        </p>
+        <label for="email"><h3>Email</h3></label>
+        <input
+          type="email"
+          id="reset-email"
+          name="email"
+          placeholder="email"
+          autocomplete="off"
+          required
+        />
+        <button
+          type="submit"
+          id="reset-submit"
+        >
+          Send Email
+        </button>
       </form>
     </div>
     <main>

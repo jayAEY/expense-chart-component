@@ -8,13 +8,18 @@
 // - check reset button ✔
 // - authentication ✔
 let home = document.querySelector("#home");
+let userDisplay = document.querySelector("#user-display");
+
 let loginButton = document.querySelector("#login-button");
 let registerButton = document.querySelector("#register-button");
+let loginLink = document.querySelector("#login-link");
+let registerLink = document.querySelector("#register-link");
+let resetLink = document.querySelector("#reset-link");
 let logoutButton = document.querySelector("#logout-button");
-let userDisplay = document.querySelector("#user-display");
 
 let loginForm = document.querySelector("#login-form");
 let registerForm = document.querySelector("#register-form");
+let resetForm = document.querySelector("#reset-form");
 let registerLoginOverlay = document.querySelector("#register-login-overlay");
 let closeButtons = document.querySelectorAll(".form-close");
 
@@ -98,6 +103,15 @@ function closeLoginAndRegister() {
   home.style.display = "flex";
   loginForm.style.display = "none";
   registerForm.style.display = "none";
+  resetForm.style.display = "none";
+}
+
+function openReset() {
+  home.style.display = "none";
+  registerLoginOverlay.style.display = "flex";
+  resetForm.style.display = "flex";
+  loginForm.style.display = "none";
+  registerForm.style.display = "none";
 }
 
 function loginAndRegister(e, email, password) {
@@ -177,6 +191,18 @@ function logout() {
 
 loginButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
 registerButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
+loginLink.addEventListener("click", (e) => {
+  closeLoginAndRegister();
+  openLoginAndRegister(e.target);
+});
+registerLink.addEventListener("click", (e) => {
+  closeLoginAndRegister();
+  openLoginAndRegister(e.target);
+});
+resetLink.addEventListener("click", (e) => {
+  openReset();
+});
+
 logoutButton.addEventListener("click", logout);
 closeButtons.forEach((elem) =>
   elem.addEventListener("click", closeLoginAndRegister)
@@ -185,6 +211,9 @@ loginForm.addEventListener("submit", (e) =>
   loginAndRegister(e, loginEmail.value, loginPassword.value)
 );
 registerForm.addEventListener("submit", (e) =>
+  loginAndRegister(e, registerEmail.value, registerPassword.value)
+);
+resetForm.addEventListener("submit", (e) =>
   loginAndRegister(e, registerEmail.value, registerPassword.value)
 );
 

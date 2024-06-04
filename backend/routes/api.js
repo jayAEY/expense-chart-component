@@ -1,9 +1,9 @@
 const express = require("express");
-const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const router = express.Router();
+const nodemailer = require("nodemailer");
 const UsersModel = require("../models/Users.js");
 
 dotenv.config();
@@ -112,6 +112,60 @@ router.get("/api/logout", (req, res) => {
     partitioned: true,
   });
   return res.send("You are now logged out");
+});
+
+router.post("/api/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res.send("No user exists");
+    } else {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
+        expiresIn: "1d",
+      });
+
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: { user: "joapuya@gmail.com", pass: process.env.APP_PASSWORD },
+      });
+
+      let mailOptions = {
+        from: "PasswordAdmin",
+        to: email,
+        subject: "Password Reset",
+        text: `${process.env.FRONTEND_URL}/${user._id}/${token}`,
+      };
+
+      transporter.sendMail(mailOptions, (err, info) => {
+        try {
+          return res.send("Email sent");
+        } catch (err) {
+          console.log(err);
+        }
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+});
+
+router.post("/api/reset-password/:id/:token", (req, res) => {
+  const { id, token } = req.params;
+  const { password } = req.body;
+  try {
+    jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      await UserModel.findByIdAndUpdate(
+        { _id: id },
+        { password: hashedPassword }
+      );
+      return res.send("Success");
+    });
+  } catch (err) {
+    return res.send(err);
+  }
 });
 
 module.exports = router;
