@@ -96,7 +96,6 @@ router.post("/api/save", async (req, res) => {
 });
 
 router.get("/api/verify", verifyUser, async (req, res) => {
-  // res.header("Access-Control-Allow-Origin", "*");
   let user = UsersModel.findOne({ email: req.email });
   return res.send({
     login: true,
@@ -118,26 +117,23 @@ router.get("/api/logout", (req, res) => {
 router.post("/api/forgot-password", async (req, res) => {
   const { email } = req.body;
   try {
-    const user = await UserModel.findOne({ email });
+    const user = await UsersModel.findOne({ email });
     if (!user) {
       return res.send("No user exists");
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-        expiresIn: "1d",
+        expiresIn: "180s",
       });
-
       let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: { user: "joapuya@gmail.com", pass: process.env.APP_PASSWORD },
       });
-
       let mailOptions = {
         from: "PasswordAdmin",
         to: email,
         subject: "Password Reset",
-        text: `${process.env.FRONTEND_URL}/${user._id}/${token}`,
+        text: `Copy and paste this link onto the reset password page (expires in 3 minutes) ${process.env.BACKEND_URL}/${user._id}/${token}`,
       };
-
       transporter.sendMail(mailOptions, (err, info) => {
         try {
           return res.send("Email sent");
@@ -158,11 +154,11 @@ router.post("/api/reset-password/:id/:token", (req, res) => {
   try {
     jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
       const hashedPassword = await bcrypt.hash(password, 10);
-      await UserModel.findByIdAndUpdate(
+      await UsersModel.findByIdAndUpdate(
         { _id: id },
         { password: hashedPassword }
       );
-      return res.send("Success");
+      return res.send("Password updated");
     });
   } catch (err) {
     return res.send(err);

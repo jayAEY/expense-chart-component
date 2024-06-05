@@ -40,7 +40,10 @@
           alt="logo"
           class="logo"
         />
-        <h1>Welcome to Wallet-Watcher!</h1>
+        <h1>
+          Welcome to <br />
+          Wallet-Watcher!
+        </h1>
         <p>A tool you can use to track and visualize your expenses</p>
         <div id="home-buttons">
           <button id="login-button">Login</button>
@@ -121,7 +124,7 @@
         <h2 class="form-close">x</h2>
         <p>
           Enter your email to receive <br />
-          a password forgot link
+          a password reset link
         </p>
         <label for="email"><h3>Email</h3></label>
         <input
@@ -143,17 +146,26 @@
         id="reset-password-form"
         action=""
       >
-        <h1>Forgot<br />Password?</h1>
+        <h1>Reset<br />Password</h1>
         <h2 class="form-close">x</h2>
         <p>
-          Enter your email to receive <br />
-          a password forgot link
+          Please enter the reset link <br />
+          that was emailed.
         </p>
-        <label for="password"><h3>Email</h3></label>
+        <label for="reset-link"><h3>Reset Link</h3></label>
+        <input
+          type="text"
+          id="reset-link"
+          name="reset-link"
+          placeholder="reset link"
+          autocomplete="off"
+          required
+        />
+        <label for="new-password"><h3>New Password</h3></label>
         <input
           type="text"
           id="new-password"
-          name="password"
+          name="new-password"
           placeholder="password"
           autocomplete="off"
           required

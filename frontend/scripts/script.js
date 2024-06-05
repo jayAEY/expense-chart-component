@@ -8,8 +8,6 @@
 // - check reset button ✔
 // - authentication ✔
 
-axios.defaults.withCredentials = true;
-
 let home = document.querySelector("#home");
 let userDisplay = document.querySelector("#user-display");
 
@@ -59,6 +57,8 @@ let currentEmail;
 let baseUrl = "https://wallet-watcher-backend.vercel.app";
 
 //authentication and db handling
+axios.defaults.withCredentials = true;
+
 window.onload = verify();
 
 function verify() {
@@ -107,6 +107,7 @@ function closeLoginAndRegister() {
   loginForm.style.display = "none";
   registerForm.style.display = "none";
   forgotForm.style.display = "none";
+  resetPasswordForm.style.display = "none";
 }
 
 function openForgot() {
@@ -120,10 +121,40 @@ function openForgot() {
 function forgotPassword(e) {
   e.preventDefault();
   let email = e.target[0].value;
+  console.log(email);
+  axios
+    .post(`${baseUrl}/api/forgot-password`, { email })
+    .then((res) => {
+      alert(res.data);
+      res.data === "Email sent" && (closeLoginAndRegister(), resetPassword());
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(`Error: ${err}`);
+    });
 }
 
-function resetPassword(e) {
-  e.preventDefault();
+function resetPassword() {
+  home.style.display = "none";
+  registerLoginOverlay.style.display = "flex";
+  resetPasswordForm.style.display = "flex";
+  let resetLink = document.querySelector("#reset-link").value;
+  let newPassword = document.querySelector("#new-password").value;
+  resetPasswordForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    resetLink &&
+      axios
+        .post(resetLink, { password: newPassword })
+        .then((res) => {
+          res.data === "Password updated"
+            ? (alert(res.data), closeLoginAndRegister())
+            : alert(`Error! ${res.data}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`Error: ${err}`);
+        });
+  });
 }
 
 function loginAndRegister(e, email, password) {
