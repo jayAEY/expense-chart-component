@@ -55,15 +55,15 @@ let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
 let currentEmail;
-const baseURL = "http://localhost:3000";
-// const baseURL = "https://wallet-watcher-backend.vercel.app";
+// const baseUrl = "http://localhost:3000";
+let baseUrl = "https://wallet-watcher-backend.vercel.app";
 
 //authentication and db handling
 window.onload = verify();
 
 function verify() {
   axios
-    .get(`${baseURL}/api/verify`)
+    .get(`${baseUrl}/api/verify`)
     .then((res) => {
       res.data.login === true
         ? ((currentEmail = res.data.email),
@@ -86,7 +86,7 @@ function saveDataToDB() {
     expenseData: localStorage.getItem("expenseData"),
   };
   axios
-    .post(`${baseURL}/api/save`, { currentEmail, data })
+    .post(`${baseUrl}/api/save`, { currentEmail, data })
     .then((res) => console.log(res.data))
     .catch((err) => {
       console.log(err);
@@ -134,7 +134,7 @@ function loginAndRegister(e, email, password) {
     loginEmail = document.querySelector("#login-email").value;
     loginPassword = document.querySelector("#login-password").value;
     axios
-      .post(`${baseURL}/api/login`, { loginEmail, loginPassword })
+      .post(`${baseUrl}/api/login`, { loginEmail, loginPassword })
       .then((res) => {
         res.data[0] === "You are now logged in"
           ? ((logoutButton.style.display = "inline-block"),
@@ -162,7 +162,7 @@ function loginAndRegister(e, email, password) {
     registerEmail = document.querySelector("#register-email").value;
     registerPassword = document.querySelector("#register-password").value;
     axios
-      .post(`${baseURL}/api/register`, { registerEmail, registerPassword })
+      .post(`${baseUrl}/api/register`, { registerEmail, registerPassword })
       .then((res) =>
         res.data === `${registerEmail} is now registered!`
           ? ((localStorage.setItem("balance", "0"),
@@ -180,7 +180,7 @@ function loginAndRegister(e, email, password) {
 
 function logout() {
   axios
-    .get(`${baseURL}/api/logout`)
+    .get(`${baseUrl}/api/logout`)
     .then((res) => {
       saveDataToDB();
       loginButton.style.display = "inline-block";
