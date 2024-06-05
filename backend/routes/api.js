@@ -135,10 +135,11 @@ router.post("/api/forgot-password", async (req, res) => {
         text: `Copy and paste this link onto the reset password page (expires in 3 minutes) ${process.env.BACKEND_URL}/${user._id}/${token}`,
       };
       transporter.sendMail(mailOptions, (err, info) => {
-        try {
-          return res.send("Email sent");
-        } catch (err) {
+        if (err) {
           console.log(err);
+        } else {
+          console.log(info);
+          return res.send("Email sent");
         }
       });
     }
