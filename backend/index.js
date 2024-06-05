@@ -12,8 +12,8 @@ app.use(express.json());
 app.use(
   cors({
     origin: [
-      "http://127.0.0.1:5500",
-      // "https://daisy-ui-mern-auth-frontend.vercel.app",
+      "http://127.0.0.1:5500/frontend/",
+      "https://wallet-watcher-frontend.vercel.app",
     ],
     credentials: true,
   })

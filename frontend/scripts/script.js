@@ -14,12 +14,13 @@ let loginButton = document.querySelector("#login-button");
 let registerButton = document.querySelector("#register-button");
 let loginLink = document.querySelector("#login-link");
 let registerLink = document.querySelector("#register-link");
-let resetLink = document.querySelector("#reset-link");
+let forgotLink = document.querySelector("#forgot-link");
 let logoutButton = document.querySelector("#logout-button");
 
 let loginForm = document.querySelector("#login-form");
 let registerForm = document.querySelector("#register-form");
-let resetForm = document.querySelector("#reset-form");
+let forgotForm = document.querySelector("#forgot-form");
+let resetPasswordForm = document.querySelector("#reset-password-form");
 let registerLoginOverlay = document.querySelector("#register-login-overlay");
 let closeButtons = document.querySelectorAll(".form-close");
 
@@ -51,8 +52,8 @@ let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
 let currentEmail;
-const baseURL = "http://localhost:3000";
-
+// const baseURL = "http://localhost:3000";
+const baseURL = "https://wallet-watcher-backend.vercel.app";
 axios.defaults.withCredentials = true;
 
 //authentication and db handling
@@ -103,15 +104,24 @@ function closeLoginAndRegister() {
   home.style.display = "flex";
   loginForm.style.display = "none";
   registerForm.style.display = "none";
-  resetForm.style.display = "none";
+  forgotForm.style.display = "none";
 }
 
-function openReset() {
+function openForgot() {
   home.style.display = "none";
   registerLoginOverlay.style.display = "flex";
-  resetForm.style.display = "flex";
+  forgotForm.style.display = "flex";
   loginForm.style.display = "none";
   registerForm.style.display = "none";
+}
+
+function forgotPassword(e) {
+  e.preventDefault();
+  let email = e.target[0].value;
+}
+
+function resetPassword(e) {
+  e.preventDefault();
 }
 
 function loginAndRegister(e, email, password) {
@@ -199,8 +209,8 @@ registerLink.addEventListener("click", (e) => {
   closeLoginAndRegister();
   openLoginAndRegister(e.target);
 });
-resetLink.addEventListener("click", (e) => {
-  openReset();
+forgotLink.addEventListener("click", (e) => {
+  openForgot();
 });
 
 logoutButton.addEventListener("click", logout);
@@ -213,9 +223,8 @@ loginForm.addEventListener("submit", (e) =>
 registerForm.addEventListener("submit", (e) =>
   loginAndRegister(e, registerEmail.value, registerPassword.value)
 );
-resetForm.addEventListener("submit", (e) =>
-  loginAndRegister(e, registerEmail.value, registerPassword.value)
-);
+forgotForm.addEventListener("submit", (e) => forgotPassword(e));
+resetPasswordForm.addEventListener("submit", (e) => resetPassword(e));
 
 // data handling
 function getBarData() {

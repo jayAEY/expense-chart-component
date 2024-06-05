@@ -127,11 +127,11 @@ nav > div > button:hover {
   margin-bottom: -30px;
 }
 
-#reset-form > .form-close {
+#forgot-form > .form-close {
   top: -40px;
 }
 
-#reset-form > h1 {
+#forgot-form > h1 {
   line-height: 0.9;
 }
 
