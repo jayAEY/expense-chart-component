@@ -96,6 +96,7 @@ router.post("/api/save", async (req, res) => {
 });
 
 router.get("/api/verify", verifyUser, async (req, res) => {
+  // res.header("Access-Control-Allow-Origin", "*");
   let user = UsersModel.findOne({ email: req.email });
   return res.send({
     login: true,
