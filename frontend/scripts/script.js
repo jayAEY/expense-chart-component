@@ -55,8 +55,8 @@ let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
 let currentEmail;
-// const baseURL = "http://localhost:3000";
-const baseURL = "https://wallet-watcher-backend.vercel.app";
+const baseURL = "http://localhost:3000";
+// const baseURL = "https://wallet-watcher-backend.vercel.app";
 
 //authentication and db handling
 window.onload = verify();
