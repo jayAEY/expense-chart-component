@@ -13,7 +13,8 @@ app.use(
   cors({
     origin: [
       "http://127.0.0.1:5500/frontend/",
-      "https://wallet-watcher-frontend.vercel.app",
+      "http://localhost:5500/frontend/",
+      "https://wallet-watcher-frontend.vercel.app/",
     ],
     credentials: true,
   })
@@ -40,5 +41,5 @@ app.use((req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is running");
+  console.log(`Server is running at localhost:${[process.env.PORT]}`);
 });

@@ -7,6 +7,9 @@
 // - spending increase month to month ✔
 // - check reset button ✔
 // - authentication ✔
+
+axios.defaults.withCredentials = true;
+
 let home = document.querySelector("#home");
 let userDisplay = document.querySelector("#user-display");
 
@@ -52,9 +55,9 @@ let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
 let currentEmail;
-// const baseURL = "http://localhost:3000";
-const baseURL = "https://wallet-watcher-backend.vercel.app";
-axios.defaults.withCredentials = true;
+const baseURL = "http://localhost:3000/";
+
+// const baseURL = "https://wallet-watcher-backend.vercel.app/";
 
 //authentication and db handling
 window.onload = verify();
