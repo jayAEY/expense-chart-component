@@ -111,7 +111,6 @@ export function login(e) {
           closeLoginAndRegister(),
           location.reload())
         : ((currentEmail = ""), (registerLoginOverlay.style.display = "flex"));
-      alert(res.data);
     })
     .catch((err) => {
       console.log(err);
