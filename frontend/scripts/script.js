@@ -144,7 +144,10 @@ function resetPassword() {
     e.preventDefault();
     resetLink &&
       axios
-        .post(resetLink, { password: newPassword })
+        .post(
+          `https://wallet-watcher-backend.vercel.app/api/reset-password/${resetLink}`,
+          { password: newPassword }
+        )
         .then((res) => {
           res.data === "Password updated"
             ? (alert(res.data), closeLoginAndRegister())

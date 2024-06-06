@@ -132,7 +132,7 @@ router.post("/api/forgot-password", async (req, res) => {
         from: "PasswordAdmin",
         to: email,
         subject: "Password Reset",
-        text: `Copy and paste this link onto the reset password page (expires in 3 minutes) ${process.env.BACKEND_URL}/${user._id}/${token}`,
+        text: `Copy and paste this link onto the reset password page (expires in 3 minutes) ${user._id}/${token}`,
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
