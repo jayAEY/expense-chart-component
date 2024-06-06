@@ -30,6 +30,8 @@ let expenseDate = document.querySelector("#expense-date");
 let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
+axios.defaults.withCredentials = true;
+
 // data handling
 function getBarData() {
   // handle month totals and month to month change
