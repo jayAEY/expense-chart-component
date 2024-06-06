@@ -54,13 +54,3 @@ I'd also like to try and make this app display all the spending info dynamically
 ## Author
 
 - Frontend Mentor - [@jayAEY](https://www.frontendmentor.io/profile/jayAEY)
-
-//CHECK ALL FEATURES
-// - adding to balance ✔
-// - adding expenses ✔
-// - subtracting expenses from balance ✔
-// - displaying last week data properly (check for timezone offset?) ✔
-// - ensure all displayed data matches localStorage ✔
-// - spending increase month to month ✔
-// - check reset button ✔
-// - authentication ✔

@@ -124,7 +124,7 @@
         <h2 class="form-close">x</h2>
         <p>
           Enter your email to receive <br />
-          a password reset link
+          a password reset code
         </p>
         <label for="email"><h3>Email</h3></label>
         <input
@@ -141,6 +141,8 @@
         >
           Send Email
         </button>
+        <p>Already have a code?</p>
+        <a id="reset-link">Enter code</a>
       </form>
       <form
         id="reset-password-form"
@@ -152,12 +154,12 @@
           Please enter the reset link <br />
           that was emailed.
         </p>
-        <label for="reset-link"><h3>Reset Link</h3></label>
+        <label for="reset-code"><h3>Reset Code</h3></label>
         <input
           type="text"
-          id="reset-link"
-          name="reset-link"
-          placeholder="reset link"
+          id="reset-code"
+          name="reset-code"
+          placeholder="reset code"
           autocomplete="off"
           required
         />

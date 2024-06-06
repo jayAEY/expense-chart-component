@@ -1,15 +1,37 @@
-import {
-  verify,
-  saveDataToDB,
-  openLoginAndRegister,
-  closeLoginAndRegister,
-  openForgot,
-  forgotPassword,
-  resetPassword,
-  login,
-  register,
-  logout,
-} from "./auth.js";
+//CHECK ALL FEATURES
+// - adding to balance ✔
+// - adding expenses ✔
+// - subtracting expenses from balance ✔
+// - displaying last week data properly (check for timezone offset?) ✔
+// - ensure all displayed data matches localStorage ✔
+// - spending increase month to month ✔
+// - check reset button ✔
+// - authentication ✔
+
+let home = document.querySelector("#home");
+let userDisplay = document.querySelector("#user-display");
+
+let loginButton = document.querySelector("#login-button");
+let registerButton = document.querySelector("#register-button");
+let loginLink = document.querySelector("#login-link");
+let registerLink = document.querySelector("#register-link");
+let forgotLink = document.querySelector("#forgot-link");
+let logoutButton = document.querySelector("#logout-button");
+
+let loginForm = document.querySelector("#login-form");
+let registerForm = document.querySelector("#register-form");
+let forgotForm = document.querySelector("#forgot-form");
+let resetPasswordForm = document.querySelector("#reset-password-form");
+let registerLoginOverlay = document.querySelector("#register-login-overlay");
+let closeButtons = document.querySelectorAll(".form-close");
+
+let loginEmail = document.querySelector("#login-email").value;
+let loginPassword = document.querySelector("#login-password").value;
+let registerEmail = document.querySelector("#register-email").value;
+let registerPassword = document.querySelector("#register-password").value;
+
+let loginSubmit = document.querySelector("#login-submit");
+let registerSubmit = document.querySelector("#register-submit");
 
 let bars = document.querySelectorAll(".bar");
 let labels = document.querySelectorAll(".label");
@@ -29,6 +51,215 @@ let expenseAdd = document.querySelector("#expense-add");
 let expenseDate = document.querySelector("#expense-date");
 let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
+
+let currentEmail;
+// const baseUrl = "http://localhost:3000";
+let baseUrl = "https://wallet-watcher-backend.vercel.app";
+
+//authentication and db handling
+axios.defaults.withCredentials = true;
+
+window.onload = verify();
+
+function verify() {
+  axios
+    .get(`${baseUrl}/api/verify`)
+    .then((res) => {
+      res.data.login === true
+        ? ((currentEmail = res.data.email),
+          (userDisplay.innerText = `Welcome ${currentEmail}!`),
+          (registerLoginOverlay.style.display = "none"),
+          (userDisplay.style.display = "inline-block"),
+          res.data.data &&
+            (localStorage.setItem("balance", res.data.data.balance),
+            localStorage.setItem("expenseData", res.data.data.expenseData)))
+        : (registerLoginOverlay.style.display = "flex");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+function saveDataToDB() {
+  let data = {
+    balance: localStorage.getItem("balance"),
+    expenseData: localStorage.getItem("expenseData"),
+  };
+  axios
+    .post(`${baseUrl}/api/save`, { currentEmail, data })
+    .then((res) => console.log(res.data))
+    .catch((err) => {
+      console.log(err);
+      alert(`Error: ${err}`);
+    });
+}
+
+function openLoginAndRegister(elem) {
+  home.style.display = "none";
+  registerLoginOverlay.style.display = "flex";
+  elem.innerText == "Login"
+    ? (loginForm.style.display = "flex")
+    : (registerForm.style.display = "flex");
+}
+
+function closeLoginAndRegister() {
+  home.style.display = "flex";
+  loginForm.style.display = "none";
+  registerForm.style.display = "none";
+  forgotForm.style.display = "none";
+  resetPasswordForm.style.display = "none";
+}
+
+function openForgot() {
+  home.style.display = "none";
+  registerLoginOverlay.style.display = "flex";
+  forgotForm.style.display = "flex";
+  loginForm.style.display = "none";
+  registerForm.style.display = "none";
+}
+
+function forgotPassword(e) {
+  e.preventDefault();
+  let email = e.target[0].value;
+  console.log(email);
+  axios
+    .post(`${baseUrl}/api/forgot-password`, { email })
+    .then((res) => {
+      alert(res.data);
+      res.data === "Email sent" && (closeLoginAndRegister(), resetPassword());
+    })
+    .catch((err) => {
+      console.log(err);
+      alert(`Error: ${err}`);
+    });
+}
+
+function resetPassword() {
+  home.style.display = "none";
+  registerLoginOverlay.style.display = "flex";
+  resetPasswordForm.style.display = "flex";
+  let resetLink = document.querySelector("#reset-link").value;
+  let newPassword = document.querySelector("#new-password").value;
+  resetPasswordForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    resetLink &&
+      axios
+        .post(
+          `https://wallet-watcher-backend.vercel.app/api/reset-password/${resetLink}`,
+          { password: newPassword }
+        )
+        .then((res) => {
+          res.data === "Password updated"
+            ? (alert(res.data), closeLoginAndRegister())
+            : alert(`Error! ${res.data}`);
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(`Error: ${err}`);
+        });
+  });
+}
+
+function loginAndRegister(e, email, password) {
+  e.preventDefault();
+  let action = e.target.id.split("-")[0];
+
+  if (action === "login") {
+    loginEmail = document.querySelector("#login-email").value;
+    loginPassword = document.querySelector("#login-password").value;
+    axios
+      .post(`${baseUrl}/api/login`, { loginEmail, loginPassword })
+      .then((res) => {
+        res.data[0] === "You are now logged in"
+          ? ((logoutButton.style.display = "inline-block"),
+            (userDisplay.style.display = "inline-block"),
+            (currentEmail = loginEmail),
+            (userDisplay.innerText = `Welcome ${currentEmail}!`),
+            (registerLoginOverlay.style.display = "none"),
+            res.data[1] &&
+              (localStorage.setItem("balance", res.data[1].balance),
+              localStorage.setItem("expenseData", res.data[1].expenseData)),
+            alert(res.data[0]),
+            closeLoginAndRegister(),
+            location.reload())
+          : ((currentEmail = ""),
+            (registerLoginOverlay.style.display = "flex"));
+        alert(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(`Error: ${err}`);
+      });
+  }
+
+  if (action === "register") {
+    registerEmail = document.querySelector("#register-email").value;
+    registerPassword = document.querySelector("#register-password").value;
+    axios
+      .post(`${baseUrl}/api/register`, { registerEmail, registerPassword })
+      .then((res) =>
+        res.data === `${registerEmail} is now registered!`
+          ? ((localStorage.setItem("balance", "0"),
+            localStorage.setItem("expenseData", "[]")),
+            alert(res.data),
+            closeLoginAndRegister())
+          : alert(res.data)
+      )
+      .catch((err) => {
+        console.log(err);
+        alert(`Error: ${err}`);
+      });
+  }
+}
+
+function logout() {
+  axios
+    .get(`${baseUrl}/api/logout`)
+    .then((res) => {
+      saveDataToDB();
+      loginButton.style.display = "inline-block";
+      registerButton.style.display = "inline-block";
+      logoutButton.style.display = "none";
+      userDisplay.style.display = "none";
+      userDisplay.innerText = "";
+      currentEmail = "";
+      alert(res.data);
+      closeLoginAndRegister();
+      localStorage.removeItem("balance");
+      localStorage.removeItem("expenseData");
+      location.reload();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+}
+
+loginButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
+registerButton.addEventListener("click", (e) => openLoginAndRegister(e.target));
+loginLink.addEventListener("click", (e) => {
+  closeLoginAndRegister();
+  openLoginAndRegister(e.target);
+});
+registerLink.addEventListener("click", (e) => {
+  closeLoginAndRegister();
+  openLoginAndRegister(e.target);
+});
+forgotLink.addEventListener("click", (e) => {
+  openForgot();
+});
+
+logoutButton.addEventListener("click", logout);
+closeButtons.forEach((elem) =>
+  elem.addEventListener("click", closeLoginAndRegister)
+);
+loginForm.addEventListener("submit", (e) =>
+  loginAndRegister(e, loginEmail.value, loginPassword.value)
+);
+registerForm.addEventListener("submit", (e) =>
+  loginAndRegister(e, registerEmail.value, registerPassword.value)
+);
+forgotForm.addEventListener("submit", (e) => forgotPassword(e));
+resetPasswordForm.addEventListener("submit", (e) => resetPassword(e));
 
 // data handling
 function getBarData() {

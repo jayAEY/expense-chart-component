@@ -8,45 +8,35 @@ const UsersModel = require("../models/Users.js");
 
 dotenv.config();
 
-const verifyUser = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    res.json({ login: false });
-  } else {
-    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
-      if (err) {
-        return res.json({ message: "Invalid Token" });
-      } else {
-        req.email = decoded.email;
-        next();
-      }
-    });
-  }
-};
-
 router.get("/", (req, res) => {
   res.json("connected");
 });
 
-router.post("/api/test", (req, res) => {
-  const { loginEmail, loginPassword } = req.body;
-  res.json({ loginEmail, loginPassword });
+router.post("/api/save", async (req, res) => {
+  const { email, data } = req.body;
+  try {
+    await UsersModel.findOneAndUpdate({ email }, { data });
+    res.send("mongoose updated");
+  } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
 });
 
 router.post("/api/register", async (req, res) => {
-  const { registerEmail, registerPassword } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await UsersModel.findOne({ email: registerEmail });
+    const user = await UsersModel.findOne({ email: email });
     if (user) {
       return res.send("User Already exists!");
     } else {
-      const hashedPassword = await bcrypt.hash(registerPassword, 10);
+      const hashedPassword = await bcrypt.hash(password, 10);
       const newUser = new UsersModel({
-        email: registerEmail,
+        email,
         password: hashedPassword,
       });
       await newUser.save();
-      res.send(`${registerEmail} is now registered!`);
+      res.send(`${email} is now registered!`);
     }
   } catch (err) {
     console.log(err);
@@ -55,18 +45,15 @@ router.post("/api/register", async (req, res) => {
 });
 
 router.post("/api/login", async (req, res) => {
-  const { loginEmail, loginPassword } = req.body;
+  const { email, password } = req.body;
   try {
-    const user = await UsersModel.findOne({ email: loginEmail });
+    const user = await UsersModel.findOne({ email });
     if (!user) {
       return res.send("No user exists");
     } else {
-      const validatedPassword = await bcrypt.compare(
-        loginPassword,
-        user.password
-      );
+      const validatedPassword = await bcrypt.compare(password, user.password);
       if (validatedPassword) {
-        const token = jwt.sign({ email: loginEmail }, process.env.JWT_KEY);
+        const token = jwt.sign({ email }, process.env.JWT_KEY);
         res.cookie("token", token, {
           httpOnly: true,
           secure: true,
@@ -82,26 +69,6 @@ router.post("/api/login", async (req, res) => {
     console.log(err);
     res.send(err);
   }
-});
-
-router.post("/api/save", async (req, res) => {
-  const { currentEmail, data } = req.body;
-  try {
-    await UsersModel.findOneAndUpdate({ email: currentEmail }, { data });
-    res.send("mongoose updated");
-  } catch (err) {
-    console.log(err);
-    res.send(err);
-  }
-});
-
-router.get("/api/verify", verifyUser, async (req, res) => {
-  let user = UsersModel.findOne({ email: req.email });
-  return res.send({
-    login: true,
-    email: req.email,
-    data: req.data,
-  });
 });
 
 router.get("/api/logout", (req, res) => {
@@ -132,7 +99,7 @@ router.post("/api/forgot-password", async (req, res) => {
         from: "PasswordAdmin",
         to: email,
         subject: "Password Reset",
-        text: `Copy and paste this link onto the reset password page (expires in 3 minutes) ${user._id}/${token}`,
+        text: `Copy and paste this code onto the reset password page (expires in 3 minutes) ${user._id}/${token}`,
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
@@ -164,6 +131,31 @@ router.post("/api/reset-password/:id/:token", (req, res) => {
   } catch (err) {
     return res.send(err);
   }
+});
+
+const verifyUser = (req, res, next) => {
+  const token = req.cookies.token;
+  if (!token) {
+    res.json({ login: false });
+  } else {
+    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
+      if (err) {
+        return res.json({ message: "Invalid Token" });
+      } else {
+        req.email = decoded.email;
+        next();
+      }
+    });
+  }
+};
+
+router.get("/api/verify", verifyUser, async (req, res) => {
+  let user = UsersModel.findOne({ email: req.email });
+  return res.send({
+    login: true,
+    email: req.email,
+    data: req.data,
+  });
 });
 
 module.exports = router;
