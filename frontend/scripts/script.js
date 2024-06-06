@@ -31,6 +31,7 @@ let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
 axios.defaults.withCredentials = true;
+window.onload = verify();
 
 // data handling
 function getBarData() {

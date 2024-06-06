@@ -72,13 +72,18 @@ router.post("/api/login", async (req, res) => {
 });
 
 router.get("/api/logout", (req, res) => {
-  res.clearCookie("token", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "none",
-    partitioned: true,
-  });
-  return res.send("You are now logged out");
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      partitioned: true,
+    });
+    return res.send("You are now logged out");
+  } catch (err) {
+    console.log(err);
+    return res.send(err);
+  }
 });
 
 router.post("/api/forgot-password", async (req, res) => {
@@ -149,13 +154,14 @@ const verifyUser = (req, res, next) => {
   }
 };
 
-router.get("/api/verify", verifyUser, async (req, res) => {
+router.get("/api/verify", verifyUser, (req, res) => {
   let user = UsersModel.findOne({ email: req.email });
-  return res.send({
-    login: true,
-    email: req.email,
-    data: req.data,
-  });
+  user &&
+    res.send({
+      login: true,
+      email: req.email,
+      data: req.data,
+    });
 });
 
 module.exports = router;

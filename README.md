@@ -64,3 +64,5 @@ I'd also like to try and make this app display all the spending info dynamically
 // - spending increase month to month ✔
 // - check reset button ✔
 // - authentication ✔
+// - add avatars
+// - display expenses

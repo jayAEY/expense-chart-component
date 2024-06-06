@@ -21,8 +21,8 @@ const resetLink = document.querySelector("#reset-link");
 
 let currentEmail;
 
-// const baseUrl = "http://localhost:3000";
-let baseUrl = "https://wallet-watcher-backend.vercel.app";
+const baseUrl = "http://localhost:3000";
+// let baseUrl = "https://wallet-watcher-backend.vercel.app";
 
 axios.defaults.withCredentials = true;
 
@@ -31,13 +31,14 @@ export function saveDataToDB() {
     balance: localStorage.getItem("balance"),
     expenseData: localStorage.getItem("expenseData"),
   };
-  axios
-    .post(`${baseUrl}/api/save`, { email: currentEmail, data })
-    .then((res) => console.log(res.data))
-    .catch((err) => {
-      console.log(err);
-      alert(`Error: ${err}`);
-    });
+  currentEmail &&
+    axios
+      .post(`${baseUrl}/api/save`, { email: currentEmail, data })
+      .then((res) => console.log(res.data))
+      .catch((err) => {
+        console.log(err);
+        alert(`Error: ${err}`);
+      });
 }
 
 export function openLoginAndRegister(elem) {
@@ -177,8 +178,6 @@ export function resetPassword(e) {
         alert(`Error: ${err}`);
       });
 }
-
-window.onload = verify();
 
 export function verify() {
   axios
