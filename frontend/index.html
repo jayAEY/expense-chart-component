@@ -195,139 +195,154 @@
       </form>
     </div>
     <main>
-      <div id="balance-panel">
-        <div id="total-balance">
-          <div id="balance-text">
-            <p>My balance</p>
-            <h1 class="dollar-sign">$</h1>
-            <h1 id="balance">0.00</h1>
+      <section id="main-section">
+        <div id="balance-panel">
+          <div id="total-balance">
+            <div id="balance-text">
+              <p>My balance</p>
+              <h1 class="dollar-sign">$</h1>
+              <h1 id="balance">0.00</h1>
+            </div>
+            <img
+              id="logo"
+              alt="logo"
+              src="./images/logo.svg"
+            />
           </div>
-          <img
-            id="logo"
-            alt="logo"
-            src="./images/logo.svg"
-          />
+          <form
+            id="add-balance"
+            onsubmit="return false"
+          >
+            <input
+              id="balance-add"
+              type="number"
+              placeholder="Add to balance"
+              step="0.01"
+              max="99999999999999"
+              autocomplete="off"
+              required
+            />
+            <input
+              id="balance-submit"
+              type="submit"
+              value="Add"
+            />
+          </form>
         </div>
+
+        <div id="spending-panel">
+          <h1>Spending - Last 7 days</h1>
+          <div id="chart">
+            <div id="tooltip">$0.00</div>
+            <div id="bars">
+              <span
+                class="bar"
+                id="mon"
+              ></span>
+              <span
+                class="bar"
+                id="tue"
+              ></span>
+              <span
+                class="bar"
+                id="wed"
+              ></span>
+              <span
+                class="bar"
+                id="thu"
+              ></span>
+              <span
+                class="bar"
+                id="fri"
+              ></span>
+              <span
+                class="bar"
+                id="sat"
+              ></span>
+              <span
+                class="bar"
+                id="sun"
+              ></span>
+            </div>
+            <div id="labels">
+              <p class="label">mon</p>
+              <p class="label">tue</p>
+              <p class="label">wed</p>
+              <p class="label">thu</p>
+              <p class="label">fri</p>
+              <p class="label">sat</p>
+              <p class="label">sun</p>
+            </div>
+          </div>
+          <div id="total-section">
+            <div id="total">
+              <p>Total this month</p>
+              <h1 class="dollar-sign">$</h1>
+              <h1 id="monthly-total">0.00</h1>
+            </div>
+            <div id="change">
+              <h2 id="expense-change">0.00%</h2>
+              <p>from last month</p>
+            </div>
+          </div>
+        </div>
+
         <form
-          id="add-balance"
+          id="expense-panel"
           onsubmit="return false"
         >
           <input
-            id="balance-add"
+            id="expense-add"
             type="number"
-            placeholder="Add to balance"
+            placeholder="Add expense"
+            min="0.00"
+            max="9999999999"
             step="0.01"
-            max="99999999999999"
             autocomplete="off"
             required
           />
           <input
-            id="balance-submit"
+            id="expense-date"
+            value="currentDay"
+            type="date"
+            autocomplete="off"
+            required
+          />
+          <input
+            id="expense-submit"
             type="submit"
             value="Add"
           />
         </form>
-      </div>
 
-      <div id="spending-panel">
-        <h1>Spending - Last 7 days</h1>
-        <div id="chart">
-          <div id="tooltip">$0.00</div>
-          <div id="bars">
-            <span
-              class="bar"
-              id="mon"
-            ></span>
-            <span
-              class="bar"
-              id="tue"
-            ></span>
-            <span
-              class="bar"
-              id="wed"
-            ></span>
-            <span
-              class="bar"
-              id="thu"
-            ></span>
-            <span
-              class="bar"
-              id="fri"
-            ></span>
-            <span
-              class="bar"
-              id="sat"
-            ></span>
-            <span
-              class="bar"
-              id="sun"
-            ></span>
-          </div>
-          <div id="labels">
-            <p class="label">mon</p>
-            <p class="label">tue</p>
-            <p class="label">wed</p>
-            <p class="label">thu</p>
-            <p class="label">fri</p>
-            <p class="label">sat</p>
-            <p class="label">sun</p>
+        <div id="warning-overlay">
+          <div id="warning-message">
+            ARE YOU SURE<br />
+            you want to RESET ALL spending and balance data?
+            <div id="warning-buttons">
+              <button id="yes">Yes</button>
+              <button id="no">No</button>
+            </div>
           </div>
         </div>
-        <div id="total-section">
-          <div id="total">
-            <p>Total this month</p>
-            <h1 class="dollar-sign">$</h1>
-            <h1 id="monthly-total">0.00</h1>
-          </div>
-          <div id="change">
-            <h2 id="expense-change">0.00%</h2>
-            <p>from last month</p>
-          </div>
+
+        <div id="reset-panel">
+          <button id="reset">Reset all</button>
         </div>
-      </div>
+      </section>
 
-      <form
-        id="expense-panel"
-        onsubmit="return false"
-      >
-        <input
-          id="expense-add"
-          type="number"
-          placeholder="Add expense"
-          min="0.00"
-          max="9999999999"
-          step="0.01"
-          autocomplete="off"
-          required
-        />
-        <input
-          id="expense-date"
-          value="currentDay"
-          type="date"
-          autocomplete="off"
-          required
-        />
-        <input
-          id="expense-submit"
-          type="submit"
-          value="Add"
-        />
-      </form>
-
-      <div id="warning-overlay">
-        <div id="warning-message">
-          ARE YOU SURE<br />
-          you want to RESET ALL spending and balance data?
-          <div id="warning-buttons">
-            <button id="yes">Yes</button>
-            <button id="no">No</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="reset-panel">
-        <button id="reset">Reset all</button>
-      </div>
+      <section id="expense-section">
+        <h1>Expenses</h1>
+        <table id="expense-table">
+          <thead>
+            <tr id="expense-head">
+              <th>Amount</th>
+              <th id="th-date">Date (YYYY/MM/DD)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
     </main>
     <script
       src="./scripts/script.js"

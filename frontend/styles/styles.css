@@ -9,9 +9,14 @@
 }
 
 body {
+  --off-white: hsl(33, 100%, 98%);
+  --tan: hsl(27, 66%, 92%);
+  --dark-gray: hsl(28, 10%, 53%);
+  --red-orange: hsl(10, 79%, 65%);
+  --dark-brown: hsl(25, 47%, 15%);
   width: 100svw;
-  height: 100svh;
-  background-color: hsl(27, 66%, 92%);
+  min-height: 100svh;
+  background-color: var(--tan);
   font-size: 12px;
   font-family: "DM Sans", sans-serif;
   display: flex;
@@ -24,9 +29,10 @@ nav {
   position: fixed;
   width: 100svw;
   height: 60px;
-  background-color: hsl(10, 79%, 65%);
+  background-color: var(--red-orange);
   align-items: center;
   justify-content: space-between;
+  z-index: 3;
 }
 
 nav > div {
@@ -38,7 +44,7 @@ nav > div {
 nav > div > button {
   height: 100%;
   background-color: inherit;
-  color: hsl(33, 31%, 94%);
+  color: var(--tan);
   padding: 4px 10px;
   border: none;
   cursor: pointer;
@@ -46,8 +52,8 @@ nav > div > button {
 }
 
 nav > div > button:hover {
-  color: hsl(25, 47%, 15%);
-  background-color: hsl(33, 31%, 94%);
+  color: var(--dark-brown);
+  background-color: var(--tan);
 }
 
 #logout-button {
@@ -67,7 +73,7 @@ nav > div > button:hover {
 
 #user-display {
   display: block;
-  color: hsl(33, 31%, 94%);
+  color: var(--tan);
   height: 100%;
   align-content: center;
 }
@@ -79,8 +85,8 @@ nav > div > button:hover {
   position: absolute;
   width: 100svw;
   height: 100svh;
-  background-color: hsl(10, 79%, 65%);
-  z-index: 2;
+  background-color: var(--red-orange);
+  z-index: 5;
 }
 
 #home {
@@ -88,7 +94,7 @@ nav > div > button:hover {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  color: hsl(27, 66%, 92%);
+  color: var(--tan);
   font-weight: bolder;
   color: #f8e9dd;
   gap: 0px;
@@ -112,8 +118,8 @@ nav > div > button:hover {
 
 #home-buttons > button {
   margin-top: 10px;
-  color: hsl(10, 79%, 65%);
-  background-color: hsl(33, 31%, 94%);
+  color: var(--red-orange);
+  background-color: var(--tan);
   padding: 4px 10px;
   border: none;
   border-radius: 3px;
@@ -129,14 +135,14 @@ nav > div > button:hover {
   display: none;
   gap: 10px;
   flex-direction: column;
-  background-color: hsl(33, 100%, 98%);
+  background-color: var(--off-white);
   max-width: 400px;
   padding: 20px;
   border-radius: 12px;
 }
 
 #register-login-overlay > form > label {
-  color: hsl(10, 79%, 65%);
+  color: var(--red-orange);
   margin-bottom: -8 px;
 }
 
@@ -156,7 +162,7 @@ nav > div > button:hover {
 
 .form-close {
   position: relative;
-  color: hsl(10, 79%, 65%);
+  color: var(--red-orange);
   top: -10px;
   left: 150px;
   z-index: 3;
@@ -164,12 +170,12 @@ nav > div > button:hover {
 }
 
 .form-close:hover {
-  color: hsl(25, 47%, 15%);
+  color: var(--dark-brown);
 }
 
 #register-login-overlay > form > button {
-  background-color: hsl(10, 79%, 65%);
-  color: hsl(33, 31%, 94%);
+  background-color: var(--red-orange);
+  color: var(--tan);
   padding: 4px 10px;
   border: none;
   border-radius: 3px;
@@ -185,17 +191,28 @@ nav > div > button:hover {
   font-weight: bolder;
   margin-top: -12px;
   text-decoration: none;
-  color: hsl(10, 79%, 65%);
+  color: var(--red-orange);
   transition: all 0.1s;
   cursor: pointer;
 }
 
 #register-login-overlay > form > a:hover {
   scale: 1.02;
-  color: hsl(25, 47%, 15%);
+  color: var(--dark-brown);
 }
 
 main {
+  position: absolute;
+  height: 100svh;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+#main-section {
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -204,14 +221,63 @@ main {
   transition: all 0.5s;
 }
 
+#expense-section {
+  display: none;
+  background-color: var(--off-white);
+  color: var(--red-orange);
+  width: 350px;
+  padding: 18px;
+  height: auto;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  /* padding-bottom: 40px; */
+}
+
+#expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+#th-date {
+  width: 48%;
+}
+
+th {
+  font-size: small;
+  font-weight: bolder;
+  padding: 8px;
+  background-color: var(--red-orange);
+  color: var(--tan);
+  text-decoration: underline;
+}
+
+td {
+  color: black;
+  padding: 2px 8px;
+  font-weight: normal;
+  background-color: var(--tan);
+}
+
+tbody > :nth-child(even) > td {
+  background-color: var(--off-white);
+}
+
+td,
+th {
+  border: 1px solid var(--off-white);
+  text-align: left;
+}
+
 #balance {
+  padding-top: 4px;
   font-size: 25px;
   transition: all 0.5s;
   width: 190px;
   border: none;
-  background-color: rgba(255, 255, 255, 0);
-  color: hsl(33, 100%, 98%);
-  padding-left: 16px;
+  color: var(--off-white);
+  padding-left: 12px;
   z-index: 1;
 }
 
@@ -239,8 +305,8 @@ input:focus {
   display: flex;
   flex-direction: column;
   padding: 18px;
-  background-color: hsl(10, 79%, 65%);
-  color: hsl(33, 100%, 98%);
+  background-color: var(--red-orange);
+  color: var(--off-white);
   height: 110px;
   border-radius: 12px;
 }
@@ -267,16 +333,16 @@ input:focus {
 
 #balance-add {
   border: none;
-  background-color: hsl(33, 31%, 94%);
-  color: hsl(10, 79%, 65%);
+  background-color: var(--tan);
+  color: var(--red-orange);
   padding: 4px;
   width: 83%;
   border-radius: 3px;
 }
 
 #balance-submit {
-  background-color: hsl(33, 31%, 94%);
-  color: hsl(28, 10%, 53%);
+  background-color: var(--off-white);
+  color: var(--dark-gray);
   padding: 4px 10px;
   border: none;
   border-radius: 3px;
@@ -290,18 +356,18 @@ input:focus {
 
 #spending-panel {
   padding: 18px;
-  background-color: hsl(33, 100%, 98%);
-  color: hsl(28, 10%, 53%);
+  background-color: var(--off-white);
+  color: var(--dark-gray);
   height: 380px;
   border-radius: 12px;
 }
 
 #spending-panel h1 {
-  color: hsl(25, 47%, 15%);
+  color: var(--dark-brown);
 }
 
 #spending-panel h2 {
-  color: hsl(25, 47%, 15%);
+  color: var(--dark-brown);
   font-size: 14px;
 }
 
@@ -340,7 +406,7 @@ input:focus {
 }
 
 .bar {
-  background-color: hsl(10, 79%, 65%);
+  background-color: var(--red-orange);
   width: calc((100% / 7) - 10px);
   border-radius: 4px;
   height: 1px;
@@ -357,18 +423,18 @@ input:focus {
   width: 100%;
   height: 90px;
   display: flex;
-  border-top: 3px solid hsl(27, 66%, 92%);
+  border-top: 3px solid var(--tan);
   align-items: center;
   justify-content: space-between;
 }
 
 #monthly-total {
+  padding-top: 4px;
   width: 200px;
   font-size: 25px;
   transition: all 0.5s;
   border: none;
-  background-color: rgba(255, 255, 255, 0);
-  padding-left: 16px;
+  padding-left: 12px;
   z-index: 1;
 }
 
@@ -384,9 +450,9 @@ input:focus {
   width: fit-content;
   left: 20%;
   padding: 5px;
-  background-color: hsl(25, 47%, 15%);
+  background-color: var(--dark-brown);
   border-radius: 3px;
-  color: hsl(33, 100%, 98%);
+  color: var(--off-white);
   text-align: center;
   font-weight: 700;
 }
@@ -396,32 +462,32 @@ input:focus {
   align-items: center;
   justify-content: space-between;
   padding: 18px;
-  background-color: hsl(33, 100%, 98%);
-  color: hsl(10, 79%, 65%);
+  background-color: var(--off-white);
+  color: var(--red-orange);
   height: 55px;
   border-radius: 12px;
 }
 
 #expense-add {
   border: none;
-  background-color: hsl(33, 31%, 94%);
+  background-color: var(--tan);
   padding: 4px;
   width: 40%;
   border-radius: 3px;
 }
 
 #expense-date {
-  background-color: hsl(33, 31%, 94%);
+  background-color: var(--tan);
   border: none;
-  color: hsl(28, 10%, 53%);
+  color: var(--dark-gray);
   padding: 4px;
   border-radius: 3px;
   cursor: text;
 }
 
 #expense-submit {
-  background-color: hsl(10, 79%, 65%);
-  color: hsl(33, 31%, 94%);
+  background-color: var(--red-orange);
+  color: var(--tan);
   padding: 4px 10px;
   border: none;
   border-radius: 3px;
@@ -438,14 +504,14 @@ input:focus {
   align-self: center;
   justify-content: center;
   padding: 12px;
-  background-color: hsl(33, 100%, 98%);
+  background-color: var(--off-white);
   width: 100%;
   border-radius: 12px;
 }
 
 #reset {
-  background-color: hsl(10, 79%, 65%);
-  color: hsl(33, 31%, 94%);
+  background-color: var(--red-orange);
+  color: var(--tan);
   padding: 4px 6px;
   border: none;
   border-radius: 3px;
@@ -455,13 +521,13 @@ input:focus {
 
 #warning-overlay {
   display: none;
-  position: absolute;
+  position: fixed;
   align-items: center;
   justify-content: center;
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 100svw;
+  height: 100svh;
   background-color: rgba(0, 0, 0, 0.69);
   z-index: 1;
 }
@@ -473,8 +539,8 @@ input:focus {
   top: 40%;
   text-align: center;
   justify-content: center;
-  background-color: hsl(10, 79%, 65%);
-  color: hsl(33, 100%, 98%);
+  background-color: var(--red-orange);
+  color: var(--off-white);
   font-size: 20pt;
   font-weight: bolder;
   line-height: 1.2;
@@ -493,8 +559,8 @@ input:focus {
 
 #yes,
 #no {
-  background-color: hsl(33, 31%, 94%);
-  color: hsl(10, 79%, 65%);
+  background-color: var(--tan);
+  color: var(--red-orange);
   padding: 4px 16px;
   border: none;
   border-radius: 3px;
@@ -511,6 +577,10 @@ input:focus {
 
 @media screen and (min-width: 500px) {
   main {
+    flex-direction: row;
+  }
+
+  main-panels {
     width: 400px;
   }
 

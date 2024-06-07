@@ -30,6 +30,9 @@ let expenseDate = document.querySelector("#expense-date");
 let expenseButton = document.querySelector("#expense-submit");
 let resetButton = document.querySelector("#reset");
 
+let expenseSection = document.querySelector("#expense-section");
+let tableBody = document.querySelector("tbody");
+
 axios.defaults.withCredentials = true;
 window.onload = verify();
 
@@ -252,6 +255,7 @@ function addExpense() {
   }
   // update bars
   getBarData();
+  generateTable();
 }
 
 function reset() {
@@ -278,13 +282,25 @@ function reset() {
   });
 }
 
+function generateTable() {
+  let newHtml = "";
+  expenseData.length > 0 &&
+    (expenseData.forEach((expenseItem) => {
+      newHtml += `<tr><td>$ ${expenseItem.expense}</td> <td>${expenseItem.date}</td></tr>`;
+    }),
+    (tableBody.innerHTML = newHtml),
+    (expenseSection.style.display = "block"));
+}
+
 window.onload = getBarData();
+window.onload = generateTable();
 bars.forEach((bar) =>
   bar.addEventListener("mouseover", () => handleTooltip(bar))
 );
 bars.forEach((bar) =>
   bar.addEventListener("mouseout", () => (tooltip.style.display = "none"))
 );
+
 balanceButton.addEventListener("click", () => addBalance());
 expenseButton.addEventListener("click", () => addExpense());
 resetButton.addEventListener("click", () => reset());
