@@ -1,6 +1,7 @@
 //authentication and mongodb features
 const registerLoginOverlay = document.querySelector("#register-login-overlay");
 const home = document.querySelector("#home");
+const avatar = document.querySelector("#avatar");
 const userDisplay = document.querySelector("#user-display");
 const logoutButton = document.querySelector("#logout-button");
 
@@ -73,9 +74,9 @@ export function register(e) {
   e.preventDefault();
   let email = document.querySelector("#register-email").value;
   let password = document.querySelector("#register-password").value;
-
+  let avatar = document.querySelector("#avatar-url").value;
   axios
-    .post(`${baseUrl}/api/register`, { email, password })
+    .post(`${baseUrl}/api/register`, { email, password, avatar })
     .then((res) =>
       res.data === `${email} is now registered!`
         ? ((localStorage.setItem("balance", "0"),
@@ -111,7 +112,7 @@ export function login(e) {
           alert(res.data[0]),
           closeLoginAndRegister(),
           location.reload())
-        : ((currentEmail = ""), (registerLoginOverlay.style.display = "flex"));
+        : ((currentEmail = ""), alert("Wrong Password"));
     })
     .catch((err) => {
       console.log(err);
@@ -188,6 +189,7 @@ export function verify() {
           (userDisplay.innerText = `Welcome ${currentEmail}!`),
           (registerLoginOverlay.style.display = "none"),
           (userDisplay.style.display = "inline-block"),
+          res.data.avatar && (avatar.src = res.data.avatar),
           res.data.data &&
             (localStorage.setItem("balance", res.data.data.balance),
             localStorage.setItem("expenseData", res.data.data.expenseData)))

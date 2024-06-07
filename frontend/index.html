@@ -28,7 +28,14 @@
 
   <body>
     <nav id="navbar">
-      <h2 id="user-display"></h2>
+      <div>
+        <img
+          id="avatar"
+          src=""
+          alt="avatar"
+        />
+        <h2 id="user-display"></h2>
+      </div>
       <div>
         <button id="logout-button">Logout</button>
       </div>
@@ -72,6 +79,13 @@
           placeholder="password"
           autocomplete="off"
           required
+        />
+        <label for="avatar"><h3>Avatar Url (optional)</h3></label>
+        <input
+          id="avatar-url"
+          name="avatar"
+          placeholder="Enter Url"
+          autocomplete="off"
         />
         <button
           type="submit"

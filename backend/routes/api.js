@@ -24,7 +24,7 @@ router.post("/api/save", async (req, res) => {
 });
 
 router.post("/api/register", async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, avatar } = req.body;
   try {
     const user = await UsersModel.findOne({ email: email });
     if (user) {
@@ -34,6 +34,7 @@ router.post("/api/register", async (req, res) => {
       const newUser = new UsersModel({
         email,
         password: hashedPassword,
+        avatar,
       });
       await newUser.save();
       res.send(`${email} is now registered!`);
@@ -94,7 +95,7 @@ router.post("/api/forgot-password", async (req, res) => {
       return res.send("No user exists");
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-        expiresIn: "180s",
+        expiresIn: 120000,
       });
       let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -104,7 +105,7 @@ router.post("/api/forgot-password", async (req, res) => {
         from: "PasswordAdmin",
         to: email,
         subject: "Password Reset",
-        text: `Copy and paste this code onto the reset password page (expires in 3 minutes) ${user._id}/${token}`,
+        text: `Copy and paste this code onto the reset password page (expires in 2 minutes) ${user._id}/${token}`,
       };
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
@@ -154,13 +155,14 @@ const verifyUser = (req, res, next) => {
   }
 };
 
-router.get("/api/verify", verifyUser, (req, res) => {
-  let user = UsersModel.findOne({ email: req.email });
+router.get("/api/verify", verifyUser, async (req, res) => {
+  let user = await UsersModel.findOne({ email: req.email });
   user &&
     res.send({
       login: true,
       email: req.email,
-      data: req.data,
+      avatar: user.avatar,
+      data: user.data,
     });
 });
 
