@@ -95,7 +95,7 @@ router.post("/api/forgot-password", async (req, res) => {
       return res.send("No user exists");
     } else {
       const token = jwt.sign({ id: user._id }, process.env.JWT_KEY, {
-        expiresIn: 120000,
+        expiresIn: "120s",
       });
       let transporter = nodemailer.createTransport({
         service: "gmail",
@@ -127,14 +127,19 @@ router.post("/api/reset-password/:id/:token", (req, res) => {
   const { password } = req.body;
   try {
     jwt.verify(token, process.env.JWT_KEY, async (err, decoded) => {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      await UsersModel.findByIdAndUpdate(
-        { _id: id },
-        { password: hashedPassword }
-      );
-      return res.send("Password updated");
+      if (err) {
+        return res.send("Invalid code");
+      } else {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await UsersModel.findByIdAndUpdate(
+          { _id: id },
+          { password: hashedPassword }
+        );
+        return res.send("Password updated");
+      }
     });
   } catch (err) {
+    console.log(err);
     return res.send(err);
   }
 });

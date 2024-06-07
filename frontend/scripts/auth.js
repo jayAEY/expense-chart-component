@@ -165,10 +165,9 @@ export function resetPassword(e) {
 
   resetUrl &&
     axios
-      .post(
-        `https://wallet-watcher-backend.vercel.app/api/reset-password/${resetUrl}`,
-        { password: newPassword }
-      )
+      .post(`${baseUrl}/api/reset-password/${resetUrl}`, {
+        password: newPassword,
+      })
       .then((res) => {
         res.data === "Password updated"
           ? (alert(res.data), closeLoginAndRegister())
