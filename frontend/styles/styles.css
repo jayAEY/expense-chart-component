@@ -60,20 +60,16 @@ nav > div > button:hover {
   display: inline-block;
 }
 
-#avatar-div {
-  height: 40px;
-  width: 40px;
-  border-radius: 20px;
-}
-
 #avatar {
   margin: 0 5px;
   display: inline-block;
   background-color: white;
-  object-fit: cover;
-
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
   align-content: center;
   text-align: center;
+  object-fit: cover;
 }
 
 #user-display {
