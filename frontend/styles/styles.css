@@ -203,7 +203,7 @@ nav > div > button:hover {
 }
 
 main {
-  position: absolute;
+  position: relative;
   height: 100svh;
   padding-top: 90px;
   padding-bottom: 90px;
