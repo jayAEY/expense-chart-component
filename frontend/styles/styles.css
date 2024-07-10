@@ -61,20 +61,19 @@ nav > div > button:hover {
 }
 
 #avatar-div {
-  margin: 0 5px;
-  display: inline-block;
-  background-color: white;
-  aspect-ratio: auto;
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  align-content: center;
-  text-align: center;
 }
 
 #avatar {
-  min-width: 100%;
-  min-height: 100%;
+  margin: 0 5px;
+  display: inline-block;
+  background-color: white;
+  object-fit: cover;
+
+  align-content: center;
+  text-align: center;
 }
 
 #user-display {
