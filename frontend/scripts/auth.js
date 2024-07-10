@@ -22,8 +22,8 @@ const resetLink = document.querySelector("#reset-link");
 
 let currentEmail;
 
-const baseUrl = "http://localhost:3000";
-// let baseUrl = "https://wallet-watcher-backend.vercel.app";
+// const baseUrl = "http://localhost:3000";
+let baseUrl = "https://wallet-watcher-backend.vercel.app";
 
 axios.defaults.withCredentials = true;
 
